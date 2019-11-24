@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="RestApi.cs" company="Tethys">
-//   Copyright (C) 2017 T. Graf
+//   Copyright (C) 2019 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.

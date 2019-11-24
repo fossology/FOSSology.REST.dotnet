@@ -18,12 +18,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Template_WinForms_with_Logging")]
+[assembly: AssemblyTitle("Fossology.Rest.Dotnet.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Licence Owner")]
-[assembly: AssemblyProduct("Template_WinForms_with_Logging")]
-[assembly: AssemblyCopyright("Copyright © 2018 T. Graf")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Fossology.Rest.Dotnet.Test")]
+[assembly: AssemblyCopyright("Copyright © 2019 T. Graf")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
