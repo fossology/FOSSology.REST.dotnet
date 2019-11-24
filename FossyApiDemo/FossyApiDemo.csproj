@@ -97,7 +97,7 @@
       <Project>{510a1d9e-c531-4a0e-a516-6aa0125e4f9b}</Project>
       <Name>Fossology.Rest.Dotnet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tethys.Fossology.Model\Tethys.Fossology.Model.csproj">
+    <ProjectReference Include="..\FOSSology.REST.dotnet.Model\FOSSology.REST.dotnet.Model.csproj">
       <Project>{396e05c3-9ad3-4d1b-8e0b-8c24c6c490eb}</Project>
       <Name>Fossology.Rest.Dotnet</Name>
     </ProjectReference>
