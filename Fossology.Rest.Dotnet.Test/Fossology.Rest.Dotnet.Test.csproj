@@ -40,18 +40,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>C:\home\packages\MSTest.TestFramework.2.1.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>C:\home\packages\MSTest.TestFramework.2.1.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Tethys.Logging, Version=1.4.2.0, Culture=neutral, PublicKeyToken=5fae225d9529f881, processorArchitecture=MSIL">
-      <HintPath>C:\home\packages\Tethys.Logging.1.4.2\lib\netstandard2.0\Tethys.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Tethys.Logging.Console, Version=1.4.2.0, Culture=neutral, PublicKeyToken=5fae225d9529f881, processorArchitecture=MSIL">
-      <HintPath>C:\home\packages\Tethys.Logging.Console.1.4.2\lib\netstandard2.0\Tethys.Logging.Console.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
