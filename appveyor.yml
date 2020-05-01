@@ -2,9 +2,6 @@ version: 1.0.{build}
 image: Visual Studio 2019
 install:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat"
-platform:
-  - Win32
-  - x64
 configuration:
   - Debug
   - Release
@@ -14,4 +11,5 @@ before_build:
   - cmd: nuget restore
   - project: Fossology.Rest.Dotnet.sln
 build:
-  verbosity: minimal
+  verbosity: normal
+test: off
