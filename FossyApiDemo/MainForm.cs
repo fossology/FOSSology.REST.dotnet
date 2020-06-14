@@ -5,8 +5,8 @@
 //
 // Licensed under the MIT License.
 // SPDX-License-Identifier: MIT
-// 
-// Unless required by applicable law or agreed to in writing, 
+//
+// Unless required by applicable law or agreed to in writing,
 // software distributed under the License is distributed on an
 // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 // either express or implied.
@@ -309,7 +309,7 @@ namespace FossyApiDemo
             {
                 this.SetStatus(5, "Uploading package");
                 var uploadFinished = false;
-                var result = this.client.UploadPackage(fileName, this.folderId, 0,
+                var result = this.client.UploadPackage(fileName, this.folderId, "",
                     () => uploadFinished = true);
                 if ((result == null) || (result.Type != "INFO") || (result.Code != 201))
                 {
@@ -636,7 +636,7 @@ namespace FossyApiDemo
                  {
                      InitialDirectory = ".", 
                      RestoreDirectory = true, 
-                     Filter = @"All Files (*.*) |*.*||"
+                     Filter = @"All Files (*.*) |*.*||",
                  })
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK)

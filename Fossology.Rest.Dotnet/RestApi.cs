@@ -17,7 +17,7 @@ namespace Fossology.Rest.Dotnet
     using System;
     using System.Net;
 
-    using Fossology.Rest.Dotnet.Model;
+    using Model;
 
     using RestSharp;
     using RestSharp.Extensions;
@@ -82,19 +82,22 @@ namespace Fossology.Rest.Dotnet
         //// ---------------------------------------------------------------------
 
         #region PUBLIC METHODS            
-        /// <summary>
-        /// Gets the response from the specified URL via GET.
-        /// </summary>
+        /// <summary>Gets the response from the specified URL via GET.</summary>
         /// <param name="url">The URL.</param>
-        /// <returns>An <see cref="IRestResponse"/> object.</returns>
-        public IRestResponse Get(string url)
+        /// <param name="ignoreResultCode">Ignore the HTTP result code.</param>
+        /// <returns>An <see cref="IRestResponse" /> object.</returns>
+        public IRestResponse Get(string url, bool ignoreResultCode = false)
         {
             try
             {
                 var request = new RestRequest(url, Method.GET);
                 this.AddHeaders(request);
                 var response = this.client.Execute(request);
-                CheckForErrors(response);
+
+                if (!ignoreResultCode)
+                {
+                    CheckForErrors(response);
+                } // if
 
                 return response;
             }

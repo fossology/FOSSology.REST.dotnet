@@ -34,10 +34,21 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="SearchResult.cs" />
+    <Compile Include="Analysis.cs" />
+    <Compile Include="Support.cs" />
+    <Compile Include="TokenResponse.cs" />
+    <Compile Include="TokenRequest.cs" />
+    <Compile Include="UploadSummary.cs" />
+    <Compile Include="UploadLicenses.cs" />
+    <Compile Include="VcsUpload.cs" />
+    <Compile Include="ServerUpload.cs" />
+    <Compile Include="UrlUpload.cs" />
     <Compile Include="Upload.cs" />
     <Compile Include="User.cs" />
     <Compile Include="TriggerInfo.cs" />

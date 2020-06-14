@@ -19,8 +19,8 @@ namespace Fossology.Rest.Dotnet
     using System;
     using System.Collections.Generic;
     using System.IO;
-
-    using Fossology.Rest.Dotnet.Model;
+    using System.Net;
+    using Model;
 
     using Newtonsoft.Json;
 
@@ -105,6 +105,29 @@ namespace Fossology.Rest.Dotnet
             return version;
         } // GetVersion()
 
+        /// <summary>
+        /// Gets a token.
+        /// </summary>
+        /// <param name="requestDetails">The request details.</param>
+        /// <returns>The token.</returns>
+        public string GetToken(TokenRequest requestDetails)
+        {
+            Log.Debug($"Requesting token {requestDetails.TokenName} for user {requestDetails.Username}...");
+
+            var json = JsonConvert.SerializeObject(requestDetails);
+            var request = new RestRequest(this.Url + "/tokens", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.JsonSerializer = new JsonSerializer();
+            request.Parameters.Clear();
+
+            request.AddJsonBody(json);
+
+            var response = this.api.Execute(request);
+            var result = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
+
+            return result.GetPlainToken();
+        } // GetToken()
+
         #region FOLDER SUPPORT
         /// <summary>
         /// Gets the folder with the specified id.
@@ -186,12 +209,12 @@ namespace Fossology.Rest.Dotnet
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="folderId">The folder identifier.</param>
-        /// <param name="groupId">The group identifier.</param>
+        /// <param name="groupName">The group name to chose while uploading the package.</param>
         /// <param name="uploadFinished">The optional upload finished callback.</param>
         /// <param name="uploadProgress">The optional upload progress callback.</param>
         /// <param name="description">The description.</param>
         /// <param name="accessLevel">The access level.</param>
-        /// <param name="ignoreScm">if set to <c>true</c> [ignore SCM].</param>
+        /// <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
         /// <returns>
         /// An <see cref="Result" /> object.
         /// </returns>
@@ -199,8 +222,7 @@ namespace Fossology.Rest.Dotnet
         /// The message property of the result contains the upload id
         /// which is needed for further operations.
         /// </remarks>
-        /// &gt;
-        public Result UploadPackage(string fileName, int folderId, int groupId,
+        public Result UploadPackage(string fileName, int folderId, string groupName = "",
                                      Action uploadFinished = null, Action<float> uploadProgress = null,
                                     string description = "", string accessLevel = "public",
                                     bool ignoreScm = true)
@@ -210,7 +232,7 @@ namespace Fossology.Rest.Dotnet
             var request = new RestRequest(this.Url + "/uploads", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("folderId", folderId.ToString());
-            request.AddHeader("groupId", groupId.ToString());
+            request.AddHeader("groupName", groupName);
             request.AddHeader("uploadDescription", description);
             request.AddHeader("public", accessLevel);
             request.AddHeader("ignoreScm", ignoreScm.ToString());
@@ -265,6 +287,127 @@ namespace Fossology.Rest.Dotnet
         } // UploadPackage()
 
         /// <summary>
+        /// Uploads the package from URL.
+        /// </summary>
+        /// <param name="folderId">The folder identifier.</param>
+        /// <param name="groupName">The group name to chose while uploading the package.</param>
+        /// <param name="details">The details.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="accessLevel">The access level.</param>
+        /// <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
+        /// <returns>
+        /// An <see cref="Result" /> object.
+        /// </returns>
+        /// <remarks>
+        /// The message property of the result contains the upload id
+        /// which is needed for further operations.
+        /// </remarks>
+        public Result UploadPackageFromUrl(int folderId, UrlUpload details, string groupName = "",
+            string description = "", string accessLevel = "public", bool ignoreScm = true)
+        {
+            Log.Debug($"Uploading package {details.Name} from URL {details.Url} to folder {folderId}...");
+
+            var request = new RestRequest(this.Url + "/uploads", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("folderId", folderId.ToString());
+            request.AddHeader("groupName", groupName);
+            request.AddHeader("uploadDescription", description);
+            request.AddHeader("public", accessLevel);
+            request.AddHeader("ignoreScm", ignoreScm.ToString());
+            request.AddHeader("uploadType", "url");
+
+            request.JsonSerializer = new JsonSerializer();
+            var json = JsonConvert.SerializeObject(details);
+            request.AddJsonBody(json);
+
+            var resultRaw = this.api.Execute(request);
+            var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
+            Log.Debug($"Package {result.Message} uploaded.");
+
+            return result;
+        } // UploadPackageFromUrl()
+
+        /// <summary>
+        /// Uploads the package from a version control system.
+        /// </summary>
+        /// <param name="folderId">The folder identifier.</param>
+        /// <param name="groupName">The group name to chose while uploading the package.</param>
+        /// <param name="details">The details.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="accessLevel">The access level.</param>
+        /// <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
+        /// <returns>
+        /// An <see cref="Result" /> object.
+        /// </returns>
+        /// <remarks>
+        /// The message property of the result contains the upload id
+        /// which is needed for further operations.
+        /// </remarks>
+        public Result UploadPackageFromVcs(int folderId, VcsUpload details, string groupName = "",
+            string description = "", string accessLevel = "public", bool ignoreScm = true)
+        {
+            Log.Debug($"Uploading package {details.VcsName} from {details.VcsUrl} to folder {folderId}...");
+            var request = new RestRequest(this.Url + "/uploads", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("folderId", folderId.ToString());
+            request.AddHeader("groupName", groupName);
+            request.AddHeader("uploadDescription", description);
+            request.AddHeader("public", accessLevel);
+            request.AddHeader("ignoreScm", ignoreScm.ToString());
+            request.AddHeader("uploadType", "vcs");
+
+            request.JsonSerializer = new JsonSerializer();
+            var json = JsonConvert.SerializeObject(details);
+            request.AddJsonBody(json);
+
+            var resultRaw = this.api.Execute(request);
+            var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
+            Log.Debug($"Package {result.Message} uploaded.");
+
+            return result;
+        } // UploadPackageFromVcs()
+
+        /// <summary>
+        /// Uploads the package from another FOSSology server.
+        /// </summary>
+        /// <param name="folderId">The folder identifier.</param>
+        /// <param name="groupName">The group name to chose while uploading the package.</param>
+        /// <param name="details">The details.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="accessLevel">The access level.</param>
+        /// <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
+        /// <returns>
+        /// An <see cref="Result" /> object.
+        /// </returns>
+        /// <remarks>
+        /// The message property of the result contains the upload id
+        /// which is needed for further operations.
+        /// </remarks>
+        public Result UploadPackageFromServer(int folderId, ServerUpload details, string groupName = "",
+            string description = "", string accessLevel = "public", bool ignoreScm = true)
+        {
+            Log.Debug($"Uploading package {details.Name} from server {details.Path} to folder {folderId}...");
+            var request = new RestRequest(this.Url + "/uploads", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("folderId", folderId.ToString());
+            request.AddHeader("groupName", groupName);
+            request.AddHeader("uploadDescription", description);
+            request.AddHeader("public", accessLevel);
+            request.AddHeader("ignoreScm", ignoreScm.ToString());
+            request.AddHeader("uploadType", "server");
+
+            request.JsonSerializer = new JsonSerializer();
+            var json = JsonConvert.SerializeObject(details);
+            request.AddJsonBody(json);
+
+            var resultRaw = this.api.Execute(request);
+            var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
+            Log.Debug($"Package {result.Message} uploaded.");
+
+            return result;
+        } // UploadPackageFromServer()
+
+        /// <summary>
         /// Gets the upload with the specified id.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -273,14 +416,46 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Getting upload {id}...");
 
-            var result = this.api.Get(this.Url + $"/uploads/{id}");
-            var upload = JsonConvert.DeserializeObject<Upload>(result.Content,
-                new JsonSerializerSettings
+            var response = this.api.Get(this.Url + $"/uploads/{id}", true);
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var upload = JsonConvert.DeserializeObject<Upload>(response.Content,
+                    new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore
                     });
-            return upload;
+
+                return upload;
+            } // if
+
+            // this will be the case for StatusCode == ServiceUnavailable
+            // In this case header["look-at"] contains something like /api/v1/jobs?upload=8
+            var result = JsonConvert.DeserializeObject<Result>(response.Content);
+            var exception = new FossologyApiException(ErrorCode.RestApiError,
+                (HttpStatusCode)result.Code, result.Message, null);
+
+            throw exception;
         } // GetUpload()
+
+        /// <summary>
+        /// Gets the summary for the upload with the specified id.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>A <see cref="UploadSummary"/> object.</returns>
+        public UploadSummary GetUploadSummary(int id)
+        {
+            Log.Debug($"Getting upload summary {id}...");
+
+            var response = this.api.Get(this.Url + $"/uploads/{id}/summary");
+            var summary = JsonConvert.DeserializeObject<UploadSummary>(response.Content,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+            return summary;
+        } // GetUploadSummary()
 
         /// <summary>
         /// Gets the upload with the specified id.
@@ -300,15 +475,49 @@ namespace Fossology.Rest.Dotnet
         } // GetUploadList()
 
         /// <summary>
+        /// Gets the summary for the upload with the specified id.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="agent">Agent name, one of (nomos, monk, ninka, ojo)</param>
+        /// <param name="containers">if set to <c>true</c> show directories and containers.</param>
+        /// <returns>A list of <see cref="UploadLicenses" /> objects.</returns>
+        public List<UploadLicenses> GetUploadLicenses(int id, string agent, bool containers)
+        {
+            Log.Debug($"Getting upload licenses for upload {id} and agent {agent}...");
+
+            var ctext = containers ? "true" : "false";
+            var request = new RestRequest(this.Url + $"/uploads/{id}/licenses?agent={agent}&containers={ctext}", Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            var response = this.api.Execute(request);
+            var summary = JsonConvert.DeserializeObject<List<UploadLicenses>>(response.Content,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+            return summary;
+        } // GetUploadLicenses()
+
+        /// <summary>
         /// Deletes the upload with the specified id.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        /// <param name="groupName">The group name to chose while deleting the package.</param>
         /// <returns>An <see cref="Result"/> object.</returns>
-        public Result DeleteUpload(int id)
+        public Result DeleteUpload(int id, string groupName = "")
         {
             Log.Debug($"Deleting upload {id}...");
 
-            var response = this.api.Delete(this.Url + $"/uploads/{id}");
+            var request = new RestRequest(this.Url + $"/uploads/{id}", Method.DELETE);
+            request.RequestFormat = DataFormat.Json;
+            request.JsonSerializer = new JsonSerializer();
+            request.Parameters.Clear();
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
+
+            var response = this.api.Execute(request);
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
             return result;
         } // DeleteUpload()
@@ -319,12 +528,11 @@ namespace Fossology.Rest.Dotnet
         /// <param name="folderId">The folder identifier.</param>
         /// <param name="uploadId">The upload identifier.</param>
         /// <param name="details">The details.</param>
-        /// <returns>An <see cref="Result"/> object.</returns>
-        /// <remarks>
-        /// The message property of the result contains the job id
-        /// which is needed for further operations.
-        /// </remarks>>
-        public Result TriggerJob(int folderId, int uploadId, TriggerInfo details)
+        /// <param name="groupName">The group name to chose while scheduling jobs.</param>
+        /// <returns>An <see cref="Result" /> object.</returns>
+        /// <remarks>The message property of the result contains the job id
+        /// which is needed for further operations.</remarks>
+        public Result TriggerJob(int folderId, int uploadId, TriggerInfo details, string groupName = "")
         {
             Log.Debug($"Triggering job for upload {uploadId}, folder={folderId}...");
 
@@ -335,6 +543,11 @@ namespace Fossology.Rest.Dotnet
             request.Parameters.Clear();
             request.AddHeader("uploadId", uploadId.ToString());
             request.AddHeader("folderId", folderId.ToString());
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
+
             request.AddJsonBody(json);
 
             var response = this.api.Execute(request);
@@ -433,12 +646,13 @@ namespace Fossology.Rest.Dotnet
         /// </summary>
         /// <param name="uploadId">The upload identifier.</param>
         /// <param name="reportFormat">The report format.</param>
+        /// <param name="groupName">The group name to chose while deleting the package.</param>
         /// <returns>An <see cref="Result"/> object.</returns>
         /// <remarks>
         /// The message property of the result contains the report id
         /// which is needed for further operations.
         /// </remarks>>
-        public Result TriggerReportGeneration(int uploadId, string reportFormat)
+        public Result TriggerReportGeneration(int uploadId, string reportFormat, string groupName = "")
         {
             Log.Debug($"Triggering report generation for upload {uploadId}, format={reportFormat}...");
 
@@ -447,6 +661,10 @@ namespace Fossology.Rest.Dotnet
             request.JsonSerializer = new JsonSerializer();
             request.AddHeader("uploadId", uploadId.ToString());
             request.AddHeader("reportFormat", reportFormat);
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
 
             var response = this.api.Execute(request);
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
@@ -460,14 +678,23 @@ namespace Fossology.Rest.Dotnet
         /// </summary>
         /// <param name="reportId">The report identifier.</param>
         /// <param name="fileName">Name of the file.</param>
+        /// <param name="groupName">The group name to chose while deleting the package.</param>
         /// <returns><c>true</c> if the file has been successfully downloaded; otherwise <c>false</c>.</returns>
-        public bool DownloadReport(int reportId, string fileName)
+        public bool DownloadReport(int reportId, string fileName, string groupName = "")
         {
             Log.Debug($"Getting report {reportId}...");
 
-            this.api.Get(this.Url + $"/report/{reportId}");
+            var request = new RestRequest(this.Url + $"/report/{reportId}", Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.JsonSerializer = new JsonSerializer();
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
 
-            // this could be an error response, in this case an exception would get thrown
+            this.api.Execute(request);
+
+            // There could be an error response, in this case an exception would get thrown
             // If there is no exception, then we can normally download the file.
             this.api.DownloadFile(this.Url + $"/report/{reportId}", fileName);
             return true;
@@ -483,11 +710,12 @@ namespace Fossology.Rest.Dotnet
         /// <param name="fileSizeMax">The file size maximum.</param>
         /// <param name="license">The license.</param>
         /// <param name="copyright">The copyright.</param>
+        /// <param name="groupName">The group name to chose while searching.</param>
         /// <returns>A list of <see cref="SearchResult"/> objects.</returns>
         public IReadOnlyList<SearchResult> Search(string fileName, string tag = null, 
                                                   string searchType = "allfiles",
                                                   int fileSizeMin = -1, int fileSizeMax = -1,
-                                                  string license = null, string copyright = null)
+                                                  string license = null, string copyright = null, string groupName = "")
         {
             Log.Debug($"Searching for file {fileName}...");
 
@@ -522,7 +750,12 @@ namespace Fossology.Rest.Dotnet
             {
                 request.AddHeader("copyright", copyright);
             } // if
-            
+
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
+
             var response = this.api.Execute(request);
             var result = JsonConvert.DeserializeObject<IReadOnlyList<SearchResult>>(response.Content);
 

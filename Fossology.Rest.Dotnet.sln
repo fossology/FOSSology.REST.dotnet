@@ -13,8 +13,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FossyApiDemo", "FossyApiDem
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{66961846-D78E-4DC0-BE09-F712FC21EA09}"
 	ProjectSection(SolutionItems) = preProject
+		ChangeLog.md = ChangeLog.md
 		LICENSE = LICENSE
 		Readme.md = Readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{4D524E0C-E90D-430E-83D5-B9786F5F243A}"
+	ProjectSection(SolutionItems) = preProject
+		GlobalAssemblyInfo.cs = GlobalAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Global

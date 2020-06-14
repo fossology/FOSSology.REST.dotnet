@@ -1,7 +1,7 @@
 ﻿#region Header
 // ---------------------------------------------------------------------------
 // <copyright file="AssemblyInfo.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2020 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -23,11 +23,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Fossology.Rest.Dotnet.Model")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Fossology.Rest.Dotnet.Model")]
-[assembly: AssemblyCopyright("Copyright © 2019 T. Graf")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -36,7 +32,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("396e05c3-9ad3-4d1b-8e0b-8c24c6c490eb")]
-
-// Version information for an assembly consists of the following four values:
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]

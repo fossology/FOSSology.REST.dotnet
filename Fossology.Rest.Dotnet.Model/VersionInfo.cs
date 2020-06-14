@@ -1,7 +1,7 @@
 ﻿#region Header
 // ---------------------------------------------------------------------------
 // <copyright file="VersionInfo.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2020 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -17,12 +17,13 @@
 namespace Fossology.Rest.Dotnet.Model
 {
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
+    using System.Text;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Fossology version information.
     /// </summary>
-    [DataContract]
+    //[DataContract]
     public class VersionInfo
     {
         /*
@@ -37,13 +38,24 @@ namespace Fossology.Rest.Dotnet.Model
         /// <summary>
         /// Gets or sets the version.
         /// </summary>
-        [DataMember(Name = "version")]
+        [JsonProperty("version")]
         public string Version { get; set; }
 
         /// <summary>
         /// Gets or sets the supported authentication methods.
         /// </summary>
-        [DataMember(Name = "security")]
+        [JsonProperty("security")]
         public List<string> Security { get; set; }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            var sb = new StringBuilder(100);
+            sb.Append(this.Version);
+            sb.Append(": ");
+            sb.Append(Support.ListToString(this.Security));
+            
+            return sb.ToString();
+        } // ToString()
     }
 }

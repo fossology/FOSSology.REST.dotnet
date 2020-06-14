@@ -78,6 +78,12 @@ namespace Fossology.Rest.Dotnet.Model
         [JsonProperty("filesize")]
         public int Filesize { get; set; }
 
+        /// <summary>
+        /// Gets or sets the SHA1 digest of the file.
+        /// </summary>
+        [JsonProperty("filesha1")]
+        public string FileSha1 { get; set; }
+
         /// <inheritdoc />
         public override string ToString()
         {

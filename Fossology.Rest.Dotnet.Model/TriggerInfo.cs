@@ -1,7 +1,7 @@
 ﻿#region Header
 // ---------------------------------------------------------------------------
 // <copyright file="TriggerInfo.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2020 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -50,66 +50,7 @@ namespace Fossology.Rest.Dotnet.Model
           }
         }   
          */
-
-        /// <summary>
-        /// Trigger analysis information.
-        /// </summary>
-        public class AnalysisPart
-        {
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the bucket.
-            /// </summary>
-            [JsonProperty("bucket")]
-            public bool Bucket { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use copyright email author.
-            /// </summary>
-            [JsonProperty("copyright_email_author")]
-            public bool CopyrightEmailAuthor { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the ecc scanner.
-            /// </summary>
-            [JsonProperty("ecc")]
-            public bool Ecc { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the keyword scanner.
-            /// </summary>
-            [JsonProperty("keyword")]
-            public bool Keyword { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the mime scanner.
-            /// </summary>
-            [JsonProperty("mime")]
-            public bool Mime { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the monk scanner.
-            /// </summary>
-            [JsonProperty("monk")]
-            public bool Monk { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the nomos scanner.
-            /// </summary>
-            [JsonProperty("nomos")]
-            public bool Nomos { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the <c>ojo</c> scanner.
-            /// </summary>
-            [JsonProperty("ojo")]
-            public bool Ojo { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the package scanner.
-            /// </summary>
-            [JsonProperty("package")]
-            public bool Package { get; set; }
-        } // AnalysisJobPart
+        
 
         /// <summary>
         /// Trigger decider information.
@@ -176,7 +117,7 @@ namespace Fossology.Rest.Dotnet.Model
         /// Gets or sets the analysis settings.
         /// </summary>
         [JsonProperty("analysis")]
-        public AnalysisPart Analysis { get; set; }
+        public Analysis Analysis { get; set; }
 
         /// <summary>
         /// Gets or sets the decider settings.
@@ -187,7 +128,7 @@ namespace Fossology.Rest.Dotnet.Model
         /// <summary>
         /// Gets or sets the reuse settings.
         /// </summary>
-        [JsonProperty("description")]
+        [JsonProperty("reuse")]
         public ReusePart Reuse { get; set; }
 
         /// <summary>
@@ -195,7 +136,7 @@ namespace Fossology.Rest.Dotnet.Model
         /// </summary>
         public TriggerInfo()
         {
-            this.Analysis = new AnalysisPart();
+            this.Analysis = new Analysis();
             this.Decider = new DeciderPart();
             this.Reuse = new ReusePart();
         } // TriggerInfo()

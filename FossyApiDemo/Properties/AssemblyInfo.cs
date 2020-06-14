@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="AssemblyInfo.cs" company="Tethys">
-//   Copyright (C) 2018 T. Graf
+//   Copyright (C) 2019-2020 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -21,11 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Fossology.Rest.Dotnet.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Fossology.Rest.Dotnet.Test")]
-[assembly: AssemblyCopyright("Copyright © 2019 T. Graf")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -34,16 +30,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("caf41cca-2778-4767-ab50-60205339e60b")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]

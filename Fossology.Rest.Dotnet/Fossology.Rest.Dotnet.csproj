@@ -37,6 +37,9 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ErrorCode.cs" />
     <Compile Include="FossologyApiException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
