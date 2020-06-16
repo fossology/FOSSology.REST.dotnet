@@ -1,12 +1,12 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="RestApi.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2020 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
 // SPDX-License-Identifier: MIT
 //
-// Unless required by applicable law or agreed to in writing, 
+// Unless required by applicable law or agreed to in writing,
 // software distributed under the License is distributed on an
 // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 // either express or implied.
@@ -17,7 +17,7 @@ namespace Fossology.Rest.Dotnet
     using System;
     using System.Net;
 
-    using Model;
+    using Fossology.Rest.Dotnet.Model;
 
     using RestSharp;
     using RestSharp.Extensions;
@@ -37,7 +37,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region PUBLIC PROPERTIES            
+        #region PUBLIC PROPERTIES
         /// <summary>
         /// Gets the access token.
         /// </summary>
@@ -66,7 +66,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region CONSTRUCTION            
+        #region CONSTRUCTION
         /// <summary>
         /// Initializes a new instance of the <see cref="RestApi" /> class.
         /// </summary>
@@ -81,7 +81,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region PUBLIC METHODS            
+        #region PUBLIC METHODS
         /// <summary>Gets the response from the specified URL via GET.</summary>
         /// <param name="url">The URL.</param>
         /// <param name="ignoreResultCode">Ignore the HTTP result code.</param>
@@ -324,7 +324,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region PRIVATE METHODS            
+        #region PRIVATE METHODS
         /// <summary>
         /// Checks for errors.
         /// </summary>
@@ -348,8 +348,8 @@ namespace Fossology.Rest.Dotnet
             try
             {
                 var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(response.Content);
-                exception = new FossologyApiException(ErrorCode.RestApiError,
-                    (HttpStatusCode)result.Code, result.Message, null);
+                exception = new FossologyApiException(
+                    ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
             }
             catch
             {

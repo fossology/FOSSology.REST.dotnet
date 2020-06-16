@@ -1,5 +1,4 @@
-﻿#region Header
-// ---------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------
 // <copyright file="FossologyClient.cs" company="Tethys">
 //   Copyright (C) 2019 T. Graf
 // </copyright>
@@ -7,12 +6,11 @@
 // Licensed under the MIT License.
 // SPDX-License-Identifier: MIT
 //
-// Unless required by applicable law or agreed to in writing, 
+// Unless required by applicable law or agreed to in writing,
 // software distributed under the License is distributed on an
 // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 // either express or implied.
 // ---------------------------------------------------------------------------
-#endregion
 
 namespace Fossology.Rest.Dotnet
 {
@@ -21,7 +19,7 @@ namespace Fossology.Rest.Dotnet
     using System.IO;
     using System.Linq;
     using System.Net;
-    using Model;
+    using Fossology.Rest.Dotnet.Model;
 
     using Newtonsoft.Json;
 
@@ -37,7 +35,7 @@ namespace Fossology.Rest.Dotnet
      * - Tethys.Logging 1.3.0, Apache-2.0
      * - Newtonsoft.Json 12.0.3, MIT
      * - RestSharp 106.6.10
-     * 
+     *
      ************************************************************************/
 
     /// <summary>
@@ -45,7 +43,7 @@ namespace Fossology.Rest.Dotnet
     /// </summary>
     public class FossologyClient
     {
-        #region PRIVATE PROPERTIES        
+        #region PRIVATE PROPERTIES
         /// <summary>
         /// The logger for this class.
         /// </summary>
@@ -54,7 +52,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region PUBLIC PROPERTIES            
+        #region PUBLIC PROPERTIES
         /// <summary>
         /// Gets the URL.
         /// </summary>
@@ -73,7 +71,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region CONSTRUCTION            
+        #region CONSTRUCTION
         /// <summary>
         /// Initializes a new instance of the <see cref="FossologyClient" /> class.
         /// </summary>
@@ -89,7 +87,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region PUBLIC METHODS        
+        #region PUBLIC METHODS
         /// <summary>
         /// Gets the Fossology version.
         /// </summary>
@@ -140,10 +138,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Getting folder {id}...");
 
             var result = this.api.Get(this.Url + $"/folders/{id}");
-            var folder = JsonConvert.DeserializeObject<Folder>(result.Content,
+            var folder = JsonConvert.DeserializeObject<Folder>(
+                result.Content,
                 new JsonSerializerSettings
                     {
-                        NullValueHandling = NullValueHandling.Ignore
+                        NullValueHandling = NullValueHandling.Ignore,
                     });
             return folder;
         } // GetFolder()
@@ -157,10 +156,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug("Getting list of folder...");
 
             var result = this.api.Get(this.Url + "/folders");
-            var list = JsonConvert.DeserializeObject<List<Folder>>(result.Content,
+            var list = JsonConvert.DeserializeObject<List<Folder>>(
+                result.Content,
                 new JsonSerializerSettings
                 {
-                    NullValueHandling = NullValueHandling.Ignore
+                    NullValueHandling = NullValueHandling.Ignore,
                 });
             return list;
         } // GetFolderList()
@@ -223,10 +223,15 @@ namespace Fossology.Rest.Dotnet
         /// The message property of the result contains the upload id
         /// which is needed for further operations.
         /// </remarks>
-        public Result UploadPackage(string fileName, int folderId, string groupName = "",
-                                     Action uploadFinished = null, Action<float> uploadProgress = null,
-                                    string description = "", string accessLevel = "public",
-                                    bool ignoreScm = true)
+        public Result UploadPackage(
+            string fileName,
+            int folderId,
+            string groupName = "",
+            Action uploadFinished = null,
+            Action<float> uploadProgress = null,
+            string description = "",
+            string accessLevel = "public",
+            bool ignoreScm = true)
         {
             Log.Debug($"Uploading package {fileName} to folder {folderId}...");
 
@@ -240,45 +245,45 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("Content-Type", "multipart/form-data");
 
             var fi = new FileInfo(fileName);
-            request.Files.Add(new FileParameter
+            var item = new FileParameter
                                   {
                                       Name = "fileInput",
                                       ContentLength = fi.Length,
                                       FileName = fileName,
                                       ContentType = "application/octet-stream",
-                                      Writer =
-                                          delegate(Stream stream)
-                                              {
-                                                  var bufferSize = 1024 * 1024; // 1 MB
-                                                  var sofar = 0;
+                                  };
+            item.Writer = stream =>
+            {
+                var bufferSize = 1024 * 1024; // 1 MB
+                var sofar = 0;
 
-                                                  var buffer = new byte[bufferSize];
-                                                  using (var fs = new FileStream(fileName, FileMode.Open))
-                                                  {
-                                                      while (sofar < fi.Length)
-                                                      {
-                                                          var read = fs.Read(buffer, 0, bufferSize);
+                var buffer = new byte[bufferSize];
+                using (var fs = new FileStream(fileName, FileMode.Open))
+                {
+                    while (sofar < fi.Length)
+                    {
+                        var read = fs.Read(buffer, 0, bufferSize);
 
-                                                          if (read < bufferSize)
-                                                          {
-                                                              bufferSize = read;
-                                                          } // if
+                        if (read < bufferSize)
+                        {
+                            bufferSize = read;
+                        } // if
 
-                                                          stream.Write(buffer, 0, bufferSize);
-                                                          sofar += bufferSize;
+                        stream.Write(buffer, 0, bufferSize);
+                        sofar += bufferSize;
 
-                                                          var percentage = sofar * 100 / fi.Length;
-                                                          var progress = percentage / 100f;
+                        var percentage = sofar * 100 / fi.Length;
+                        var progress = percentage / 100f;
 
-                                                          Log.Debug($"Upload progress = {progress}");
-                                                          uploadProgress?.Invoke(progress);
-                                                      } // while
-                                                  } // using
+                        Log.Debug($"Upload progress = {progress}");
+                        uploadProgress?.Invoke(progress);
+                    } // while
+                } // using
 
-                                                  uploadFinished?.Invoke();
-                                              }
-                                  });
-            
+                uploadFinished?.Invoke();
+            };
+            request.Files.Add(item);
+
             request.AlwaysMultipartFormData = true;
             var resultRaw = this.api.Execute(request);
             var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
@@ -303,8 +308,13 @@ namespace Fossology.Rest.Dotnet
         /// The message property of the result contains the upload id
         /// which is needed for further operations.
         /// </remarks>
-        public Result UploadPackageFromUrl(int folderId, UrlUpload details, string groupName = "",
-            string description = "", string accessLevel = "public", bool ignoreScm = true)
+        public Result UploadPackageFromUrl(
+            int folderId,
+            UrlUpload details,
+            string groupName = "",
+            string description = "",
+            string accessLevel = "public",
+            bool ignoreScm = true)
         {
             Log.Debug($"Uploading package {details.Name} from URL {details.Url} to folder {folderId}...");
 
@@ -344,8 +354,13 @@ namespace Fossology.Rest.Dotnet
         /// The message property of the result contains the upload id
         /// which is needed for further operations.
         /// </remarks>
-        public Result UploadPackageFromVcs(int folderId, VcsUpload details, string groupName = "",
-            string description = "", string accessLevel = "public", bool ignoreScm = true)
+        public Result UploadPackageFromVcs(
+            int folderId,
+            VcsUpload details,
+            string groupName = "",
+            string description = "",
+            string accessLevel = "public",
+            bool ignoreScm = true)
         {
             Log.Debug($"Uploading package {details.VcsName} from {details.VcsUrl} to folder {folderId}...");
             var request = new RestRequest(this.Url + "/uploads", Method.POST);
@@ -372,8 +387,8 @@ namespace Fossology.Rest.Dotnet
         /// Uploads the package from another FOSSology server.
         /// </summary>
         /// <param name="folderId">The folder identifier.</param>
-        /// <param name="groupName">The group name to chose while uploading the package.</param>
         /// <param name="details">The details.</param>
+        /// <param name="groupName">The group name to chose while uploading the package.</param>
         /// <param name="description">The description.</param>
         /// <param name="accessLevel">The access level.</param>
         /// <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
@@ -384,8 +399,13 @@ namespace Fossology.Rest.Dotnet
         /// The message property of the result contains the upload id
         /// which is needed for further operations.
         /// </remarks>
-        public Result UploadPackageFromServer(int folderId, ServerUpload details, string groupName = "",
-            string description = "", string accessLevel = "public", bool ignoreScm = true)
+        public Result UploadPackageFromServer(
+            int folderId,
+            ServerUpload details,
+            string groupName = "",
+            string description = "",
+            string accessLevel = "public",
+            bool ignoreScm = true)
         {
             Log.Debug($"Uploading package {details.Name} from server {details.Path} to folder {folderId}...");
             var request = new RestRequest(this.Url + "/uploads", Method.POST);
@@ -421,10 +441,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Checking status for upload {id}...");
 
             var result = this.api.Get(this.Url + $"/jobs?upload={id}");
-            var jobs = JsonConvert.DeserializeObject<List<Job>>(result.Content,
+            var jobs = JsonConvert.DeserializeObject<List<Job>>(
+                result.Content,
                 new JsonSerializerSettings
                 {
-                    NullValueHandling = NullValueHandling.Ignore
+                    NullValueHandling = NullValueHandling.Ignore,
                 });
 
             return jobs.All(job => job.Status == "Completed");
@@ -443,10 +464,11 @@ namespace Fossology.Rest.Dotnet
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var upload = JsonConvert.DeserializeObject<Upload>(response.Content,
+                var upload = JsonConvert.DeserializeObject<Upload>(
+                    response.Content,
                     new JsonSerializerSettings
                     {
-                        NullValueHandling = NullValueHandling.Ignore
+                        NullValueHandling = NullValueHandling.Ignore,
                     });
 
                 return upload;
@@ -455,8 +477,8 @@ namespace Fossology.Rest.Dotnet
             // this will be the case for StatusCode == ServiceUnavailable
             // In this case header["look-at"] contains something like /api/v1/jobs?upload=8
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
-            var exception = new FossologyApiException(ErrorCode.RestApiError,
-                (HttpStatusCode)result.Code, result.Message, null);
+            var exception = new FossologyApiException(
+                ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
 
             throw exception;
         } // GetUpload()
@@ -471,10 +493,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Getting upload summary {id}...");
 
             var response = this.api.Get(this.Url + $"/uploads/{id}/summary");
-            var summary = JsonConvert.DeserializeObject<UploadSummary>(response.Content,
+            var summary = JsonConvert.DeserializeObject<UploadSummary>(
+                response.Content,
                 new JsonSerializerSettings
                 {
-                    NullValueHandling = NullValueHandling.Ignore
+                    NullValueHandling = NullValueHandling.Ignore,
                 });
 
             return summary;
@@ -489,10 +512,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug("Getting all uploads...");
 
             var result = this.api.Get(this.Url + "/uploads");
-            var list = JsonConvert.DeserializeObject<List<Upload>>(result.Content,
+            var list = JsonConvert.DeserializeObject<List<Upload>>(
+                result.Content,
                 new JsonSerializerSettings
                     {
-                        NullValueHandling = NullValueHandling.Ignore
+                        NullValueHandling = NullValueHandling.Ignore,
                     });
             return list;
         } // GetUploadList()
@@ -512,10 +536,11 @@ namespace Fossology.Rest.Dotnet
             var request = new RestRequest(this.Url + $"/uploads/{id}/licenses?agent={agent}&containers={ctext}", Method.GET);
             request.RequestFormat = DataFormat.Json;
             var response = this.api.Execute(request);
-            var summary = JsonConvert.DeserializeObject<List<UploadLicenses>>(response.Content,
+            var summary = JsonConvert.DeserializeObject<List<UploadLicenses>>(
+                response.Content,
                 new JsonSerializerSettings
                 {
-                    NullValueHandling = NullValueHandling.Ignore
+                    NullValueHandling = NullValueHandling.Ignore,
                 });
 
             return summary;
@@ -590,10 +615,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Getting job {id}...");
 
             var result = this.api.Get(this.Url + $"/jobs/{id}");
-            var job = JsonConvert.DeserializeObject<Job>(result.Content,
+            var job = JsonConvert.DeserializeObject<Job>(
+                result.Content,
                 new JsonSerializerSettings
                     {
-                        NullValueHandling = NullValueHandling.Ignore
+                        NullValueHandling = NullValueHandling.Ignore,
                     });
             return job;
         } // GetJob()
@@ -607,10 +633,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug("Getting all jobs...");
 
             var result = this.api.Get(this.Url + "/jobs");
-            var list = JsonConvert.DeserializeObject<List<Job>>(result.Content,
+            var list = JsonConvert.DeserializeObject<List<Job>>(
+                result.Content,
                 new JsonSerializerSettings
                     {
-                        NullValueHandling = NullValueHandling.Ignore
+                        NullValueHandling = NullValueHandling.Ignore,
                     });
             return list;
         } // GetJobList()
@@ -626,10 +653,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug("Getting users...");
 
             var result = this.api.Get(this.Url + "/users");
-            var list = JsonConvert.DeserializeObject<List<User>>(result.Content,
+            var list = JsonConvert.DeserializeObject<List<User>>(
+                result.Content,
                 new JsonSerializerSettings
                     {
-                        NullValueHandling = NullValueHandling.Ignore
+                        NullValueHandling = NullValueHandling.Ignore,
                     });
             return list;
         } // GetUser()
@@ -735,10 +763,15 @@ namespace Fossology.Rest.Dotnet
         /// <param name="copyright">The copyright.</param>
         /// <param name="groupName">The group name to chose while searching.</param>
         /// <returns>A list of <see cref="SearchResult"/> objects.</returns>
-        public IReadOnlyList<SearchResult> Search(string fileName, string tag = null, 
-                                                  string searchType = "allfiles",
-                                                  int fileSizeMin = -1, int fileSizeMax = -1,
-                                                  string license = null, string copyright = null, string groupName = "")
+        public IReadOnlyList<SearchResult> Search(
+            string fileName,
+            string tag = null,
+            string searchType = "allfiles",
+            int fileSizeMin = -1,
+            int fileSizeMax = -1,
+            string license = null,
+            string copyright = null,
+            string groupName = "")
         {
             Log.Debug($"Searching for file {fileName}...");
 

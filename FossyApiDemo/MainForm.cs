@@ -185,7 +185,7 @@ namespace FossyApiDemo
         /// Handles the DragEnter event of the MainForm control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="DragEventArgs"/> instance 
+        /// <param name="e">The <see cref="DragEventArgs"/> instance
         /// containing the event data.</param>
         private void MainFormDragEnter(object sender, DragEventArgs e)
         {
@@ -263,7 +263,7 @@ namespace FossyApiDemo
                     jobTrigger.Reuse.ReuseMain = false;
                     jobTrigger.Reuse.ReuseEnhanced = false;
                     var result = this.client.TriggerJob(this.folderId, this.uploadId, jobTrigger);
-                    if (result == null) 
+                    if (result == null)
                     {
                         LogErrorMessage("Unable to start analysis jobs", null);
                         return -1;
@@ -309,8 +309,8 @@ namespace FossyApiDemo
             {
                 this.SetStatus(5, "Uploading package");
                 var uploadFinished = false;
-                var result = this.client.UploadPackage(fileName, this.folderId, "",
-                    () => uploadFinished = true);
+                var result = this.client.UploadPackage(
+                    fileName, this.folderId, string.Empty, () => uploadFinished = true);
                 if ((result == null) || (result.Type != "INFO") || (result.Code != 201))
                 {
                     LogErrorMessage("Unable to upload package", result);
@@ -370,7 +370,7 @@ namespace FossyApiDemo
 
                 // extra check for report id
                 var index = result.Message.LastIndexOf('/');
-                this.reportId = int.Parse(index >= 0 
+                this.reportId = int.Parse(index >= 0
                    ? result.Message.Substring(index + 1) : result.Message);
 
                 var upload = this.client.GetUpload(this.uploadId);
@@ -471,7 +471,7 @@ namespace FossyApiDemo
                 {
                     text += $", time to finish = {SecondsToTime(this.status.Eta)}";
                 } // if
-                
+
                 this.SetStatus(50, text);
                 log.Debug($"Job status: eta = {this.status.Eta}, status = '{this.status.Status}'");
                 if (this.status.Status == "Completed")
@@ -634,8 +634,8 @@ namespace FossyApiDemo
         {
             using (var dlg = new OpenFileDialog
                  {
-                     InitialDirectory = ".", 
-                     RestoreDirectory = true, 
+                     InitialDirectory = ".",
+                     RestoreDirectory = true,
                      Filter = @"All Files (*.*) |*.*||",
                  })
             {

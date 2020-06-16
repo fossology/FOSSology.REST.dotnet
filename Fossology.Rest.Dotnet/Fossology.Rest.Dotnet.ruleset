@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Rules for FossyApiDemo" Description="Code analysis rules for FossyApiDemo.csproj." ToolsVersion="16.0">
+<RuleSet Name="Rules for Fossology.Rest.Dotnet" Description="Code analysis rules for Fossology.Rest.Dotnet.csproj." ToolsVersion="16.0">
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1001" Action="Warning" />
     <Rule Id="CA1009" Action="Warning" />
@@ -68,9 +68,6 @@
     <Rule Id="SA0001" Action="None" />
     <Rule Id="SA1124" Action="None" />
     <Rule Id="SA1201" Action="None" />
-    <Rule Id="SA1204" Action="None" />
-    <Rule Id="SA1305" Action="Warning" />
-    <Rule Id="SA1412" Action="Warning" />
     <Rule Id="SA1515" Action="None" />
     <Rule Id="SA1636" Action="None" />
   </Rules>

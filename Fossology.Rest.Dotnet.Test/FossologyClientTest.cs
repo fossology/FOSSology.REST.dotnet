@@ -1,5 +1,4 @@
-﻿#region Header
-// ---------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------
 // <copyright file="FossologyClientTest.cs" company="Tethys">
 //   Copyright (C) 2019 T. Graf
 // </copyright>
@@ -7,12 +6,11 @@
 // Licensed under the MIT License.
 // SPDX-License-Identifier: MIT
 //
-// Unless required by applicable law or agreed to in writing, 
+// Unless required by applicable law or agreed to in writing,
 // software distributed under the License is distributed on an
 // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 // either express or implied.
 // ---------------------------------------------------------------------------
-#endregion
 
 namespace Fossology.Rest.Dotnet.Test
 {
@@ -22,8 +20,8 @@ namespace Fossology.Rest.Dotnet.Test
     using System.IO;
     using System.Net;
     using System.Threading;
-    using Dotnet;
-    using Model;
+    using Fossology.Rest.Dotnet;
+    using Fossology.Rest.Dotnet.Model;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Tethys.Logging;
@@ -61,8 +59,8 @@ namespace Fossology.Rest.Dotnet.Test
         /// <summary>Test class initialization.</summary>
         /// <param name="context">The context.</param>
         [ClassInitialize]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style",
-            "IDE0060:Remove unused parameter", Justification = "Parameter is required")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Style", "IDE0060:Remove unused parameter", Justification = "Parameter is required")]
         public static void Initialize(TestContext context)
         {
             LogManager.Adapter = new ColoredConsoleLoggerFactoryAdapter(LogLevel.Debug);
@@ -104,7 +102,8 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestErrorInvalidToken()
         {
-            var client = new FossologyClient(LocalUrl,
+            var client = new FossologyClient(
+                LocalUrl,
                 "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIxOTIuMTY4LjAuMTc4IiwiYXVkIjoiMTkyLjE2OC4wLjE3OCIsImV4cCI6MTU3NTkzNTk5OSwibmJmIjoxNTczMzQ0MDAwLCJqdGkiOiJOUzR6Iiwic2NvcGUiOiJ3cml0ZSJ9.F9FsMOdvcBKnVoUX87EYTmzcVI5dtutJN-cnPgIk0VE");
             try
             {
@@ -588,10 +587,9 @@ namespace Fossology.Rest.Dotnet.Test
             request.TokenName = "TestToken1";
             request.TokenScope = "write";
             request.TokenExpire = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
-            //var tokenResult = client.GetToken(request);
-            //Assert.IsNotNull(tokenResult);
-            //Assert.IsTrue(tokenResult.Length > 20);
-
+            var tokenResult = client.GetToken(request);
+            Assert.IsNotNull(tokenResult);
+            Assert.IsTrue(tokenResult.Length > 20);
 
             var folderlist = client.GetFolderList();
             Assert.IsNotNull(folderlist);
@@ -678,10 +676,9 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual(jobId, job.Id);
 
             // PHP Fatal error:  Uncaught Exception: cannot find uploadId = 14 in /usr/local/share/fossology/lib/php/Dao/UploadDao.php:201
-            //var summary = client.GetUploadSummary(uploadId);
-            //Assert.IsNotNull(summary);
-            //Assert.AreEqual(uploadId, summary.Id);
-
+            ////var summary = client.GetUploadSummary(uploadId);
+            ////Assert.IsNotNull(summary);
+            ////Assert.AreEqual(uploadId, summary.Id);
             var licensesFound = client.GetUploadLicenses(
                 uploadId, "nomos", true);
             Assert.IsNotNull(licensesFound);

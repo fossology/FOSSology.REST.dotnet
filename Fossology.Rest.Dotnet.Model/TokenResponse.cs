@@ -1,5 +1,4 @@
-﻿#region Header
-// ---------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------
 // <copyright file="TokenResponse.cs" company="Tethys">
 //   Copyright (C) 2020 T. Graf
 // </copyright>
@@ -7,12 +6,11 @@
 // Licensed under the MIT License.
 // SPDX-License-Identifier: MIT
 //
-// Unless required by applicable law or agreed to in writing, 
+// Unless required by applicable law or agreed to in writing,
 // software distributed under the License is distributed on an
 // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 // either express or implied.
 // ---------------------------------------------------------------------------
-#endregion
 
 namespace Fossology.Rest.Dotnet.Model
 {
@@ -21,8 +19,6 @@ namespace Fossology.Rest.Dotnet.Model
     /// <summary>
     /// Data returned by a token generation request.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class TokenResponse
     {
         #region PUBLIC PROPERTIES
@@ -35,7 +31,7 @@ namespace Fossology.Rest.Dotnet.Model
 
         //// ---------------------------------------------------------------------
 
-        #region PUBLIC METHODS        
+        #region PUBLIC METHODS
         /// <summary>
         /// Gets the plain token.
         /// </summary>
