@@ -19,6 +19,7 @@ namespace Fossology.Rest.Dotnet
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Net;
     using Model;
 
@@ -406,6 +407,28 @@ namespace Fossology.Rest.Dotnet
 
             return result;
         } // UploadPackageFromServer()
+
+        /// <summary>
+        /// Determines whether the upload with the given id has been successfully
+        /// uploaded and unpacked. Only when unpacking has been done, we can access
+        /// the upload and trigger jobs.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns><c>true</c> if the upload has been successfully unpacked;
+        /// otherwise, <c>false</c>.</returns>
+        public bool IsUploadUnpacked(int id)
+        {
+            Log.Debug($"Checking status for upload {id}...");
+
+            var result = this.api.Get(this.Url + $"/jobs?upload={id}");
+            var jobs = JsonConvert.DeserializeObject<List<Job>>(result.Content,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+            return jobs.All(job => job.Status == "Completed");
+        } // IsUploadUnpacked()
 
         /// <summary>
         /// Gets the upload with the specified id.

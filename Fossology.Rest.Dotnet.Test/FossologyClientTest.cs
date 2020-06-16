@@ -45,7 +45,7 @@ namespace Fossology.Rest.Dotnet.Test
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTMwNDMxOTksIm5iZiI6MTU5MjA5MjgwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.q7vgcRWR596ShkHrRoHxn2vOn7hsJl8UvjXYpVN4PSU";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTM1NjE1OTksIm5iZiI6MTU5MjI2NTYwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.h9oNRGV_N-GkEJGNZPp2qQCgOkb1rDv0_bnEnWjCnkg";
 
         /// <summary>
         /// The filename of a test package.
@@ -78,6 +78,24 @@ namespace Fossology.Rest.Dotnet.Test
             var result = client.GetVersion();
             Assert.IsNotNull(result);
             Debug.WriteLine($"Version = {result}");
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetToken()
+        {
+            var client = new FossologyClient(LocalUrl, string.Empty);
+            var request = new TokenRequest();
+            request.Username = "fossy";
+            request.Password = "fossy";
+            request.TokenName = "TestToken1";
+            request.TokenScope = "write";
+            request.TokenExpire = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+            var result = client.GetToken(request);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Length > 20);
         }
 
         /// <summary>
@@ -222,6 +240,33 @@ namespace Fossology.Rest.Dotnet.Test
             } // catch
         }
 
+        private static void WaitUntilUploadIsDone(FossologyClient client, int id)
+        {
+            while (!client.IsUploadUnpacked(id))
+            {
+                Debug.WriteLine($"Waiting for upload {id} to get unpacked...");
+                Thread.Sleep(500);
+            } // while
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestUploadPackageCheckUnpackStatus()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var result = client.UploadPackage(@"..\..\..\TestData\xtxgd.zip", 5);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("INFO", result.Type);
+            Assert.AreEqual(201, result.Code);
+            var uploadId = int.Parse(result.Message);
+            Debug.WriteLine($"Upload id = {uploadId}");
+
+            WaitUntilUploadIsDone(client, uploadId);
+            Debug.WriteLine($"Upload id = {uploadId} is now available");
+        }
+
         /// <summary>
         /// Unit test.
         /// </summary>
@@ -300,7 +345,7 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestGetUploadLicenses()
         {
-            const int Id = 2;
+            const int Id = 5;
 
             var client = new FossologyClient(LocalUrl, Token);
             var licenses = client.GetUploadLicenses(Id, "nomos", true);
@@ -504,24 +549,6 @@ namespace Fossology.Rest.Dotnet.Test
         }
 
         /// <summary>
-        /// Unit test.
-        /// </summary>
-        [TestMethod]
-        public void TestGetToken()
-        {
-            var client = new FossologyClient(LocalUrl, string.Empty);
-            var request = new TokenRequest();
-            request.Username = "fossy";
-            request.Password = "fossy";
-            request.TokenName = "TestToken1";
-            request.TokenScope = "write";
-            request.TokenExpire = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
-            var result = client.GetToken(request);
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.Length > 20);
-        }
-
-        /// <summary>
         /// Finds the folder with the given name.
         /// </summary>
         /// <param name="folderList">The folder list.</param>
@@ -555,6 +582,17 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.IsNotNull(version);
             Debug.WriteLine($"Version = {version}");
 
+            var request = new TokenRequest();
+            request.Username = "fossy";
+            request.Password = "fossy";
+            request.TokenName = "TestToken1";
+            request.TokenScope = "write";
+            request.TokenExpire = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+            //var tokenResult = client.GetToken(request);
+            //Assert.IsNotNull(tokenResult);
+            //Assert.IsTrue(tokenResult.Length > 20);
+
+
             var folderlist = client.GetFolderList();
             Assert.IsNotNull(folderlist);
             if ((folderlist.Count != 1) && (folderlist.Count != 2))
@@ -585,8 +623,7 @@ namespace Fossology.Rest.Dotnet.Test
             var uploadId = int.Parse(result.Message);
             Assert.IsTrue(uploadId > 0);
 
-            // ugly but required: wait some time until upload is available
-            Thread.Sleep(3000);
+            WaitUntilUploadIsDone(client, uploadId);
 
             var uploadlist = client.GetUploadList();
             Assert.IsNotNull(uploadlist);
@@ -639,6 +676,17 @@ namespace Fossology.Rest.Dotnet.Test
             var job = client.GetJob(jobId);
             Assert.IsNotNull(job);
             Assert.AreEqual(jobId, job.Id);
+
+            // PHP Fatal error:  Uncaught Exception: cannot find uploadId = 14 in /usr/local/share/fossology/lib/php/Dao/UploadDao.php:201
+            //var summary = client.GetUploadSummary(uploadId);
+            //Assert.IsNotNull(summary);
+            //Assert.AreEqual(uploadId, summary.Id);
+
+            var licensesFound = client.GetUploadLicenses(
+                uploadId, "nomos", true);
+            Assert.IsNotNull(licensesFound);
+            Assert.IsTrue(licensesFound.Count > 0);
+            Assert.AreEqual("MIT", licensesFound[0].AgentFindings[0]);
 
             result = client.TriggerReportGeneration(uploadId, "spdx2");
             Assert.IsNotNull(result);
