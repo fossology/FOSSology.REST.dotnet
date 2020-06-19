@@ -39,10 +39,10 @@ namespace Fossology.Rest.Dotnet.Model
         public string Version { get; set; }
 
         /// <summary>
-        /// Gets or sets the supported authentication methods.
+        /// Gets the supported authentication methods.
         /// </summary>
         [JsonProperty("security")]
-        public List<string> Security { get; set; }
+        public List<string> Security { get; }
 
         /// <inheritdoc />
         public override string ToString()

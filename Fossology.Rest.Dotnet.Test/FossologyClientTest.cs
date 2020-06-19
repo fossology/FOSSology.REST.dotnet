@@ -239,15 +239,6 @@ namespace Fossology.Rest.Dotnet.Test
             } // catch
         }
 
-        private static void WaitUntilUploadIsDone(FossologyClient client, int id)
-        {
-            while (!client.IsUploadUnpacked(id))
-            {
-                Debug.WriteLine($"Waiting for upload {id} to get unpacked...");
-                Thread.Sleep(500);
-            } // while
-        }
-
         /// <summary>
         /// Unit test.
         /// </summary>
@@ -548,25 +539,6 @@ namespace Fossology.Rest.Dotnet.Test
         }
 
         /// <summary>
-        /// Finds the folder with the given name.
-        /// </summary>
-        /// <param name="folderList">The folder list.</param>
-        /// <param name="folderName">The folder name.</param>
-        /// <returns>The id of the folder or -1.</returns>
-        private static int FindFolder(IEnumerable<Folder> folderList, string folderName)
-        {
-            foreach (var folder in folderList)
-            {
-                if (folder.Name == folderName)
-                {
-                    return folder.Id;
-                } // if
-            } // foreach
-
-            return -1;
-        } // FindFolder()
-
-        /// <summary>
         /// Integration test, runs unit tests in defined order on a plain
         /// Fossology instance.
         /// </summary>
@@ -712,5 +684,33 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.IsNotNull(result);
             Assert.AreEqual(202, result.Code);
         }
+
+        private static void WaitUntilUploadIsDone(FossologyClient client, int id)
+        {
+            while (!client.IsUploadUnpacked(id))
+            {
+                Debug.WriteLine($"Waiting for upload {id} to get unpacked...");
+                Thread.Sleep(500);
+            } // while
+        }
+
+        /// <summary>
+        /// Finds the folder with the given name.
+        /// </summary>
+        /// <param name="folderList">The folder list.</param>
+        /// <param name="folderName">The folder name.</param>
+        /// <returns>The id of the folder or -1.</returns>
+        private static int FindFolder(IEnumerable<Folder> folderList, string folderName)
+        {
+            foreach (var folder in folderList)
+            {
+                if (folder.Name == folderName)
+                {
+                    return folder.Id;
+                } // if
+            } // foreach
+
+            return -1;
+        } // FindFolder()
     }
 }

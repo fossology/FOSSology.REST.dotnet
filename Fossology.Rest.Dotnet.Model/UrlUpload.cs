@@ -19,14 +19,16 @@ namespace Fossology.Rest.Dotnet.Model
     /// <summary>
     /// Information to create an upload from a URL.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class UrlUpload
     {
         /// <summary>
         /// Gets or sets the URL for file/folder to be uploaded.
         /// </summary>
         [JsonProperty("url")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Design",
+            "CA1056:Uri properties should not be strings",
+            Justification = "REST API compatibility")]
         public string Url { get; set; }
 
         /// <summary>

@@ -19,8 +19,6 @@ namespace Fossology.Rest.Dotnet.Model
     /// <summary>
     /// Information to create an access token.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class TokenRequest
     {
         /// <summary>

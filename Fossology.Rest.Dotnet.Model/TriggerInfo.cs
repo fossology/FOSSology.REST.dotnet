@@ -50,67 +50,6 @@ namespace Fossology.Rest.Dotnet.Model
          */
 
         /// <summary>
-        /// Trigger decider information.
-        /// </summary>
-        public class DeciderPart
-        {
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the nomos/monk decisions.
-            /// </summary>
-            [JsonProperty("nomos_monk")]
-            public bool NomosMonk { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to reuse bulk result.
-            /// </summary>
-            [JsonProperty("bulk_reused")]
-            public bool BulkReused { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the new scanner.
-            /// </summary>
-            [JsonProperty("new_scanner")]
-            public bool NewScanner { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to use the <c>ojo</c> decider.
-            /// </summary>
-            [JsonProperty("ojo_decider")]
-            public bool OjoDecider { get; set; }
-        } // DeciderJobPart
-
-        /// <summary>
-        /// Trigger reuse information.
-        /// </summary>
-        public class ReusePart
-        {
-            /// <summary>
-            /// Gets or sets the id of the upload to reuse.
-            /// </summary>
-            [JsonProperty("reuse_upload")]
-            public int ReuseUploadId { get; set; }
-
-            /// <summary>
-            /// Gets or sets the id of the group of the reused upload.
-            /// </summary>
-            [JsonProperty("reuse_group")]
-            public int ReuseGroup { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to reuse the main license.
-            /// </summary>
-            [JsonProperty("reuse_main")]
-            public bool ReuseMain { get; set; }
-
-            /// <summary>
-            /// Gets or sets a value indicating whether to reuse
-            /// bulk phrases from reused packages.
-            /// </summary>
-            [JsonProperty("reuse_enhanced")]
-            public bool ReuseEnhanced { get; set; }
-        } // ReuseJobPart
-
-        /// <summary>
         /// Gets or sets the analysis settings.
         /// </summary>
         [JsonProperty("analysis")]
@@ -120,13 +59,13 @@ namespace Fossology.Rest.Dotnet.Model
         /// Gets or sets the decider settings.
         /// </summary>
         [JsonProperty("decider")]
-        public DeciderPart Decider { get; set; }
+        public DeciderInfo Decider { get; set; }
 
         /// <summary>
         /// Gets or sets the reuse settings.
         /// </summary>
         [JsonProperty("reuse")]
-        public ReusePart Reuse { get; set; }
+        public ReuseInfo Reuse { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TriggerInfo"/> class.
@@ -134,8 +73,8 @@ namespace Fossology.Rest.Dotnet.Model
         public TriggerInfo()
         {
             this.Analysis = new Analysis();
-            this.Decider = new DeciderPart();
-            this.Reuse = new ReusePart();
+            this.Decider = new DeciderInfo();
+            this.Reuse = new ReuseInfo();
         } // TriggerInfo()
     } // TriggerInfo
 }

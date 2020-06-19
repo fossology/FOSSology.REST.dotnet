@@ -19,8 +19,6 @@ namespace Fossology.Rest.Dotnet.Model
     /// <summary>
     /// Information about an upload.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class UploadSummary
     {
         /// <summary>

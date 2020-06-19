@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <Version>1.1</Version>
+    <FileVersion>1.1.0.0</FileVersion>
+    <Product>Fossology.Rest.Dotnet</Product>
+    <Company></Company>
+    <Copyright>Copyright © 2019-2020 T. Graf</Copyright>
+    <Authors>T. Graf</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/fossology/FOSSology.REST.dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/fossology/FOSSology.REST.dotnet</RepositoryUrl>
+    <PackageTags>FOSSology REST API</PackageTags>
+  </PropertyGroup>
+</Project>

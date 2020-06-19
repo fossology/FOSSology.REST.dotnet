@@ -1,0 +1,505 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fossology.Rest.Dotnet</name>
+    </assembly>
+    <members>
+        <member name="T:Fossology.Rest.Dotnet.ErrorCode">
+            <summary>
+            Enumeration of error codes.
+            </summary>
+        </member>
+        <member name="F:Fossology.Rest.Dotnet.ErrorCode.NoError">
+            <summary>
+            No error.
+            </summary>
+        </member>
+        <member name="F:Fossology.Rest.Dotnet.ErrorCode.Unknown">
+            <summary>
+            An unknown error.
+            </summary>
+        </member>
+        <member name="F:Fossology.Rest.Dotnet.ErrorCode.Unauthorized">
+            <summary>
+            User or client not authorized.
+            </summary>
+        </member>
+        <member name="F:Fossology.Rest.Dotnet.ErrorCode.RestApiError">
+            <summary>
+            A REST API error has happened.
+            </summary>
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.FossologyApiException">
+            <summary>
+            Exception used with in Fossology.Rest.Dotnet.
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.FossologyApiException.ErrorCode">
+            <summary>
+            Gets the error code.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.FossologyApiException.HttpStatusCode">
+            <summary>
+            Gets the HTTP status code.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyApiException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.FossologyApiException"/> class.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyApiException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.FossologyApiException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyApiException.#ctor(Fossology.Rest.Dotnet.ErrorCode)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.FossologyApiException"/> class.
+            </summary>
+            <param name="errorCode">The error code.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyApiException.#ctor(Fossology.Rest.Dotnet.ErrorCode,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.FossologyApiException"/> class.
+            </summary>
+            <param name="errorCode">The error code.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyApiException.#ctor(Fossology.Rest.Dotnet.ErrorCode,System.Net.HttpStatusCode)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.FossologyApiException"/> class.
+            </summary>
+            <param name="errorCode">The error code.</param>
+            <param name="httpStatusCode">The HTTP status code.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyApiException.#ctor(Fossology.Rest.Dotnet.ErrorCode,System.Net.HttpStatusCode,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.FossologyApiException"/> class.
+            </summary>
+            <param name="errorCode">The error code.</param>
+            <param name="httpStatusCode">The HTTP status code.</param>
+            <param name="message">The message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyApiException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.FossologyApiException"/> class.
+            </summary>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyApiException.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.FossologyClient">
+            <summary>
+            Client for the SW360 REST API.
+            </summary>
+        </member>
+        <member name="F:Fossology.Rest.Dotnet.FossologyClient.Log">
+            <summary>
+            The logger for this class.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.FossologyClient.Url">
+            <summary>
+            Gets the URL.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.FossologyClient.Token">
+            <summary>
+            Gets the token.
+            </summary>
+        </member>
+        <member name="F:Fossology.Rest.Dotnet.FossologyClient.api">
+            <summary>
+            The API.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.FossologyClient" /> class.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="token">The token.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetVersion">
+            <summary>
+            Gets the Fossology version.
+            </summary>
+            <returns>A <see cref="T:Fossology.Rest.Dotnet.Model.VersionInfo"/> object.</returns>
+            <returns>
+            Requires no authorization.
+            </returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetToken(Fossology.Rest.Dotnet.Model.TokenRequest)">
+            <summary>
+            Gets a token.
+            </summary>
+            <param name="requestDetails">The request details.</param>
+            <returns>The token.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetFolder(System.Int32)">
+            <summary>
+            Gets the folder with the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>A <see cref="T:Fossology.Rest.Dotnet.Model.Folder"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetFolderList">
+            <summary>
+            Gets the list of all folders.
+            </summary>
+            <returns>A list of <see cref="T:Fossology.Rest.Dotnet.Model.Folder"/> objects.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.CreateFolder(System.String,System.Int32)">
+            <summary>
+            Creates a new folder.
+            </summary>
+            <param name="folderName">Name of the folder.</param>
+            <param name="parentFolder">The parent folder.</param>
+            <returns>An <see cref="T:Fossology.Rest.Dotnet.Model.Result"/> object.</returns>
+            <remarks>
+            The message property of the result contains the folder id
+            which is needed for further operations.
+            </remarks>>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.DeleteFolder(System.Int32)">
+            <summary>
+            Deletes the folder with the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>An <see cref="T:Fossology.Rest.Dotnet.Model.Result"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.UploadPackage(System.String,System.Int32,System.String,System.Action,System.Action{System.Single},System.String,System.String,System.Boolean)">
+            <summary>
+            Uploads the package.
+            </summary>
+            <param name="fileName">Name of the file.</param>
+            <param name="folderId">The folder identifier.</param>
+            <param name="groupName">The group name to chose while uploading the package.</param>
+            <param name="uploadFinished">The optional upload finished callback.</param>
+            <param name="uploadProgress">The optional upload progress callback.</param>
+            <param name="description">The description.</param>
+            <param name="accessLevel">The access level.</param>
+            <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
+            <returns>
+            An <see cref="T:Fossology.Rest.Dotnet.Model.Result" /> object.
+            </returns>
+            <remarks>
+            The message property of the result contains the upload id
+            which is needed for further operations.
+            </remarks>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.UploadPackageFromUrl(System.Int32,Fossology.Rest.Dotnet.Model.UrlUpload,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Uploads the package from URL.
+            </summary>
+            <param name="folderId">The folder identifier.</param>
+            <param name="details">The details.</param>
+            <param name="groupName">The group name to chose while uploading the package.</param>
+            <param name="description">The description.</param>
+            <param name="accessLevel">The access level.</param>
+            <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
+            <returns>
+            An <see cref="T:Fossology.Rest.Dotnet.Model.Result" /> object.
+            </returns>
+            <remarks>
+            The message property of the result contains the upload id
+            which is needed for further operations.
+            </remarks>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.UploadPackageFromVcs(System.Int32,Fossology.Rest.Dotnet.Model.VcsUpload,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Uploads the package from a version control system.
+            </summary>
+            <param name="folderId">The folder identifier.</param>
+            <param name="details">The details.</param>
+            <param name="groupName">The group name to chose while uploading the package.</param>
+            <param name="description">The description.</param>
+            <param name="accessLevel">The access level.</param>
+            <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
+            <returns>
+            An <see cref="T:Fossology.Rest.Dotnet.Model.Result" /> object.
+            </returns>
+            <remarks>
+            The message property of the result contains the upload id
+            which is needed for further operations.
+            </remarks>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.UploadPackageFromServer(System.Int32,Fossology.Rest.Dotnet.Model.ServerUpload,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Uploads the package from another FOSSology server.
+            </summary>
+            <param name="folderId">The folder identifier.</param>
+            <param name="details">The details.</param>
+            <param name="groupName">The group name to chose while uploading the package.</param>
+            <param name="description">The description.</param>
+            <param name="accessLevel">The access level.</param>
+            <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
+            <returns>
+            An <see cref="T:Fossology.Rest.Dotnet.Model.Result" /> object.
+            </returns>
+            <remarks>
+            The message property of the result contains the upload id
+            which is needed for further operations.
+            </remarks>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.IsUploadUnpacked(System.Int32)">
+            <summary>
+            Determines whether the upload with the given id has been successfully
+            uploaded and unpacked. Only when unpacking has been done, we can access
+            the upload and trigger jobs.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns><c>true</c> if the upload has been successfully unpacked;
+            otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetUpload(System.Int32)">
+            <summary>
+            Gets the upload with the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>A <see cref="T:Fossology.Rest.Dotnet.Model.Upload"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetUploadSummary(System.Int32)">
+            <summary>
+            Gets the summary for the upload with the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>A <see cref="T:Fossology.Rest.Dotnet.Model.UploadSummary"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetUploadList">
+            <summary>
+            Gets the upload with the specified id.
+            </summary>
+            <returns>A list of <see cref="T:Fossology.Rest.Dotnet.Model.Upload"/> objects.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetUploadLicenses(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Gets the summary for the upload with the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="agent">Agent name, one of (nomos, monk, ninka, ojo).</param>
+            <param name="containers">if set to <c>true</c> show directories and containers.</param>
+            <returns>A list of <see cref="T:Fossology.Rest.Dotnet.Model.UploadLicenses" /> objects.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.DeleteUpload(System.Int32,System.String)">
+            <summary>
+            Deletes the upload with the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="groupName">The group name to chose while deleting the package.</param>
+            <returns>An <see cref="T:Fossology.Rest.Dotnet.Model.Result"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.TriggerJob(System.Int32,System.Int32,Fossology.Rest.Dotnet.Model.TriggerInfo,System.String)">
+            <summary>Triggers a job.</summary>
+            <param name="folderId">The folder identifier.</param>
+            <param name="uploadId">The upload identifier.</param>
+            <param name="details">The details.</param>
+            <param name="groupName">The group name to chose while scheduling jobs.</param>
+            <returns>An <see cref="T:Fossology.Rest.Dotnet.Model.Result" /> object.</returns>
+            <remarks>The message property of the result contains the job id
+            which is needed for further operations.</remarks>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetJob(System.Int32)">
+            <summary>
+            Gets the job with the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>A <see cref="T:Fossology.Rest.Dotnet.Model.Job"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetJobList">
+            <summary>
+            Gets a list of all jobs.
+            </summary>
+            <returns>A <see cref="T:Fossology.Rest.Dotnet.Model.Job"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetUserList">
+            <summary>
+            Gets a list of all users.
+            </summary>
+            <returns>A <see cref="T:Fossology.Rest.Dotnet.Model.User"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.GetUser(System.Int32)">
+            <summary>
+            Gets the user with the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>A <see cref="T:Fossology.Rest.Dotnet.Model.User"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.DeleteUser(System.Int32)">
+            <summary>
+            Deletes the user with the specified id.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>An <see cref="T:Fossology.Rest.Dotnet.Model.Result"/> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.TriggerReportGeneration(System.Int32,System.String,System.String)">
+            <summary>
+            Triggers the report generation.
+            </summary>
+            <param name="uploadId">The upload identifier.</param>
+            <param name="reportFormat">The report format.</param>
+            <param name="groupName">The group name to chose while deleting the package.</param>
+            <returns>An <see cref="T:Fossology.Rest.Dotnet.Model.Result"/> object.</returns>
+            <remarks>
+            The message property of the result contains the report id
+            which is needed for further operations.
+            </remarks>>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.DownloadReport(System.Int32,System.String,System.String)">
+            <summary>
+            Downloads the specified report.
+            </summary>
+            <param name="reportId">The report identifier.</param>
+            <param name="fileName">Name of the file.</param>
+            <param name="groupName">The group name to chose while deleting the package.</param>
+            <returns><c>true</c> if the file has been successfully downloaded; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.FossologyClient.Search(System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.String,System.String)">
+            <summary>Search for a specific file.</summary>
+            <param name="fileName">Filename to find, can contain % as wild-card.</param>
+            <param name="tag">Tag to find.</param>
+            <param name="searchType">Limit search, can be directory, containers, <c>allfiles</c>.</param>
+            <param name="fileSizeMin">The file size minimum.</param>
+            <param name="fileSizeMax">The file size maximum.</param>
+            <param name="license">The license.</param>
+            <param name="copyright">The copyright.</param>
+            <param name="groupName">The group name to chose while searching.</param>
+            <returns>A list of <see cref="T:Fossology.Rest.Dotnet.Model.SearchResult"/> objects.</returns>
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.RestApi">
+            <summary>
+            Basic REST API implementation.
+            </summary>
+        </member>
+        <member name="F:Fossology.Rest.Dotnet.RestApi.client">
+            <summary>
+            The client.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.RestApi.AccessToken">
+            <summary>
+            Gets the access token.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.RestApi.TimeZone">
+            <summary>
+            Gets or sets the time zone.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.RestApi.Email">
+            <summary>
+            Gets or sets the email.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.RestApi.BeforeRequest">
+            <summary>
+            Gets or sets a before request handler (for extensibility).
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.RestApi.AfterResponse">
+            <summary>
+            Gets or sets an after response handler (for extensibility).
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.RestApi" /> class.
+            </summary>
+            <param name="hostUrl">The host URL.</param>
+            <param name="accessToken">The access token.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.Get(System.String,System.Boolean)">
+            <summary>Gets the response from the specified URL via GET.</summary>
+            <param name="url">The URL.</param>
+            <param name="ignoreResultCode">Ignore the HTTP result code.</param>
+            <returns>An <see cref="T:RestSharp.IRestResponse" /> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.Get``1(System.String)">
+            <summary>
+            Gets the response from the specified URL via GET.
+            </summary>
+            <typeparam name="T">Type of the object.</typeparam>
+            <param name="url">The URL.</param>
+            <returns>
+            An object of type T.
+            </returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.Post(System.String,System.Object)">
+            <summary>
+            Post the data to the specified URL via POST.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <returns>
+            An <see cref="T:RestSharp.IRestResponse" /> object.
+            </returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.Post(System.String,System.String)">
+            <summary>
+            Post the data to the specified URL via POST.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <returns>
+            An <see cref="T:RestSharp.IRestResponse" /> object.
+            </returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.Patch(System.String,System.String)">
+            <summary>
+            Send data via PATCH.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="payload">The payload.</param>
+            <returns>An <see cref="T:RestSharp.IRestResponse" /> object.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.Delete(System.String)">
+            <summary>
+            Post the data to the specified URL via POST.
+            </summary>
+            <param name="url">The URL.</param>
+            <returns>
+            An <see cref="T:RestSharp.IRestResponse" /> object.
+            </returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.Execute(RestSharp.RestRequest)">
+            <summary>
+            Executes a custom REST request.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>
+            An <see cref="T:RestSharp.IRestResponse" /> object.
+            </returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.DownloadFile(System.String,System.String)">
+            <summary>Downloading a file from the given uri.</summary>
+            <param name="uri">The uri.</param>
+            <param name="filename">The filename.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.CheckForErrors(RestSharp.IRestResponse)">
+            <summary>
+            Checks for errors.
+            </summary>
+            <param name="response">The response.</param>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.RestApi.AddHeaders(RestSharp.IRestRequest)">
+            <summary>
+            Adds necessary and optional headers.
+            </summary>
+            <param name="request">The request.</param>
+            <example>
+            <code>Prefer: outlook.timezone="Eastern Standard Time"</code>
+            </example>
+        </member>
+    </members>
+</doc>

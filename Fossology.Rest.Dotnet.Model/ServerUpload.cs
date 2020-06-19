@@ -19,8 +19,6 @@ namespace Fossology.Rest.Dotnet.Model
     /// <summary>
     /// Information to create an upload from a server.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class ServerUpload
     {
         /// <summary>

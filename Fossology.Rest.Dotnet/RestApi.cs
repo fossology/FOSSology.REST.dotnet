@@ -15,12 +15,12 @@
 namespace Fossology.Rest.Dotnet
 {
     using System;
+    using System.IO;
     using System.Net;
 
     using Fossology.Rest.Dotnet.Model;
 
     using RestSharp;
-    using RestSharp.Extensions;
     using RestSharp.Serialization.Json;
 
     /// <summary>
@@ -309,7 +309,8 @@ namespace Fossology.Rest.Dotnet
                 request.RequestFormat = DataFormat.Json;
                 request.JsonSerializer = new JsonSerializer();
                 this.AddHeaders(request);
-                this.client.DownloadData(request).SaveAs(filename);
+                var data = this.client.DownloadData(request, true);
+                File.WriteAllBytes(filename, data);
             }
             catch (FossologyApiException)
             {

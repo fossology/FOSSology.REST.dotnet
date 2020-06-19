@@ -19,7 +19,7 @@ namespace Fossology.Rest.Dotnet.Model
     /// <summary>
     /// Support methods.
     /// </summary>
-    public class Support
+    public static class Support
     {
         /// <summary>
         /// List to string.

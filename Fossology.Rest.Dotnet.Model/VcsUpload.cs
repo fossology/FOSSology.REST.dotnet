@@ -19,8 +19,6 @@ namespace Fossology.Rest.Dotnet.Model
     /// <summary>
     /// Information to create an upload from a version control system.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class VcsUpload
     {
         /// <summary>
@@ -33,6 +31,10 @@ namespace Fossology.Rest.Dotnet.Model
         /// Gets or sets the URL of the repository.
         /// </summary>
         [JsonProperty("vcsUrl")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Design",
+            "CA1056:Uri properties should not be strings",
+            Justification = "REST API compatibility")]
         public string VcsUrl { get; set; }
 
         /// <summary>

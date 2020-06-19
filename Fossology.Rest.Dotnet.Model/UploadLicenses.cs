@@ -20,8 +20,6 @@ namespace Fossology.Rest.Dotnet.Model
     /// <summary>
     /// Information about the licenses of the uploaded files.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class UploadLicenses
     {
         /// <summary>
@@ -31,16 +29,16 @@ namespace Fossology.Rest.Dotnet.Model
         public string FilePath { get; set; }
 
         /// <summary>
-        /// Gets or sets the short names of the found licenses.
+        /// Gets the short names of the found licenses.
         /// </summary>
         [JsonProperty("agentFindings")]
-        public List<string> AgentFindings { get; set; }
+        public List<string> AgentFindings { get; }
 
         /// <summary>
-        /// Gets or sets the conclusions, i.e. license(s) decided by user.
+        /// Gets the conclusions, i.e. license(s) decided by user.
         /// </summary>
         [JsonProperty("conclusions")]
-        public List<string> Conclusions { get; set; }
+        public List<string> Conclusions { get; }
 
         /// <inheritdoc />
         public override string ToString()

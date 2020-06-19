@@ -296,8 +296,8 @@ namespace Fossology.Rest.Dotnet
         /// Uploads the package from URL.
         /// </summary>
         /// <param name="folderId">The folder identifier.</param>
-        /// <param name="groupName">The group name to chose while uploading the package.</param>
         /// <param name="details">The details.</param>
+        /// <param name="groupName">The group name to chose while uploading the package.</param>
         /// <param name="description">The description.</param>
         /// <param name="accessLevel">The access level.</param>
         /// <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
@@ -342,8 +342,8 @@ namespace Fossology.Rest.Dotnet
         /// Uploads the package from a version control system.
         /// </summary>
         /// <param name="folderId">The folder identifier.</param>
-        /// <param name="groupName">The group name to chose while uploading the package.</param>
         /// <param name="details">The details.</param>
+        /// <param name="groupName">The group name to chose while uploading the package.</param>
         /// <param name="description">The description.</param>
         /// <param name="accessLevel">The access level.</param>
         /// <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
@@ -525,7 +525,7 @@ namespace Fossology.Rest.Dotnet
         /// Gets the summary for the upload with the specified id.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <param name="agent">Agent name, one of (nomos, monk, ninka, ojo)</param>
+        /// <param name="agent">Agent name, one of (nomos, monk, ninka, ojo).</param>
         /// <param name="containers">if set to <c>true</c> show directories and containers.</param>
         /// <returns>A list of <see cref="UploadLicenses" /> objects.</returns>
         public List<UploadLicenses> GetUploadLicenses(int id, string agent, bool containers)
@@ -754,9 +754,9 @@ namespace Fossology.Rest.Dotnet
 
         #region SEARCH SUPPORT
         /// <summary>Search for a specific file.</summary>
-        /// <param name="fileName">Filename to find, can contain % as wild-card</param>
-        /// <param name="tag">Tag to find</param>
-        /// <param name="searchType">Limit search, can be directory, containers, <c>allfiles</c></param>
+        /// <param name="fileName">Filename to find, can contain % as wild-card.</param>
+        /// <param name="tag">Tag to find.</param>
+        /// <param name="searchType">Limit search, can be directory, containers, <c>allfiles</c>.</param>
         /// <param name="fileSizeMin">The file size minimum.</param>
         /// <param name="fileSizeMax">The file size maximum.</param>
         /// <param name="license">The license.</param>
