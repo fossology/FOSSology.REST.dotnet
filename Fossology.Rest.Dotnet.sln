@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{66961846-D78E-4DC0-BE09-F712FC21EA09}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
 		ChangeLog.md = ChangeLog.md
 		LICENSE = LICENSE
 		Readme.md = Readme.md

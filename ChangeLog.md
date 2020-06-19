@@ -2,12 +2,6 @@
 
 ## 1.1.0 (NEXT)
 * supports FOSSOlogy REST API v1.0.16 (FOSSology 3.8.0).
-* ?? /uploads/{id}/summary:
-* ?? /uploads/{id}/licenses:
-* ?? search using groupName
-* ?? new param groupName for report generation
-* ?? ojo for license decider
-
 * new method GetToken().
 * new method UploadPackageFromUrl().
 * new method UploadPackageFromVcs().
@@ -21,6 +15,7 @@
 * new class UrlUpload.
 * class Upload has new property FileSha1
 * Integration test improved.
+* support of .Net Core (target is netstandard2.0).
     
 
 ## 1.0.0 (2020-11-24)

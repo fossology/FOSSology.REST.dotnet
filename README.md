@@ -4,7 +4,7 @@ This is a .NET implementation of the REST API of FOSSology.
 
 ## Project Build Status ##
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![NuGet](https://img.shields.io/badge/nuget%20package-v1.0.0-blue.svg)](https://www.nuget.org/packages/Fossology.Rest.Dotnet/)
+[![NuGet](https://img.shields.io/badge/nuget%20package-v1.1.0-blue.svg)](https://www.nuget.org/packages/Fossology.Rest.Dotnet/)
 
 FOSSology is a open source license compliance software system.
 It is used to analyze source code and to determine licenses,
