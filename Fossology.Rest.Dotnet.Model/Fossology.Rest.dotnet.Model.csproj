@@ -4,7 +4,15 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <CodeAnalysisRuleSet>..\Fossology.Rest.Dotnet.ruleset</CodeAnalysisRuleSet>
     <Description>Object model for the NET implementation of the REST API of FOSSology.</Description>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Fossology.Rest.Dotnet.Model.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Fossology.Rest.Dotnet.Model.xml</DocumentationFile>
   </PropertyGroup>
 
  <ItemGroup>

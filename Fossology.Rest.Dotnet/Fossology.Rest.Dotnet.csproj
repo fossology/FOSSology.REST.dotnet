@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <DocumentationFile>E:\PROG\My_OSS\GitHub\tngraf-FOSSology.REST.dotnet\Fossology.Rest.Dotnet\Fossology.Rest.Dotnet.xml</DocumentationFile>
+    <DocumentationFile>bin\Fossology.Rest.Dotnet.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Fossology.Rest.Dotnet.xml</DocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>
