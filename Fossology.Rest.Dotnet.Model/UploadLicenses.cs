@@ -40,6 +40,15 @@ namespace Fossology.Rest.Dotnet.Model
         [JsonProperty("conclusions")]
         public List<string> Conclusions { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UploadLicenses"/> class.
+        /// </summary>
+        public UploadLicenses()
+        {
+            this.AgentFindings = new List<string>();
+            this.Conclusions = new List<string>();
+        } // UploadLicenses()
+
         /// <inheritdoc />
         public override string ToString()
         {
