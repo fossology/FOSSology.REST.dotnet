@@ -43,12 +43,12 @@ namespace Fossology.Rest.Dotnet.Test
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTM1NjE1OTksIm5iZiI6MTU5MjI2NTYwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.h9oNRGV_N-GkEJGNZPp2qQCgOkb1rDv0_bnEnWjCnkg";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTM2NDc5OTksIm5iZiI6MTU5MzA0MzIwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.YsZLPym6rRUdBsEtEderJS2Xlj09DOG0J3z0Ygbv8MI";
 
         /// <summary>
         /// The filename of a test package.
         /// </summary>
-        private const string Filename = @"..\..\..\TestData\fetch-retry-master.zip";
+        private const string Filename = @"..\..\..\..\TestData\fetch-retry-master.zip";
 
         /// <summary>
         /// The test folder name.
@@ -335,7 +335,7 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestGetUploadLicenses()
         {
-            const int Id = 5;
+            const int Id = 2;
 
             var client = new FossologyClient(LocalUrl, Token);
             var licenses = client.GetUploadLicenses(Id, "nomos", true);
@@ -547,22 +547,24 @@ namespace Fossology.Rest.Dotnet.Test
         {
             const string ReportFilename = "Report.spdx2.rdf";
 
-            var client = new FossologyClient(LocalUrl, Token);
+            var client = new FossologyClient(LocalUrl, string.Empty);
 
             var version = client.GetVersion();
             Assert.IsNotNull(version);
             Debug.WriteLine($"Version = {version}");
 
             var request = new TokenRequest();
+            var guid = Guid.NewGuid();
             request.Username = "fossy";
             request.Password = "fossy";
-            request.TokenName = "TestToken1";
+            request.TokenName = guid.ToString();
             request.TokenScope = "write";
             request.TokenExpire = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
             var tokenResult = client.GetToken(request);
             Assert.IsNotNull(tokenResult);
             Assert.IsTrue(tokenResult.Length > 20);
 
+            client = new FossologyClient(LocalUrl, tokenResult);
             var folderlist = client.GetFolderList();
             Assert.IsNotNull(folderlist);
             if ((folderlist.Count != 1) && (folderlist.Count != 2))
@@ -646,11 +648,13 @@ namespace Fossology.Rest.Dotnet.Test
             var job = client.GetJob(jobId);
             Assert.IsNotNull(job);
             Assert.AreEqual(jobId, job.Id);
+            WaitUntilJobIsDone(client, jobId);
 
             // PHP Fatal error:  Uncaught Exception: cannot find uploadId = 14 in /usr/local/share/fossology/lib/php/Dao/UploadDao.php:201
-            ////var summary = client.GetUploadSummary(uploadId);
-            ////Assert.IsNotNull(summary);
-            ////Assert.AreEqual(uploadId, summary.Id);
+            var summary = client.GetUploadSummary(uploadId);
+            Assert.IsNotNull(summary);
+            Assert.AreEqual(uploadId, summary.Id);
+
             var licensesFound = client.GetUploadLicenses(
                 uploadId, "nomos", true);
             Assert.IsNotNull(licensesFound);
@@ -690,6 +694,26 @@ namespace Fossology.Rest.Dotnet.Test
             while (!client.IsUploadUnpacked(id))
             {
                 Debug.WriteLine($"Waiting for upload {id} to get unpacked...");
+                Thread.Sleep(500);
+            } // while
+        }
+
+        /// <summary>
+        /// Waits the until the given job is done.
+        /// </summary>
+        /// <param name="client">The client.</param>
+        /// <param name="id">The job identifier.</param>
+        private static void WaitUntilJobIsDone(FossologyClient client, int id)
+        {
+            while (true)
+            {
+                var job = client.GetJob(id);
+                if (job.Status == "Completed")
+                {
+                    return;
+                } // if
+
+                Debug.WriteLine($"Waiting for job {id} to complete...");
                 Thread.Sleep(500);
             } // while
         }
