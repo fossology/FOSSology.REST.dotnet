@@ -4,7 +4,7 @@ This is a .NET implementation of the REST API of FOSSology.
 
 ## Project Build Status ##
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![NuGet](https://img.shields.io/badge/nuget%20package-v1.0.0-blue.svg)](https://www.nuget.org/packages/Fossology.Rest.Dotnet/)
+[![NuGet](https://img.shields.io/badge/nuget%20package-v1.1.0-blue.svg)](https://www.nuget.org/packages/Fossology.Rest.Dotnet/)
 
 FOSSology is a open source license compliance software system.
 It is used to analyze source code and to determine licenses,
@@ -12,9 +12,9 @@ copyrights and other keywords within the given source code.
 More information about FOSSology can be found [here](https://www.fossology.org/.)
 
 ## Library ##
-**Fossology.Rest.Dotnet** - The REST API implementation.
-**Fossology.Rest.Dotnet.Model** - The object model.
-**Fossology.Rest.Dotnet.Test** - Unit tests.
+* **Fossology.Rest.Dotnet** - The REST API implementation.
+* **Fossology.Rest.Dotnet.Model** - The object model.
+* **Fossology.Rest.Dotnet.Test** - Unit tests.
 
 ## Test Application ##
 
@@ -48,10 +48,10 @@ More information about FOSSology can be found [here](https://www.fossology.org/.
 
 ## License
 
-Copyright (C) 2019 T. Graf
+Copyright (C) 2019-2020 T. Graf
 
-Licensed under the **MIT License** (the "License");
-you may not use this file except in compliance with the License.
+Licensed under the **MIT License** (the "License");  
+you may not use this file except in compliance with the License.  
 You may obtain a copy of the License at
 
        https://opensource.org/licenses/MIT

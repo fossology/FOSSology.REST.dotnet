@@ -1,0 +1,641 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fossology.Rest.Dotnet.Model</name>
+    </assembly>
+    <members>
+        <member name="T:Fossology.Rest.Dotnet.Model.Analysis">
+            <summary>
+            Trigger analysis information.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Analysis.Bucket">
+            <summary>
+            Gets or sets a value indicating whether to use the bucket.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Analysis.CopyrightEmailAuthor">
+            <summary>
+            Gets or sets a value indicating whether to use copyright email author.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Analysis.Ecc">
+            <summary>
+            Gets or sets a value indicating whether to use the ecc scanner.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Analysis.Keyword">
+            <summary>
+            Gets or sets a value indicating whether to use the keyword scanner.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Analysis.Mime">
+            <summary>
+            Gets or sets a value indicating whether to use the mime scanner.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Analysis.Monk">
+            <summary>
+            Gets or sets a value indicating whether to use the monk scanner.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Analysis.Nomos">
+            <summary>
+            Gets or sets a value indicating whether to use the nomos scanner.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Analysis.Ojo">
+            <summary>
+            Gets or sets a value indicating whether to use the <c>ojo</c> scanner.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Analysis.Package">
+            <summary>
+            Gets or sets a value indicating whether to use the package scanner.
+            </summary>
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.DeciderInfo">
+            <summary>
+            Trigger decider information.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.DeciderInfo.NomosMonk">
+            <summary>
+            Gets or sets a value indicating whether to use the nomos/monk decisions.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.DeciderInfo.BulkReused">
+            <summary>
+            Gets or sets a value indicating whether to reuse bulk result.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.DeciderInfo.NewScanner">
+            <summary>
+            Gets or sets a value indicating whether to use the new scanner.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.DeciderInfo.OjoDecider">
+            <summary>
+            Gets or sets a value indicating whether to use the <c>ojo</c> decider.
+            </summary>
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.Folder">
+            <summary>
+            Fossology version information.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Folder.Id">
+            <summary>
+            Gets or sets the id.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Folder.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Folder.Description">
+            <summary>
+            Gets or sets the description.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Folder.Parent">
+            <summary>
+            Gets or sets the parent folder.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.Folder.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.Job">
+            <summary>
+            Fossology job information.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Job.Id">
+            <summary>
+            Gets or sets the id.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Job.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Job.QueueDate">
+            <summary>
+            Gets or sets the date when the job was queued.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Job.UploadId">
+            <summary>
+            Gets or sets the upload id.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Job.UserId">
+            <summary>
+            Gets or sets the id of the user who scheduled the job.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Job.GroupId">
+            <summary>
+            Gets or sets the Group under which the job was scheduled.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Job.Eta">
+            <summary>
+            Gets or sets the ETA of job to finish in seconds.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Job.Status">
+            <summary>
+            Gets or sets the current status of the job in the queue.
+            Can be one of Completed, Failed, Queued, Processing.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.Job.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.Result">
+            <summary>
+            Fossology version information.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Result.Code">
+            <summary>
+            Gets or sets the code.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Result.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Result.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.Result.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.ReuseInfo">
+            <summary>
+            Trigger reuse information.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.ReuseInfo.ReuseUploadId">
+            <summary>
+            Gets or sets the id of the upload to reuse.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.ReuseInfo.ReuseGroup">
+            <summary>
+            Gets or sets the id of the group of the reused upload.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.ReuseInfo.ReuseMain">
+            <summary>
+            Gets or sets a value indicating whether to reuse the main license.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.ReuseInfo.ReuseEnhanced">
+            <summary>
+            Gets or sets a value indicating whether to reuse
+            bulk phrases from reused packages.
+            </summary>
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.SearchResult">
+            <summary>
+            Fossology version information.
+            </summary>
+            <remarks>
+            <code>
+            {
+              "upload": {
+                "folderid": 0,
+                "foldername": "string",
+                "id": 0,
+                "description": "string",
+                "uploadname": "string",
+                "uploaddate": "string",
+                "filesize": 0
+              },
+              "uploadTreeId": 0,
+              "filename": "string"
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.SearchResult.Upload">
+            <summary>
+            Gets or sets the upload.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.SearchResult.UploadTreeId">
+            <summary>
+            Gets or sets the upload tree id.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.SearchResult.Filename">
+            <summary>
+            Gets or sets the file name.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.SearchResult.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.ServerUpload">
+            <summary>
+            Information to create an upload from a server.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.ServerUpload.Path">
+            <summary>
+            Gets or sets the file path to be uploaded (recursive, supports *).
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.ServerUpload.Name">
+            <summary>
+            Gets or sets the viewable name for this file or directory.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.ServerUpload.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.Support">
+            <summary>
+            Support methods.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.Support.ListToString(System.Collections.Generic.IReadOnlyList{System.String})">
+            <summary>
+            List to string.
+            </summary>
+            <param name="list">The list.</param>
+            <returns>A single string.</returns>
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.TokenRequest">
+            <summary>
+            Information to create an access token.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.TokenRequest.Username">
+            <summary>
+            Gets or sets the user name.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.TokenRequest.Password">
+            <summary>
+            Gets or sets the password.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.TokenRequest.TokenName">
+            <summary>
+            Gets or sets the token name.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.TokenRequest.TokenScope">
+            <summary>
+            Gets or sets the token scope, one of (read, write).
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.TokenRequest.TokenExpire">
+            <summary>
+            Gets or sets the token expiry date.
+            </summary>
+            <remarks>Date format is yyyy-mm-dd.</remarks>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.TokenRequest.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.TokenResponse">
+            <summary>
+            Data returned by a token generation request.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.TokenResponse.Authorization">
+            <summary>
+            Gets or sets the authorization value.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.TokenResponse.GetPlainToken">
+            <summary>
+            Gets the plain token.
+            </summary>
+            <returns>The token.</returns>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.TokenResponse.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.TriggerInfo">
+            <summary>
+            Fossology job triggering information.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.TriggerInfo.Analysis">
+            <summary>
+            Gets or sets the analysis settings.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.TriggerInfo.Decider">
+            <summary>
+            Gets or sets the decider settings.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.TriggerInfo.Reuse">
+            <summary>
+            Gets or sets the reuse settings.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.TriggerInfo.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Fossology.Rest.Dotnet.Model.TriggerInfo"/> class.
+            </summary>
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.Upload">
+            <summary>
+            Fossology version information.
+            </summary>
+            <remarks>
+            <code>
+            {
+              "folderid": 0,
+              "foldername": "string",
+              "id": 0,
+              "description": "string",
+              "uploadname": "string",
+              "uploaddate": "string",
+              "filesize": 0
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Upload.FolderId">
+            <summary>
+            Gets or sets the folder id.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Upload.FolderName">
+            <summary>
+            Gets or sets the folder name.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Upload.Id">
+            <summary>
+            Gets or sets the id.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Upload.Description">
+            <summary>
+            Gets or sets the description.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Upload.UploadName">
+            <summary>
+            Gets or sets the upload name.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Upload.UploadDate">
+            <summary>
+            Gets or sets the upload date.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Upload.Filesize">
+            <summary>
+            Gets or sets the file size.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.Upload.FileSha1">
+            <summary>
+            Gets or sets the SHA1 digest of the file.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.Upload.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.UploadLicenses">
+            <summary>
+            Information about the licenses of the uploaded files.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadLicenses.FilePath">
+            <summary>
+            Gets or sets the relative file path.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadLicenses.AgentFindings">
+            <summary>
+            Gets the short names of the found licenses.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadLicenses.Conclusions">
+            <summary>
+            Gets the conclusions, i.e. license(s) decided by user.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.UploadLicenses.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.UploadSummary">
+            <summary>
+            Information about an upload.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.Id">
+            <summary>
+            Gets or sets the identifier of the upload.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.UploadName">
+            <summary>
+            Gets or sets the name of the upload.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.MainLicense">
+            <summary>
+            Gets or sets the main license.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.UniqueLicenses">
+            <summary>
+            Gets or sets the number of unique licenses found.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.TotalLicenses">
+            <summary>
+            Gets or sets the number of total licenses found.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.UniqueConcludedLicenses">
+            <summary>
+            Gets or sets the number of unique concluded licenses found.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.TotalConcludedLicenses">
+            <summary>
+            Gets or sets the number of total concluded licenses found.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.FilesToBeCleared">
+            <summary>
+            Gets or sets the number of files without clearing decisions.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.FilesCleared">
+            <summary>
+            Gets or sets the number of files with clearing decisions.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.ClearingStatus">
+            <summary>
+            Gets or sets the clearing status, one of (Open, InProgress, Closed, Rejected).
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UploadSummary.CopyrightCount">
+            <summary>
+            Gets or sets the number of copyrights found in the upload.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.UploadSummary.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.UrlUpload">
+            <summary>
+            Information to create an upload from a URL.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UrlUpload.Url">
+            <summary>
+            Gets or sets the URL for file/folder to be uploaded.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UrlUpload.Name">
+            <summary>
+            Gets or sets the viewable name for this file or directory.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UrlUpload.Accept">
+            <summary>
+            Gets or sets the comma-separated lists of file name suffixes or patterns to accept.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UrlUpload.Reject">
+            <summary>
+            Gets or sets the comma-separated lists of file name suffixes or patterns to reject.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.UrlUpload.MaxRecursionDepth">
+            <summary>
+            Gets or sets the maximum recursion depth for folders (0 for infinite).
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.UrlUpload.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.User">
+            <summary>
+            Fossology user information.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.User.Id">
+            <summary>
+            Gets or sets the id.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.User.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.User.Description">
+            <summary>
+            Gets or sets the description.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.User.Email">
+            <summary>
+            Gets or sets the email address.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.User.AccessLevel">
+            <summary>
+            Gets or sets the access level, one of (none, read_only, read_write, admin).
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.User.RootFolderId">
+            <summary>
+            Gets or sets the root folder id.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.User.EmailNotification">
+            <summary>
+            Gets or sets a value indicating whether the user should receive email notifications.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.User.Agents">
+            <summary>
+            Gets or sets the agent settings.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.User.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.VcsUpload">
+            <summary>
+            Information to create an upload from a version control system.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.VcsUpload.VcsType">
+            <summary>
+            Gets or sets the VCS type (svn or git).
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.VcsUpload.VcsUrl">
+            <summary>
+            Gets or sets the URL of the repository.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.VcsUpload.VcsBranch">
+            <summary>
+            Gets or sets the branch to checkout for analysis (for Git only).
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.VcsUpload.VcsName">
+            <summary>
+            Gets or sets the display name of the upload.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.VcsUpload.VcsUsername">
+            <summary>
+            Gets or sets the VCS username.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.VcsUpload.VcsPassword">
+            <summary>
+            Gets or sets the VCS password.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.VcsUpload.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Fossology.Rest.Dotnet.Model.VersionInfo">
+            <summary>
+            Fossology version information.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.VersionInfo.Version">
+            <summary>
+            Gets or sets the version.
+            </summary>
+        </member>
+        <member name="P:Fossology.Rest.Dotnet.Model.VersionInfo.Security">
+            <summary>
+            Gets the supported authentication methods.
+            </summary>
+        </member>
+        <member name="M:Fossology.Rest.Dotnet.Model.VersionInfo.ToString">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

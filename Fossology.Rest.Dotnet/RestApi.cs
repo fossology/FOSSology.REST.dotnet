@@ -1,12 +1,12 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="RestApi.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2020 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
 // SPDX-License-Identifier: MIT
 //
-// Unless required by applicable law or agreed to in writing, 
+// Unless required by applicable law or agreed to in writing,
 // software distributed under the License is distributed on an
 // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 // either express or implied.
@@ -15,12 +15,12 @@
 namespace Fossology.Rest.Dotnet
 {
     using System;
+    using System.IO;
     using System.Net;
 
     using Fossology.Rest.Dotnet.Model;
 
     using RestSharp;
-    using RestSharp.Extensions;
     using RestSharp.Serialization.Json;
 
     /// <summary>
@@ -37,7 +37,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region PUBLIC PROPERTIES            
+        #region PUBLIC PROPERTIES
         /// <summary>
         /// Gets the access token.
         /// </summary>
@@ -66,7 +66,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region CONSTRUCTION            
+        #region CONSTRUCTION
         /// <summary>
         /// Initializes a new instance of the <see cref="RestApi" /> class.
         /// </summary>
@@ -81,20 +81,23 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region PUBLIC METHODS            
-        /// <summary>
-        /// Gets the response from the specified URL via GET.
-        /// </summary>
+        #region PUBLIC METHODS
+        /// <summary>Gets the response from the specified URL via GET.</summary>
         /// <param name="url">The URL.</param>
-        /// <returns>An <see cref="IRestResponse"/> object.</returns>
-        public IRestResponse Get(string url)
+        /// <param name="ignoreResultCode">Ignore the HTTP result code.</param>
+        /// <returns>An <see cref="IRestResponse" /> object.</returns>
+        public IRestResponse Get(string url, bool ignoreResultCode = false)
         {
             try
             {
                 var request = new RestRequest(url, Method.GET);
                 this.AddHeaders(request);
                 var response = this.client.Execute(request);
-                CheckForErrors(response);
+
+                if (!ignoreResultCode)
+                {
+                    CheckForErrors(response);
+                } // if
 
                 return response;
             }
@@ -306,7 +309,8 @@ namespace Fossology.Rest.Dotnet
                 request.RequestFormat = DataFormat.Json;
                 request.JsonSerializer = new JsonSerializer();
                 this.AddHeaders(request);
-                this.client.DownloadData(request).SaveAs(filename);
+                var data = this.client.DownloadData(request, true);
+                File.WriteAllBytes(filename, data);
             }
             catch (FossologyApiException)
             {
@@ -321,7 +325,7 @@ namespace Fossology.Rest.Dotnet
 
         //// ---------------------------------------------------------------------
 
-        #region PRIVATE METHODS            
+        #region PRIVATE METHODS
         /// <summary>
         /// Checks for errors.
         /// </summary>
@@ -345,8 +349,8 @@ namespace Fossology.Rest.Dotnet
             try
             {
                 var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(response.Content);
-                exception = new FossologyApiException(ErrorCode.RestApiError,
-                    (HttpStatusCode)result.Code, result.Message, null);
+                exception = new FossologyApiException(
+                    ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
             }
             catch
             {

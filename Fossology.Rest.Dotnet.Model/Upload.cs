@@ -1,5 +1,4 @@
-﻿#region Header
-// ---------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------
 // <copyright file="Upload.cs" company="Tethys">
 //   Copyright (C) 2019 T. Graf
 // </copyright>
@@ -7,12 +6,11 @@
 // Licensed under the MIT License.
 // SPDX-License-Identifier: MIT
 //
-// Unless required by applicable law or agreed to in writing, 
+// Unless required by applicable law or agreed to in writing,
 // software distributed under the License is distributed on an
 // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 // either express or implied.
 // ---------------------------------------------------------------------------
-#endregion
 
 namespace Fossology.Rest.Dotnet.Model
 {
@@ -77,6 +75,12 @@ namespace Fossology.Rest.Dotnet.Model
         /// </summary>
         [JsonProperty("filesize")]
         public int Filesize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the SHA1 digest of the file.
+        /// </summary>
+        [JsonProperty("filesha1")]
+        public string FileSha1 { get; set; }
 
         /// <inheritdoc />
         public override string ToString()
