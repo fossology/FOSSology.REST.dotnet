@@ -6,6 +6,7 @@
 * new method GetHealth().
 * have `FossologyClient` to be a partial class for better overview.
 * new method GetGroupList().
+* add support for groups for all methods where it did not yet exist.
 
 ## 1.1.0 (2020-06-25)
 * supports FOSSology REST API v1.0.16 (FOSSology 3.8.0 built @ 2020/06/19).
