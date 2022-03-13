@@ -14,11 +14,9 @@
 
 namespace Fossology.Rest.Dotnet.Test
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
+    using Fossology.Rest.Dotnet.Model;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Model;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -27,10 +25,20 @@ namespace Fossology.Rest.Dotnet.Test
     [TestClass]
     public class DeserializationTest
     {
+        /// <summary>
+        /// Class StringListClass.
+        /// </summary>
         public class StringListClass
         {
+            /// <summary>
+            /// Gets my list.
+            /// </summary>
+            /// <value>My list.</value>
             public List<string> MyList { get; }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="StringListClass"/> class.
+            /// </summary>
             public StringListClass()
             {
                 this.MyList = new List<string>();
@@ -82,7 +90,7 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestDeserializeComplex1()
         {
-            const string JsonText = 
+            const string JsonText =
                 "{"
                 + "\"filePath\":\"fetch-retry-master.zip/fetch-retry-master/package.json\","
                 + "\"agentFindings\":[\"MIT\"],"
