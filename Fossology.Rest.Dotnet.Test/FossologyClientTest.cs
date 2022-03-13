@@ -708,6 +708,37 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual("OK", actual.Database.Status);
         }
 
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetGroupList()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var actual = client.GetGroupList();
+            Assert.IsNotNull(actual);
+            Assert.IsTrue(actual.Count > 0);
+        }
+
+#if false // not yet supported by Fossology
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestCreateGroup()
+        {
+            const string GroupName = "TestGroup";
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var actual = client.CreateGroup(GroupName);
+            Assert.IsNotNull(actual);
+            //Assert.AreEqual("OK", actual.Status);
+        }
+#endif
+
+        //// ---------------------------------------------------------------------
+
+#region SUPPORT METHODS
         private static void WaitUntilUploadIsDone(FossologyClient client, int id)
         {
             while (!client.IsUploadUnpacked(id))
@@ -755,5 +786,6 @@ namespace Fossology.Rest.Dotnet.Test
 
             return -1;
         } // FindFolder()
+#endregion SUPPORT METHODS
     }
 }
