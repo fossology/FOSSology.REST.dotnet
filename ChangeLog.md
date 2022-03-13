@@ -1,5 +1,8 @@
 # ChangeLog - FOSSology.REST.dotnet
 
+## NEXT
+* improved error handling.
+
 ## 1.1.0 (2020-06-25)
 * supports FOSSology REST API v1.0.16 (FOSSology 3.8.0 built @ 2020/06/19).
 * new method GetToken().

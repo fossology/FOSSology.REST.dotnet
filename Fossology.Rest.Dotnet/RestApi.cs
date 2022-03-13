@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="RestApi.cs" company="Tethys">
-//   Copyright (C) 2019-2020 T. Graf
+//   Copyright (C) 2019-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -348,9 +348,22 @@ namespace Fossology.Rest.Dotnet
             FossologyApiException exception;
             try
             {
-                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(response.Content);
-                exception = new FossologyApiException(
-                    ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
+                if (string.IsNullOrEmpty(response.Content))
+                {
+                    exception = new FossologyApiException(
+                        ErrorCode.RestApiError, response.StatusCode, string.Empty, null);
+                }
+                else if (response.Content.ToLower().StartsWith("<html>"))
+                {
+                    exception = new FossologyApiException(
+                        ErrorCode.RestApiError, response.StatusCode, response.Content, null);
+                }
+                else
+                {
+                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(response.Content);
+                    exception = new FossologyApiException(
+                        ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
+                } // if
             }
             catch
             {
