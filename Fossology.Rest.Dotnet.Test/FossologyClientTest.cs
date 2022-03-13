@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="FossologyClientTest.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -27,6 +27,11 @@ namespace Fossology.Rest.Dotnet.Test
     using Tethys.Logging;
     using Tethys.Logging.Console;
 
+    // NOTE:
+    // If you just run all tests, a number of them will fail.
+    // This is just because the test will be run in random order ... and if
+    // for example a folder has not yet been created it will be impossible to delete it.
+
     /// <summary>
     /// Unit test class.
     /// </summary>
@@ -36,14 +41,14 @@ namespace Fossology.Rest.Dotnet.Test
         #region PRIVATE PROPERTIES
         /// <summary>
         /// The Fossology url.
-        /// Take care: the token depends also on the url!
+        /// Take care: the token depends also on the url.
         /// </summary>
         private const string LocalUrl = "http://localhost:8081/repo/api/v1";
 
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTM2NDc5OTksIm5iZiI6MTU5MzA0MzIwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.YsZLPym6rRUdBsEtEderJS2Xlj09DOG0J3z0Ygbv8MI";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc0NzUxOTksIm5iZiI6MTY0NzEyOTYwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.AKflkhB4194sjPAxMrse3kyBAeMdnGjtQzZZGsYRqMI";
 
         /// <summary>
         /// The filename of a test package.

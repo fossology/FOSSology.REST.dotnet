@@ -2,7 +2,9 @@
 
 ## NEXT
 * improved error handling.
+* supports FOSSology REST API v1.4.3 (FOSSology 4.0.0 built @ 2023/03/09).
 * new method GetHealth().
+* have `FossologyClient` to be a partial class for better overview.
 
 ## 1.1.0 (2020-06-25)
 * supports FOSSology REST API v1.0.16 (FOSSology 3.8.0 built @ 2020/06/19).
