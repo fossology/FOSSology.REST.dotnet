@@ -689,6 +689,20 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual(202, result.Code);
         }
 
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetHealth()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var actual = client.GetHealth();
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("OK", actual.Status);
+            Assert.AreEqual("OK", actual.Scheduler.Status);
+            Assert.AreEqual("OK", actual.Database.Status);
+        }
+
         private static void WaitUntilUploadIsDone(FossologyClient client, int id)
         {
             while (!client.IsUploadUnpacked(id))

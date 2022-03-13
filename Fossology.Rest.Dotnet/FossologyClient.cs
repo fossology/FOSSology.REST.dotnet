@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="FossologyClient.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -507,13 +507,24 @@ namespace Fossology.Rest.Dotnet
         /// Gets the upload with the specified id.
         /// </summary>
         /// <returns>A list of <see cref="Upload"/> objects.</returns>
-        public IReadOnlyList<Upload> GetUploadList()
+        /// <param name="groupName">The group name to use while retrieving uploads.</param>
+        public IReadOnlyList<Upload> GetUploadList(string groupName = "")
         {
             Log.Debug("Getting all uploads...");
 
-            var result = this.api.Get(this.Url + "/uploads");
+            var request = new RestRequest(this.Url + $"/uploads", Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.JsonSerializer = new JsonSerializer();
+            request.Parameters.Clear();
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
+
+            var response = this.api.Execute(request);
+
             var list = JsonConvert.DeserializeObject<List<Upload>>(
-                result.Content,
+                response.Content,
                 new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
@@ -818,6 +829,26 @@ namespace Fossology.Rest.Dotnet
             return result;
         } // Search()
         #endregion // SEARCH SUPPORT
+
+        #region HEALTH SUPPORT
+        /// <summary>
+        /// Gets the health information.
+        /// </summary>
+        /// <returns><see cref="HealthInfo"/>.</returns>
+        public HealthInfo GetHealth()
+        {
+            Log.Debug($"Getting health info...");
+
+            var result = this.api.Get(this.Url + $"/health");
+            var info = JsonConvert.DeserializeObject<HealthInfo>(
+                result.Content,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+            return info;
+        } // GetHealth()
+        #endregion
         #endregion // PUBLIC METHODS
     } // FossologyClient
 }
