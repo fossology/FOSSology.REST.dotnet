@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="MainForm.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -118,7 +118,7 @@ namespace FossyApiDemo
         {
 #if DEBUG
             this.txtFossyUrl.Text = "http://localhost:8081/repo/api/v1";
-            this.txtToken.Text = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJhdWQiOiJsb2NhbGhvc3QiLCJleHAiOjE1NzUxNTgzOTksIm5iZiI6MTU3NDU1MzYwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.vubUlZv2u_9naEU1VAkAPWhS0Ccn8tVnbNNURlQyDko";
+            this.txtToken.Text = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc0NzUxOTksIm5iZiI6MTY0NzEyOTYwMCwianRpIjoiTXk0eiIsInNjb3BlIjoid3JpdGUifQ.DSDQDyodi5LgIUyqUbOKQiMtpoqOkI0RnF-uphwI_0A";
             this.txtFolder.Text = "TestFolder";
             this.txtFile.Text = @"..\..\..\TestData\fetch-retry-master.zip";
 #endif
@@ -147,27 +147,74 @@ namespace FossyApiDemo
         } // BtnBrowseUploadClick()
 
         /// <summary>
+        /// Handles the Click event of the btnGetToken control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void BtnGetTokenClick(object sender, EventArgs e)
+        {
+            try
+            {
+                log.Info("Creating token for default user 'fossy'...");
+                var token = this.GetToken();
+
+                log.Info($"Token = {token}");
+
+                this.txtToken.Text = token;
+                log.Info("Token has been inserted into token text box.");
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error getting token: " + ex.Message);
+            } // if
+        } // BtnGetTokenClick()
+
+        /// <summary>
+        /// Handles the Click event of the btnShowInfo control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void BtnShowInfoClick(object sender, EventArgs e)
+        {
+            try
+            {
+                this.ShowInfo();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Error showing info: " + ex.Message);
+            } // if
+        } // BtnShowInfoClick()
+
+        /// <summary>
         /// Handles the Click event of the <c>btnUpload</c> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private async void BtnUploadClick(object sender, EventArgs e)
         {
-            if (!this.CheckFolder())
+            try
             {
-                return;
-            } // if
+                if (!this.CheckFolder())
+                {
+                    return;
+                } // if
 
-            if (string.IsNullOrEmpty(this.txtFile.Text))
-            {
-                log.Error("No file to upload specified!");
-            } // if
+                if (string.IsNullOrEmpty(this.txtFile.Text))
+                {
+                    log.Error("No file to upload specified!");
+                } // if
 
-            this.cancelUpload = false;
-            var result = await this.ProcessFileAsync(this.txtFile.Text);
-            if (result)
+                this.cancelUpload = false;
+                var result = await this.ProcessFileAsync(this.txtFile.Text);
+                if (result)
+                {
+                    log.Info("Done.");
+                } // if
+            }
+            catch (Exception ex)
             {
-                log.Info("Done.");
+                log.Error("Error: " + ex.Message);
             } // if
         } // BtnUploadClick()
 
@@ -214,6 +261,55 @@ namespace FossyApiDemo
         //// ---------------------------------------------------------------------
 
         #region PRIVATE METHODS
+        /// <summary>
+        /// Gets an access token for the default user 'fossy'.
+        /// </summary>
+        /// <returns>System.String.</returns>
+        private string GetToken()
+        {
+            if (this.client == null)
+            {
+                this.CreateClient();
+            } // if
+
+            var request = new TokenRequest();
+            request.Username = "fossy";
+            request.Password = "fossy";
+            request.TokenName = "TestToken";
+            request.TokenScope = "write";
+            request.TokenExpire = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+            var result = this.client.GetToken(request);
+
+            return result;
+        } // GetToken()
+
+        /// <summary>
+        /// Shows the information.
+        /// </summary>
+        private void ShowInfo()
+        {
+            if (this.client == null)
+            {
+                this.CreateClient();
+            } // if
+
+            // get version does not require an access token
+            var version = this.client.GetVersion();
+            log.Info($"FOSSology version = {version.Version}");
+
+            // get user does require an access token
+            var users = this.client.GetUserList();
+            foreach (var user in users)
+            {
+                if (user.Name != "fossy")
+                {
+                    continue;
+                } // if
+
+                var userinfo = this.client.GetUser(user.Id);
+                log.Info($"Current user = {userinfo.Name}, email = {userinfo.Email}, description = {userinfo.Description}");
+            } // foreach
+        } // ShowInfo()
 
         /// <summary>
         /// Processes the file.

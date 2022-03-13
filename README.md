@@ -42,13 +42,12 @@ More information about FOSSology can be found [here](https://www.fossology.org/.
   http://localhost:8081/repo/
 * Login via the admin account
   user = ```fossy```, pwd = ```fossy```
-* Go to ```admin/users/edit user account``` and create an API token or
-  use the appropriate REST call to generate a token.
+* Start the demo application and create a token
 * Optionally create a folder and upload a package 
 
 ## License
 
-Copyright (C) 2019-2020 T. Graf
+Copyright (C) 2019-2022 T. Graf
 
 Licensed under the **MIT License** (the "License");  
 you may not use this file except in compliance with the License.  

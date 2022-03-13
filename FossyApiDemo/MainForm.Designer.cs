@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.btnShowInfo = new System.Windows.Forms.Button();
+            this.btnCancelUpload = new System.Windows.Forms.Button();
             this.groupUpload = new System.Windows.Forms.GroupBox();
             this.btnBrowseUpload = new System.Windows.Forms.Button();
             this.txtFolder = new System.Windows.Forms.TextBox();
@@ -45,7 +47,7 @@
             this.lblProgress = new System.Windows.Forms.Label();
             this.btnUpload = new System.Windows.Forms.Button();
             this.rtfLogView = new Tethys.Logging.Controls.RtfLogView();
-            this.btnCancelUpload = new System.Windows.Forms.Button();
+            this.btnGetToken = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -64,6 +66,8 @@
             // 
             // splitContainer.Panel1
             // 
+            this.splitContainer.Panel1.Controls.Add(this.btnGetToken);
+            this.splitContainer.Panel1.Controls.Add(this.btnShowInfo);
             this.splitContainer.Panel1.Controls.Add(this.btnCancelUpload);
             this.splitContainer.Panel1.Controls.Add(this.groupUpload);
             this.splitContainer.Panel1.Controls.Add(this.groupFossology);
@@ -76,6 +80,26 @@
             this.splitContainer.Size = new System.Drawing.Size(695, 548);
             this.splitContainer.SplitterDistance = 297;
             this.splitContainer.TabIndex = 2;
+            // 
+            // btnShowInfo
+            // 
+            this.btnShowInfo.Location = new System.Drawing.Point(153, 245);
+            this.btnShowInfo.Name = "btnShowInfo";
+            this.btnShowInfo.Size = new System.Drawing.Size(135, 40);
+            this.btnShowInfo.TabIndex = 16;
+            this.btnShowInfo.Text = "Show Info";
+            this.btnShowInfo.UseVisualStyleBackColor = true;
+            this.btnShowInfo.Click += new System.EventHandler(this.BtnShowInfoClick);
+            // 
+            // btnCancelUpload
+            // 
+            this.btnCancelUpload.Location = new System.Drawing.Point(435, 245);
+            this.btnCancelUpload.Name = "btnCancelUpload";
+            this.btnCancelUpload.Size = new System.Drawing.Size(135, 40);
+            this.btnCancelUpload.TabIndex = 15;
+            this.btnCancelUpload.Text = "Cancel Upload";
+            this.btnCancelUpload.UseVisualStyleBackColor = true;
+            this.btnCancelUpload.Click += new System.EventHandler(this.BtnCancelUploadClick);
             // 
             // groupUpload
             // 
@@ -222,7 +246,7 @@
             // 
             // btnUpload
             // 
-            this.btnUpload.Location = new System.Drawing.Point(12, 245);
+            this.btnUpload.Location = new System.Drawing.Point(294, 245);
             this.btnUpload.Name = "btnUpload";
             this.btnUpload.Size = new System.Drawing.Size(135, 40);
             this.btnUpload.TabIndex = 0;
@@ -245,15 +269,15 @@
             this.rtfLogView.TabIndex = 0;
             this.rtfLogView.TextColor = System.Drawing.Color.Black;
             // 
-            // btnCancelUpload
+            // btnGetToken
             // 
-            this.btnCancelUpload.Location = new System.Drawing.Point(153, 245);
-            this.btnCancelUpload.Name = "btnCancelUpload";
-            this.btnCancelUpload.Size = new System.Drawing.Size(135, 40);
-            this.btnCancelUpload.TabIndex = 15;
-            this.btnCancelUpload.Text = "Cancel Upload";
-            this.btnCancelUpload.UseVisualStyleBackColor = true;
-            this.btnCancelUpload.Click += new System.EventHandler(this.BtnCancelUploadClick);
+            this.btnGetToken.Location = new System.Drawing.Point(12, 245);
+            this.btnGetToken.Name = "btnGetToken";
+            this.btnGetToken.Size = new System.Drawing.Size(135, 40);
+            this.btnGetToken.TabIndex = 17;
+            this.btnGetToken.Text = "Get Token";
+            this.btnGetToken.UseVisualStyleBackColor = true;
+            this.btnGetToken.Click += new System.EventHandler(this.BtnGetTokenClick);
             // 
             // MainForm
             // 
@@ -301,6 +325,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnBrowseUpload;
         private System.Windows.Forms.Button btnCancelUpload;
+        private System.Windows.Forms.Button btnShowInfo;
+        private System.Windows.Forms.Button btnGetToken;
     }
 }
 
