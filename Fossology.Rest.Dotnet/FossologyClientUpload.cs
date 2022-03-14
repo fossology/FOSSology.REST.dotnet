@@ -25,8 +25,6 @@ namespace Fossology.Rest.Dotnet
 
     using RestSharp;
 
-    using Tethys.Logging;
-
     using JsonSerializer = RestSharp.Serialization.Json.JsonSerializer;
 
     /// <summary>
@@ -277,20 +275,29 @@ namespace Fossology.Rest.Dotnet
                     NullValueHandling = NullValueHandling.Ignore,
                 });
 
-            return jobs.All(job => job.Status == "Completed");
+            return jobs != null && jobs.All(job => job.Status == "Completed");
         } // IsUploadUnpacked()
 
         /// <summary>
         /// Gets the upload with the specified id.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        /// <param name="groupName">The group name to choose.</param>
         /// <returns>A <see cref="Upload"/> object.</returns>
-        public Upload GetUpload(int id)
+        public Upload GetUpload(int id, string groupName = "")
         {
             Log.Debug($"Getting upload {id}...");
 
-            var response = this.api.Get(this.Url + $"/uploads/{id}", true);
+            var request = new RestRequest(this.Url + $"/uploads/{id}", Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.JsonSerializer = new JsonSerializer();
+            request.Parameters.Clear();
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
 
+            var response = this.api.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var upload = JsonConvert.DeserializeObject<Upload>(
@@ -316,12 +323,22 @@ namespace Fossology.Rest.Dotnet
         /// Gets the summary for the upload with the specified id.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        /// <param name="groupName">The group name to choose.</param>
         /// <returns>A <see cref="UploadSummary"/> object.</returns>
-        public UploadSummary GetUploadSummary(int id)
+        public UploadSummary GetUploadSummary(int id, string groupName = "")
         {
             Log.Debug($"Getting upload summary {id}...");
 
-            var response = this.api.Get(this.Url + $"/uploads/{id}/summary");
+            var request = new RestRequest(this.Url + $"/uploads/{id}/summary", Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.JsonSerializer = new JsonSerializer();
+            request.Parameters.Clear();
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
+
+            var response = this.api.Execute(request);
             var summary = JsonConvert.DeserializeObject<UploadSummary>(
                 response.Content,
                 new JsonSerializerSettings
