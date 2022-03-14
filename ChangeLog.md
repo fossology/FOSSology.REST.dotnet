@@ -8,6 +8,7 @@
 * new method GetGroupList().
 * add support for groups for all methods where it did not yet exist.
 * new method GetInfo().
+* support for licenses added: new methods GetLicenseList(), GetLicense(), CreateLicense().
 
 ## 1.1.0 (2020-06-25)
 * supports FOSSology REST API v1.0.16 (FOSSology 3.8.0 built @ 2020/06/19).

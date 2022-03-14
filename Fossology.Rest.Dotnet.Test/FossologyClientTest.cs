@@ -736,6 +736,84 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.IsTrue(actual.Count > 0);
         }
 
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetLicenseList()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+
+            // default
+            var actual = client.GetLicenseList();
+            Assert.IsNotNull(actual);
+            Assert.IsTrue(actual.Count == 100);
+
+            actual = client.GetLicenseList(1, 1, "main", true);
+            Assert.IsNotNull(actual);
+            Assert.IsTrue(actual.Count == 1);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetLicense()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+
+            var actual = client.GetLicense("MIT");
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("MIT", actual.ShortName);
+            Assert.AreEqual("MIT License", actual.FullName);
+            Assert.AreEqual(0, actual.Risk);
+            Assert.IsFalse(actual.IsCandidate);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestCreateLicense_Fail()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+
+            var license = new License();
+            license.ShortName = "MIT";
+            license.FullName = "MIT License";
+
+            try
+            {
+                client.CreateLicense(license);
+                Assert.IsFalse(true, "This must not happen!");
+            }
+            catch (FossologyApiException fex)
+            {
+                Assert.IsNotNull(fex);
+                Assert.AreEqual(HttpStatusCode.Conflict, fex.HttpStatusCode);
+            }
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestCreateLicense()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+
+            var license = new License();
+            license.ShortName = "TOM-MIT";
+            license.FullName = "Tom's MIT License";
+            license.IsCandidate = true;
+            license.Risk = 0;
+            license.LicenseText = "Some dummy license text";
+
+            var actual = client.CreateLicense(license);
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(201, actual.Code);
+        }
+
 #if false // not yet supported by Fossology
         /// <summary>
         /// Unit test.
@@ -754,7 +832,7 @@ namespace Fossology.Rest.Dotnet.Test
 
         //// ---------------------------------------------------------------------
 
-#region SUPPORT METHODS
+        #region SUPPORT METHODS
         private static void WaitUntilUploadIsDone(FossologyClient client, int id)
         {
             while (!client.IsUploadUnpacked(id))
