@@ -28,9 +28,10 @@ namespace Fossology.Rest.Dotnet.Test
     using Tethys.Logging.Console;
 
     // NOTE:
-    // If you just run all tests, a number of them will fail.
-    // This is just because the test will be run in random order ... and if
-    // for example a folder has not yet been created it will be impossible to delete it.
+    // 1. Prior to running test, valid token information needs to be provided.
+    // 2. If you just run all tests, a number of them will fail.
+    //    This is just because the test will be run in random order ... and if
+    //    for example a folder has not yet been created it will be impossible to delete it.
 
     /// <summary>
     /// Unit test class.
@@ -48,7 +49,7 @@ namespace Fossology.Rest.Dotnet.Test
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc0NzUxOTksIm5iZiI6MTY0NzEyOTYwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.AKflkhB4194sjPAxMrse3kyBAeMdnGjtQzZZGsYRqMI";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc1NjE1OTksIm5iZiI6MTY0NzIxNjAwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.VoBawVZLVEBUs75EEN39L_ml7ZuQhRsJVTWxtxGC26I";
 
         /// <summary>
         /// The filename of a test package.
@@ -706,6 +707,21 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual("OK", actual.Status);
             Assert.AreEqual("OK", actual.Scheduler.Status);
             Assert.AreEqual("OK", actual.Database.Status);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetInfo()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var actual = client.GetInfo();
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("FOSSology API", actual.Name);
+            Assert.AreEqual("fossology@fossology.org", actual.Contact);
+            Assert.AreEqual("GPL-2.0-only", actual.FossologyLicense.Name);
+            Assert.AreEqual("master", actual.FossologyInfo.BranchName);
         }
 
         /// <summary>
