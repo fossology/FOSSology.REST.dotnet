@@ -51,7 +51,7 @@ namespace Fossology.Rest.Dotnet
             return list;
         } // GetGroupList()
 
-#if false // not yet supported by Fossology
+#if true // not yet supported by Fossology
         /// <summary>
         /// Creates a new group.
         /// </summary>
@@ -65,7 +65,7 @@ namespace Fossology.Rest.Dotnet
         {
             var request = new RestRequest(this.Url + "/groups", Method.POST);
             request.RequestFormat = DataFormat.Json;
-            request.AddHeader("groupName", groupName);
+            request.AddHeader("name", groupName);
 
             var resultRaw = this.api.Execute(request);
             var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);

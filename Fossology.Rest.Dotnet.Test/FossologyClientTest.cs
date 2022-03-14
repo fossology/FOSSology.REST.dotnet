@@ -16,6 +16,7 @@ namespace Fossology.Rest.Dotnet.Test
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.IO;
     using System.Net;
@@ -740,6 +741,20 @@ namespace Fossology.Rest.Dotnet.Test
         /// Unit test.
         /// </summary>
         [TestMethod]
+        public void TestCreateGroup()
+        {
+            const string GroupName = "TestGroup1";
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var actual = client.CreateGroup(GroupName);
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(200, actual.Code);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
         public void TestGetLicenseList()
         {
             var client = new FossologyClient(LocalUrl, Token);
@@ -814,21 +829,38 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual(201, actual.Code);
         }
 
-#if false // not yet supported by Fossology
         /// <summary>
         /// Unit test.
         /// </summary>
         [TestMethod]
-        public void TestCreateGroup()
+        public void TestFileSearch()
         {
-            const string GroupName = "TestGroup";
-
             var client = new FossologyClient(LocalUrl, Token);
-            var actual = client.CreateGroup(GroupName);
+            var hash = new Hash();
+            hash.Sha1 = "81fe8bfe87576c3ecb22426f8e57847382917acf";
+            hash.Md5 = "e2fc714c4727ee9395f324cd2e7f331f";
+            hash.Sha256 = "88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589";
+            hash.Size = 0;
+            var hashes = new List<Hash>();
+            hashes.Add(hash);
+
+            var actual = client.SearchForFile(hashes);
             Assert.IsNotNull(actual);
-            //Assert.AreEqual("OK", actual.Status);
+            Assert.IsTrue(actual.Length > 0);
+
+            // always returns
+            // [
+            //   {
+            //     "hash" : {
+            //        "sha1":null,
+            //        "md5":null,
+            //        "sha256":null,
+            //        "size":null
+            //      },
+            //     "message": "Invalid keys"
+            //   }
+            // ]"
         }
-#endif
 
         //// ---------------------------------------------------------------------
 
