@@ -51,7 +51,6 @@ namespace Fossology.Rest.Dotnet
             return list;
         } // GetGroupList()
 
-#if true // not yet supported by Fossology
         /// <summary>
         /// Creates a new group.
         /// </summary>
@@ -73,6 +72,5 @@ namespace Fossology.Rest.Dotnet
 
             return result;
         } // CreateGroup()
-#endif
     } // FossologyClient
 }

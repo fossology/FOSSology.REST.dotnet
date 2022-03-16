@@ -11,6 +11,7 @@
 * support for licenses added: new methods GetLicenseList(), GetLicense(), CreateLicense().
 * code coverage support
 * new classes Hash and Obligation.
+* improved unit tests.
 
 ## 1.1.0 (2020-06-25)
 * supports FOSSology REST API v1.0.16 (FOSSology 3.8.0 built @ 2020/06/19).

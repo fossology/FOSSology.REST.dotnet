@@ -83,14 +83,40 @@ namespace Fossology.Rest.Dotnet
         /// <summary>
         /// Gets a list of all jobs.
         /// </summary>
-        /// <returns>A <see cref="Job"/> object.</returns>
-        public IReadOnlyList<Job> GetJobList()
+        /// <param name="uploadId">The upload identifier.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="limit">The limit.</param>
+        /// <param name="groupName">Name of the group.</param>
+        /// <returns>A <see cref="Job" /> object.</returns>
+        public IReadOnlyList<Job> GetJobList(
+            int uploadId = -1,
+            int page = 1,
+            int limit = 100,
+            string groupName = "")
         {
             Log.Debug("Getting all jobs...");
 
-            var result = this.api.Get(this.Url + "/jobs");
+            var url = "/jobs";
+            if (uploadId > -1)
+            {
+                url = $"/jobs?upload={uploadId}";
+            } // if
+
+            var request = new RestRequest(this.Url + url, Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.JsonSerializer = new JsonSerializer();
+            request.Parameters.Clear();
+            request.AddHeader("page", page.ToString());
+            request.AddHeader("limit", limit.ToString());
+
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
+
+            var response = this.api.Execute(request);
             var list = JsonConvert.DeserializeObject<List<Job>>(
-                result.Content,
+                response.Content,
                 new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
