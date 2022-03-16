@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="Analysis.cs" company="Tethys">
-//   Copyright (C) 2020 T. Graf
+//   Copyright (C) 2020-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -74,5 +74,11 @@ namespace Fossology.Rest.Dotnet.Model
         /// </summary>
         [JsonProperty("package")]
         public bool Package { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the REUSE.Software analysis.
+        /// </summary>
+        [JsonProperty("reso")]
+        public bool Reso { get; set; }
     } // Analysis
 }
