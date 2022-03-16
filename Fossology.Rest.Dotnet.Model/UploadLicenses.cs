@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="UploadLicenses.cs" company="Tethys">
-//   Copyright (C) 2020 T. Graf
+//   Copyright (C) 2020-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -14,7 +14,6 @@
 
 namespace Fossology.Rest.Dotnet.Model
 {
-    using System.Collections.Generic;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -29,30 +28,23 @@ namespace Fossology.Rest.Dotnet.Model
         public string FilePath { get; set; }
 
         /// <summary>
-        /// Gets the short names of the found licenses.
+        /// Gets the findings for this file.
         /// </summary>
-        [JsonProperty("agentFindings")]
-        public List<string> AgentFindings { get; }
-
-        /// <summary>
-        /// Gets the conclusions, i.e. license(s) decided by user.
-        /// </summary>
-        [JsonProperty("conclusions")]
-        public List<string> Conclusions { get; }
+        [JsonProperty("findings")]
+        public Findings Findings { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UploadLicenses"/> class.
         /// </summary>
         public UploadLicenses()
         {
-            this.AgentFindings = new List<string>();
-            this.Conclusions = new List<string>();
+            this.Findings = new Findings();
         } // UploadLicenses()
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{this.FilePath}: C={Support.ListToString(this.Conclusions)}: F={Support.ListToString(this.AgentFindings)}";
+            return $"{this.FilePath}: {this.Findings}";
         } // ToString()
     } // UploadLicenses
 }
