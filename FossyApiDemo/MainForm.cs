@@ -162,6 +162,9 @@ namespace FossyApiDemo
 
                 this.txtToken.Text = token;
                 log.Info("Token has been inserted into token text box.");
+
+                // clear existing client, because it has been initialized with an old token
+                this.client = null;
             }
             catch (Exception ex)
             {
