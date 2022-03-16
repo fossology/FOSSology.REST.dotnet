@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="UploadSummary.cs" company="Tethys">
-//   Copyright (C) 2020 T. Graf
+//   Copyright (C) 2020-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -32,6 +32,12 @@ namespace Fossology.Rest.Dotnet.Model
         /// </summary>
         [JsonProperty("uploadName")]
         public string UploadName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the assignee id of the upload.
+        /// </summary>
+        [JsonProperty("assignee")]
+        public int Assignee { get; set; }
 
         /// <summary>
         /// Gets or sets the main license.
