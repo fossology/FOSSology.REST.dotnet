@@ -92,5 +92,31 @@ namespace Fossology.Rest.Dotnet
 
             return result;
         } // Search()
+
+        /// <summary>
+        /// Searches for files by hash.
+        /// </summary>
+        /// <param name="fileHashes">A list of file hashes.</param>
+        /// <param name="groupName">Name of the group.</param>
+        /// <returns>A raw JSON result.</returns>
+        public string SearchForFile(List<Hash> fileHashes, string groupName = "")
+        {
+            Log.Debug($"Searching for files by hash...");
+
+            var json = JsonConvert.SerializeObject(fileHashes);
+
+            var request = new RestRequest(this.Url + "/filesearch", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.JsonSerializer = new JsonSerializer();
+            request.Parameters.Clear();
+            if (!string.IsNullOrEmpty(groupName))
+            {
+                request.AddHeader("groupName", groupName);
+            } // if
+
+            request.AddJsonBody(json);
+            var resultRaw = this.api.Execute(request);
+            return resultRaw.Content;
+        } // SearchForFile()
     } // FossologyClient
 }
