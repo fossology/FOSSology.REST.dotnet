@@ -43,13 +43,10 @@ namespace Fossology.Rest.Dotnet
         /// <param name="description">The description.</param>
         /// <param name="accessLevel">The access level.</param>
         /// <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
-        /// <returns>
-        /// An <see cref="Result" /> object.
-        /// </returns>
-        /// <remarks>
-        /// The message property of the result contains the upload id
-        /// which is needed for further operations.
-        /// </remarks>
+        /// <param name="applyGlobal">if set to <c>true</c> apply global decisions.</param>
+        /// <returns>An <see cref="Result" /> object.</returns>
+        /// <remarks>The message property of the result contains the upload id
+        /// which is needed for further operations.</remarks>
         public Result UploadPackage(
             string fileName,
             int folderId,
@@ -58,9 +55,15 @@ namespace Fossology.Rest.Dotnet
             Action<float> uploadProgress = null,
             string description = "",
             string accessLevel = "public",
-            bool ignoreScm = true)
+            bool ignoreScm = true,
+            bool applyGlobal = false)
         {
             Log.Debug($"Uploading package {fileName} to folder {folderId}...");
+
+            if (!File.Exists(fileName))
+            {
+                throw new FossologyApiException(ErrorCode.FileNotFound, fileName);
+            } // if
 
             var request = new RestRequest(this.Url + "/uploads", Method.POST);
             request.RequestFormat = DataFormat.Json;
@@ -70,13 +73,14 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("public", accessLevel);
             request.AddHeader("ignoreScm", ignoreScm.ToString());
             request.AddHeader("Content-Type", "multipart/form-data");
+            request.AddHeader("applyGlobal", applyGlobal.ToString());
 
             var fi = new FileInfo(fileName);
             var item = new FileParameter
                                   {
                                       Name = "fileInput",
                                       ContentLength = fi.Length,
-                                      FileName = fileName,
+                                      FileName = fi.Name,
                                       ContentType = "application/octet-stream",
                                   };
             item.Writer = stream =>

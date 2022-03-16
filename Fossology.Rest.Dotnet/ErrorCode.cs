@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="ErrorCode.cs" company="Tethys">
-//   Copyright (C) 2019-2020 T. Graf
+//   Copyright (C) 2019-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -38,5 +38,10 @@ namespace Fossology.Rest.Dotnet
         /// A REST API error has happened.
         /// </summary>
         RestApiError = 3,
+
+        /// <summary>
+        /// File to upload not found.
+        /// </summary>
+        FileNotFound = 4,
     } // ErrorCode
 }
