@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
-// <copyright file="UploadLicenses.cs" company="Tethys">
-//   Copyright (C) 2020-2022 T. Graf
+// <copyright file="Hash.cs" company="Tethys">
+//   Copyright (C) 2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -17,34 +17,38 @@ namespace Fossology.Rest.Dotnet.Model
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Information about the licenses of the uploaded files.
+    /// Fossology hash information.
     /// </summary>
-    public class UploadLicenses
+    public class Hash
     {
         /// <summary>
-        /// Gets or sets the relative file path.
+        /// Gets or sets the SHA1 hash.
         /// </summary>
-        [JsonProperty("filePath")]
-        public string FilePath { get; set; }
+        [JsonProperty("sha1")]
+        public string Sha1 { get; set; }
 
         /// <summary>
-        /// Gets the findings for this file.
+        /// Gets or sets the MD5 hash.
         /// </summary>
-        [JsonProperty("findings")]
-        public Findings Findings { get; }
+        [JsonProperty("md5")]
+        public string Md5 { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UploadLicenses"/> class.
+        /// Gets or sets the SHA256 hash.
         /// </summary>
-        public UploadLicenses()
-        {
-            this.Findings = new Findings();
-        } // UploadLicenses()
+        [JsonProperty("sha256")]
+        public string Sha256 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the file in bytes.
+        /// </summary>
+        [JsonProperty("size")]
+        public int Size { get; set; }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{this.FilePath}: {this.Findings}";
-        } // ToString()
-    } // UploadLicenses
+            return $"SHA1={this.Sha1}, MD5={this.Md5}, SHA256={this.Sha256}, size={this.Size}'";
+        }
+    } // Hash
 }

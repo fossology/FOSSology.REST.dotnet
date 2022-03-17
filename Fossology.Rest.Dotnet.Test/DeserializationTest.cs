@@ -88,21 +88,49 @@ namespace Fossology.Rest.Dotnet.Test
         /// Unit test.
         /// </summary>
         [TestMethod]
-        public void TestDeserializeComplex1()
+        public void TestDeserializeFindings()
         {
             const string JsonText =
-                "{"
-                + "\"filePath\":\"fetch-retry-master.zip/fetch-retry-master/package.json\","
-                + "\"agentFindings\":[\"MIT\"],"
-                + "\"conclusions\":null"
-                + "}";
+                "{" +
+                  "\"scanner\":[" +
+                "\"No_license_found\"" +
+                "]," +
+                "\"conclusion\":null," +
+                "\"copyright\":null" +
+                "}";
 
-            var actual = JsonConvert.DeserializeObject<UploadLicenses>(JsonText);
+            var actual = JsonConvert.DeserializeObject<Findings>(JsonText);
             Assert.IsNotNull(actual);
-            Assert.IsNotNull(actual.AgentFindings);
-            Assert.AreEqual(1, actual.AgentFindings.Count);
+            Assert.AreEqual(1, actual.Scanner.Count);
+            Assert.AreEqual("No_license_found", actual.Scanner[0]);
+            Assert.AreEqual(0, actual.Copyrights.Count);
+            Assert.AreEqual(0, actual.Copyrights.Count);
+        }
 
-            // ==> no correct deserialization without constructor...
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestDeserializeUploadLicenses()
+        {
+            const string JsonText =
+                "[" +
+                  "{" +
+                    "\"filePath\":\"Tethys.xml_v1.0.0.zip/Tethys.Xml-1.0.0/Tethys.Xml.sln\"," +
+                    "\"findings\":" +
+                    "{" +
+                      "\"scanner\":[" +
+                        "\"No_license_found\"" +
+                      "]," +
+                      "\"conclusion\":null," +
+                      "\"copyright\":null" +
+                    "}" +
+                  "}" +
+                "]";
+
+            var actual = JsonConvert.DeserializeObject<List<UploadLicenses>>(JsonText);
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(1, actual.Count);
         }
     }
 }

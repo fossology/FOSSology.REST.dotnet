@@ -310,7 +310,7 @@ namespace Fossology.Rest.Dotnet
                 request.JsonSerializer = new JsonSerializer();
                 this.AddHeaders(request);
                 var data = this.client.DownloadData(request, true);
-                File.WriteAllBytes(filename, data);
+                System.IO.File.WriteAllBytes(filename, data);
             }
             catch (FossologyApiException)
             {

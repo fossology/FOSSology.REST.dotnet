@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="Upload.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -71,21 +71,21 @@ namespace Fossology.Rest.Dotnet.Model
         public string UploadDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the file size.
+        /// Gets or sets the assignee id of the upload.
         /// </summary>
-        [JsonProperty("filesize")]
-        public int Filesize { get; set; }
+        [JsonProperty("assignee", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Assignee { get; set; }
 
         /// <summary>
-        /// Gets or sets the SHA1 digest of the file.
+        /// Gets or sets the hash of the file.
         /// </summary>
-        [JsonProperty("filesha1")]
-        public string FileSha1 { get; set; }
+        [JsonProperty("hash")]
+        public Hash Hash { get; set; }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{this.Id}: {this.UploadName}, folder={this.FolderId}, size={this.Filesize}, {this.UploadDate} '{this.Description}'";
+            return $"{this.Id}: {this.UploadName}, folder={this.FolderId}, size={this.Hash.Size}, {this.UploadDate} '{this.Description}'";
         }
     } // Upload
 }

@@ -162,6 +162,9 @@ namespace FossyApiDemo
 
                 this.txtToken.Text = token;
                 log.Info("Token has been inserted into token text box.");
+
+                // clear existing client, because it has been initialized with an old token
+                this.client = null;
             }
             catch (Exception ex)
             {
@@ -482,9 +485,9 @@ namespace FossyApiDemo
                 } // if
 
                 var reportFilename = upload.UploadName + ".spdx2.rdf.xml";
-                if (File.Exists(reportFilename))
+                if (System.IO.File.Exists(reportFilename))
                 {
-                    File.Delete(reportFilename);
+                    System.IO.File.Delete(reportFilename);
                 } // if
 
                 this.SetStatus(90, "Downloading report...");
@@ -533,7 +536,7 @@ namespace FossyApiDemo
                 } // catch
             } // while
 
-            if (!File.Exists(reportFilename))
+            if (!System.IO.File.Exists(reportFilename))
             {
                 log.Error("Error downloading report!");
                 return false;

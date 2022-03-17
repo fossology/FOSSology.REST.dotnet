@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="FossologyClientTest.cs" company="Tethys">
-//   Copyright (C) 2019 T. Graf
+//   Copyright (C) 2019-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -17,7 +17,6 @@ namespace Fossology.Rest.Dotnet.Test
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
     using System.Net;
     using System.Threading;
     using Fossology.Rest.Dotnet;
@@ -26,6 +25,9 @@ namespace Fossology.Rest.Dotnet.Test
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Tethys.Logging;
     using Tethys.Logging.Console;
+
+    // NOTE:
+    // 1. Prior to running test, valid token information needs to be provided.
 
     /// <summary>
     /// Unit test class.
@@ -36,19 +38,29 @@ namespace Fossology.Rest.Dotnet.Test
         #region PRIVATE PROPERTIES
         /// <summary>
         /// The Fossology url.
-        /// Take care: the token depends also on the url!
+        /// Take care: the token depends also on the url.
         /// </summary>
         private const string LocalUrl = "http://localhost:8081/repo/api/v1";
 
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTM2NDc5OTksIm5iZiI6MTU5MzA0MzIwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.YsZLPym6rRUdBsEtEderJS2Xlj09DOG0J3z0Ygbv8MI";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc4MjA3OTksIm5iZiI6MTY0NzQ3NTIwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.8PK99xI7N482c1GC2Onzwe2p74Y80_ef4DVj99jiwn4";
 
         /// <summary>
         /// The filename of a test package.
         /// </summary>
         private const string Filename = @"..\..\..\..\TestData\fetch-retry-master.zip";
+
+        /// <summary>
+        /// The name of a test package.
+        /// </summary>
+        private const string PackageName = "fetch-retry-master.zip";
+
+        /// <summary>
+        /// The name of a test package.
+        /// </summary>
+        private const string PackageName2 = "Tethys.xml_v1.0.0.zip";
 
         /// <summary>
         /// The test folder name.
@@ -88,7 +100,8 @@ namespace Fossology.Rest.Dotnet.Test
             var request = new TokenRequest();
             request.Username = "fossy";
             request.Password = "fossy";
-            request.TokenName = "TestToken1";
+            var uuid = Guid.NewGuid().ToString();
+            request.TokenName = uuid;
             request.TokenScope = "write";
             request.TokenExpire = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
             var result = client.GetToken(request);
@@ -155,7 +168,8 @@ namespace Fossology.Rest.Dotnet.Test
         {
             var client = new FossologyClient(LocalUrl, Token);
             var listPrev = client.GetFolderList();
-            var result = client.CreateFolder("TestFolder", 1);
+            var uuid = Guid.NewGuid().ToString();
+            var result = client.CreateFolder("TestFolder-" + uuid, 1);
             Assert.IsNotNull(result);
             Assert.AreEqual("INFO", result.Type);
             if (result.Code == 200)
@@ -174,12 +188,42 @@ namespace Fossology.Rest.Dotnet.Test
         /// Unit test.
         /// </summary>
         [TestMethod]
+        public void TestCreateFolderForGroup()
+        {
+            var groupName = "TestFolderGroup-" + Guid.NewGuid();
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var actual = client.CreateGroup(groupName);
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(200, actual.Code);
+
+            var uuid = Guid.NewGuid().ToString();
+            var result = client.CreateFolder("TestFolder-" + uuid, 1, groupName);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("INFO", result.Type);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
         public void TestDeleteFolder()
         {
             var client = new FossologyClient(LocalUrl, Token);
-            var result = client.DeleteFolder(3);
+
+            var folderName = "TestFolder-" + Guid.NewGuid();
+            Assert.IsFalse(FossologyFolderExists(client, folderName));
+
+            var result = client.CreateFolder(folderName, 1);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(201, result.Code);
+            var folderId = int.Parse(result.Message);
+            Assert.IsTrue(FossologyFolderExists(client, folderName));
+
+            result = client.DeleteFolder(folderId);
             Assert.IsNotNull(result);
             Assert.AreEqual(202, result.Code);
+            Assert.IsFalse(FossologyFolderExists(client, folderName));
         }
 
         /// <summary>
@@ -188,8 +232,10 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestUploadPackage()
         {
+            var folderId = EnsureTestFolderExists();
+
             var client = new FossologyClient(LocalUrl, Token);
-            var result = client.UploadPackage(Filename, 3);
+            var result = client.UploadPackage(Filename, folderId);
             Assert.IsNotNull(result);
             Assert.AreEqual("INFO", result.Type);
             Assert.AreEqual(201, result.Code);
@@ -202,12 +248,19 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestGetUpload()
         {
-            const int Id = 2;
+            var id = FindUpload(PackageName2);
+            if (id < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                id = FindUpload(PackageName2);
+            } // if
 
             var client = new FossologyClient(LocalUrl, Token);
-            var result = client.GetUpload(Id);
+            var result = client.GetUpload(id);
             Assert.IsNotNull(result);
-            Assert.AreEqual(Id, result.Id);
+            Assert.AreEqual(id, result.Id);
             Debug.WriteLine($"Upload = {result}");
         }
 
@@ -217,20 +270,22 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestUploadPackageAndCheckLookAt()
         {
+            var id = FindUpload(PackageName2);
+            if (id < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                id = FindUpload(PackageName2);
+            } // if
+
             var client = new FossologyClient(LocalUrl, Token);
-            var result = client.UploadPackage(Filename, 3);
-            Assert.IsNotNull(result);
-            Assert.AreEqual("INFO", result.Type);
-            Assert.AreEqual(201, result.Code);
-            var uploadId = int.Parse(result.Message);
-            Debug.WriteLine($"Upload id = {uploadId}");
 
             try
             {
-                var result2 = client.GetUpload(uploadId);
+                var result2 = client.GetUpload(id);
                 Assert.IsNotNull(result2);
-                Assert.AreEqual(uploadId, result2.Id);
-                Debug.WriteLine($"Upload = {result}");
+                Assert.AreEqual(id, result2.Id);
             }
             catch (FossologyApiException ex)
             {
@@ -245,16 +300,20 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestUploadPackageCheckUnpackStatus()
         {
-            var client = new FossologyClient(LocalUrl, Token);
-            var result = client.UploadPackage(@"..\..\..\TestData\xtxgd.zip", 5);
-            Assert.IsNotNull(result);
-            Assert.AreEqual("INFO", result.Type);
-            Assert.AreEqual(201, result.Code);
-            var uploadId = int.Parse(result.Message);
-            Debug.WriteLine($"Upload id = {uploadId}");
+            var id = FindUpload(PackageName2);
+            if (id < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                id = FindUpload(PackageName2);
+            } // if
 
-            WaitUntilUploadIsDone(client, uploadId);
-            Debug.WriteLine($"Upload id = {uploadId} is now available");
+            var client = new FossologyClient(LocalUrl, Token);
+            Debug.WriteLine($"Upload id = {id}");
+
+            WaitUntilUploadIsDone(client, id);
+            Debug.WriteLine($"Upload id = {id} is now available");
         }
 
         /// <summary>
@@ -263,13 +322,15 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestUploadPackageFromUrl()
         {
+            var folderId = EnsureTestFolderExists();
+
             var client = new FossologyClient(LocalUrl, Token);
             var details = new UrlUpload();
             details.Name = "Tethys.xml_v1.0.0.zip";
             details.Url = "https://github.com/tngraf/Tethys.Xml/archive/v1.0.0.zip";
             details.MaxRecursionDepth = 0;
 
-            var result = client.UploadPackageFromUrl(3, details);
+            var result = client.UploadPackageFromUrl(folderId, details);
             Assert.IsNotNull(result);
             Assert.AreEqual("INFO", result.Type);
             Assert.AreEqual(201, result.Code);
@@ -282,6 +343,8 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestUploadPackageFromVcs()
         {
+            var folderId = EnsureTestFolderExists();
+
             var client = new FossologyClient(LocalUrl, Token);
             var details = new VcsUpload();
             details.VcsName = "Tethys.Logging";
@@ -291,7 +354,7 @@ namespace Fossology.Rest.Dotnet.Test
             details.VcsUsername = "xxx";
             details.VcsPassword = "xxx";
 
-            var result = client.UploadPackageFromVcs(3, details);
+            var result = client.UploadPackageFromVcs(folderId, details);
             Assert.IsNotNull(result);
             Assert.AreEqual("INFO", result.Type);
             Assert.AreEqual(201, result.Code);
@@ -304,12 +367,19 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestGetUploadSummary()
         {
-            const int Id = 2;
+            var id = FindUpload(PackageName2);
+            if (id < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                id = FindUpload(PackageName2);
+            } // if
 
             var client = new FossologyClient(LocalUrl, Token);
-            var summary = client.GetUploadSummary(Id);
+            var summary = client.GetUploadSummary(id);
             Assert.IsNotNull(summary);
-            Assert.AreEqual(Id, summary.Id);
+            Assert.AreEqual(id, summary.Id);
             Debug.WriteLine($"Upload = {summary}");
         }
 
@@ -322,7 +392,6 @@ namespace Fossology.Rest.Dotnet.Test
             var client = new FossologyClient(LocalUrl, Token);
             var result = client.GetUploadList();
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Count > 0);
             foreach (var upload in result)
             {
                 Debug.WriteLine($"  Upload summary = {upload}");
@@ -335,17 +404,32 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestGetUploadLicenses()
         {
-            const int Id = 2;
+#if true
+            var uploadId = FindUpload(PackageName2);
+            if (uploadId < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                uploadId = FindUpload(PackageName2);
+            } // if
+
+            UploadPackageAndRunJobs(uploadId);
+#else
+            // use a specific upload
+            var uploadId = 111;
+#endif
 
             var client = new FossologyClient(LocalUrl, Token);
-            var licenses = client.GetUploadLicenses(Id, "nomos", true);
+            var licenses = client.GetUploadLicenses(uploadId, "nomos", true);
             Assert.IsNotNull(licenses);
-            foreach (var info in licenses)
-            {
-                Debug.WriteLine($"Upload licenses found by nomos = {info}");
-            } // foreach
 
-            licenses = client.GetUploadLicenses(Id, "monk", true);
+            ////Assert.AreEqual(14, licenses.Count);
+            ////Assert.AreEqual(1, licenses[2].Findings.Scanner.Count);
+            ////Assert.AreEqual("Apache-2.0", licenses[2].Findings.Scanner[0]);
+            ////Assert.AreEqual("Tethys.xml_v1.0.0.zip/Tethys.Xml-1.0.0/LICENSE", licenses[2].FilePath);
+
+            licenses = client.GetUploadLicenses(uploadId, "monk", true);
             Assert.IsNotNull(licenses);
             foreach (var info in licenses)
             {
@@ -359,8 +443,22 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestDeleteUpload()
         {
+            var id = FindUpload(PackageName2);
+            if (id < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                id = FindUpload(PackageName2);
+            } // if
+
+            if (id < 0)
+            {
+                Assert.Inconclusive("Upload not ready...");
+            } // if
+
             var client = new FossologyClient(LocalUrl, Token);
-            var result = client.DeleteUpload(3);
+            var result = client.DeleteUpload(id);
             Assert.IsNotNull(result);
             Assert.AreEqual(202, result.Code);
         }
@@ -371,6 +469,16 @@ namespace Fossology.Rest.Dotnet.Test
         [TestMethod]
         public void TestTriggerJob()
         {
+            var folderId = EnsureTestFolderExists();
+            var id = FindUpload(PackageName2);
+            if (id < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                id = FindUpload(PackageName2);
+            } // if
+
             var client = new FossologyClient(LocalUrl, Token);
             var job = new TriggerInfo();
             job.Analysis.Bucket = true;
@@ -390,26 +498,11 @@ namespace Fossology.Rest.Dotnet.Test
             job.Reuse.ReuseGroup = 0;
             job.Reuse.ReuseMain = true;
             job.Reuse.ReuseEnhanced = true;
-            var result = client.TriggerJob(3, 2, job, "fossy");
+            var result = client.TriggerJob(folderId, id, job, "fossy");
             Assert.IsNotNull(result);
             Assert.AreEqual("INFO", result.Type);
             Assert.AreEqual(201, result.Code);
             Debug.WriteLine($"TriggerInfo job id = {result.Message}");
-        }
-
-        /// <summary>
-        /// Unit test.
-        /// </summary>
-        [TestMethod]
-        public void TestGetJob()
-        {
-            const int Id = 4;
-
-            var client = new FossologyClient(LocalUrl, Token);
-            var result = client.GetJob(Id);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(Id, result.Id);
-            Debug.WriteLine($"Job = {result}");
         }
 
         /// <summary>
@@ -431,10 +524,91 @@ namespace Fossology.Rest.Dotnet.Test
         /// Unit test.
         /// </summary>
         [TestMethod]
+        public void TestGetJobListWithId()
+        {
+            var uploadId = FindUpload(PackageName2);
+            if (uploadId < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                uploadId = FindUpload(PackageName2);
+            } // if
+
+            var jobId = UploadPackageAndRunJobs(uploadId);
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var result = client.GetJobList(uploadId, 1, 1000);
+            var found = false;
+            foreach (var job in result)
+            {
+                if (job.Id == jobId)
+                {
+                    found = true;
+                    break;
+                } // if
+            } // foreach
+
+            Assert.IsTrue(found, "Expected job not found!");
+
+            result = client.GetJobList(-1, 1, 1000);
+            Assert.IsNotNull(result);
+            found = false;
+            foreach (var job in result)
+            {
+                if (job.Id == jobId)
+                {
+                    found = true;
+                    break;
+                } // if
+            } // foreach
+
+            Assert.IsTrue(found, "Expected job not found!");
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetJob()
+        {
+            var uploadId = FindUpload(PackageName2);
+            if (uploadId < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                uploadId = FindUpload(PackageName2);
+            } // if
+
+            var jobId = UploadPackageAndRunJobs(uploadId);
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var result = client.GetJob(jobId);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(jobId, result.Id);
+            Debug.WriteLine($"Job = {result}");
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
         public void TestTriggerReport()
         {
+            var uploadId = FindUpload(PackageName2);
+            if (uploadId < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                uploadId = FindUpload(PackageName2);
+            } // if
+
+            UploadPackageAndRunJobs(uploadId);
+
             var client = new FossologyClient(LocalUrl, Token);
-            var result = client.TriggerReportGeneration(2, "spdx2");
+            var result = client.TriggerReportGeneration(uploadId, "spdx2");
             Assert.IsNotNull(result);
             Assert.AreEqual("INFO", result.Type);
             Assert.AreEqual(201, result.Code);
@@ -449,14 +623,29 @@ namespace Fossology.Rest.Dotnet.Test
         {
             const string ReportName = "Report.spdx2.rdf";
 
-            if (File.Exists(ReportName))
+            if (System.IO.File.Exists(ReportName))
             {
-                File.Delete(ReportName);
+                System.IO.File.Delete(ReportName);
             } // if
 
+            var uploadId = FindUpload(PackageName2);
+            if (uploadId < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                Thread.Sleep(3000);
+                uploadId = FindUpload(PackageName2);
+            } // if
+
+            UploadPackageAndRunJobs(uploadId);
+
+            var reportId = TriggerReportGeneration(uploadId);
+
+            // ugly but required: wait some time until report is available
+            Thread.Sleep(3000);
+
             var client = new FossologyClient(LocalUrl, Token);
-            client.DownloadReport(7, ReportName);
-            Assert.IsTrue(File.Exists(ReportName));
+            client.DownloadReport(reportId, ReportName);
+            Assert.IsTrue(System.IO.File.Exists(ReportName));
         }
 
         /// <summary>
@@ -494,20 +683,6 @@ namespace Fossology.Rest.Dotnet.Test
         /// Unit test.
         /// </summary>
         [TestMethod]
-        public void TestDeleteUserSuccess()
-        {
-            const int Id = 4;
-
-            var client = new FossologyClient(LocalUrl, Token);
-            var result = client.DeleteUser(Id);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(202, result.Code);
-        }
-
-        /// <summary>
-        /// Unit test.
-        /// </summary>
-        [TestMethod]
         public void TestDeleteUserFailure()
         {
             const int Id = 44;
@@ -539,6 +714,32 @@ namespace Fossology.Rest.Dotnet.Test
         }
 
         /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestSearch2()
+        {
+            var uploadId = FindUpload(PackageName2);
+            if (uploadId < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                uploadId = FindUpload(PackageName2);
+            } // if
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var result = client.Search("%", null, "allfiles", 10, 10000000);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Count > 0);
+
+            result = client.Search("%BuildPackages.ps1%", null, "allfiles", 10, 10000000, null, null);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Count > 0);
+            Assert.AreEqual("BuildPackages.ps1", result[0].Filename);
+        }
+
+        /// <summary>
         /// Integration test, runs unit tests in defined order on a plain
         /// Fossology instance.
         /// </summary>
@@ -565,34 +766,21 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.IsTrue(tokenResult.Length > 20);
 
             client = new FossologyClient(LocalUrl, tokenResult);
-            var folderlist = client.GetFolderList();
-            Assert.IsNotNull(folderlist);
-            if ((folderlist.Count != 1) && (folderlist.Count != 2))
+            var folderId = EnsureTestFolderExists();
+
+#if false
+            var result = client.UploadPackage(Filename, folderId);
+#else
+            var uploadId = FindUpload(PackageName2);
+            if (uploadId < 0)
             {
-                Assert.Fail("Invalid number of folders");
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+
+                uploadId = FindUpload(PackageName2);
             } // if
-
-            var folder = client.GetFolder(1);
-            Assert.IsNotNull(folder);
-            Assert.AreEqual(1, folder.Id);
-
-            Result result;
-            var folderId = FindFolder(folderlist, TestFolderName);
-            if (folderId < 0)
-            {
-                result = client.CreateFolder(TestFolderName, 1);
-                Assert.IsNotNull(result);
-                Assert.AreEqual("INFO", result.Type);
-                Assert.AreEqual(201, result.Code);
-                folderId = int.Parse(result.Message);
-                Assert.IsTrue(folderId > 0);
-            } // if
-
-            result = client.UploadPackage(Filename, folderId);
-            Assert.IsNotNull(result);
-            Assert.AreEqual("INFO", result.Type);
-            Assert.AreEqual(201, result.Code);
-            var uploadId = int.Parse(result.Message);
+#endif
             Assert.IsTrue(uploadId > 0);
 
             WaitUntilUploadIsDone(client, uploadId);
@@ -635,7 +823,7 @@ namespace Fossology.Rest.Dotnet.Test
             jobTrigger.Reuse.ReuseGroup = 0;
             jobTrigger.Reuse.ReuseMain = false;
             jobTrigger.Reuse.ReuseEnhanced = false;
-            result = client.TriggerJob(folderId, uploadId, jobTrigger);
+            var result = client.TriggerJob(folderId, uploadId, jobTrigger);
             Assert.IsNotNull(result);
             Assert.AreEqual("INFO", result.Type);
             Assert.AreEqual(201, result.Code);
@@ -658,8 +846,13 @@ namespace Fossology.Rest.Dotnet.Test
             var licensesFound = client.GetUploadLicenses(
                 uploadId, "nomos", true);
             Assert.IsNotNull(licensesFound);
-            Assert.IsTrue(licensesFound.Count > 0);
-            Assert.AreEqual("MIT", licensesFound[0].AgentFindings[0]);
+            Assert.IsTrue(licensesFound.Count > 2);
+#if false
+            if (licensesFound[2].AgentFindings.Count > 0)
+            {
+                Assert.AreEqual("Apache-2.0", licensesFound[2].AgentFindings[0]);
+            } // if
+#endif
 
             result = client.TriggerReportGeneration(uploadId, "spdx2");
             Assert.IsNotNull(result);
@@ -669,16 +862,16 @@ namespace Fossology.Rest.Dotnet.Test
             var text = result.Message.Substring(result.Message.LastIndexOf('/') + 1);
             var reportId = int.Parse(text);
 
-            if (File.Exists(ReportFilename))
+            if (System.IO.File.Exists(ReportFilename))
             {
-                File.Delete(ReportFilename);
+                System.IO.File.Delete(ReportFilename);
             } // if
 
             // ugly but required: wait some time until report is available
             Thread.Sleep(3000);
 
             client.DownloadReport(reportId, ReportFilename);
-            Assert.IsTrue(File.Exists(ReportFilename));
+            Assert.IsTrue(System.IO.File.Exists(ReportFilename));
 
             result = client.DeleteUpload(uploadId);
             Assert.IsNotNull(result);
@@ -703,6 +896,339 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual("OK", actual.Database.Status);
         }
 
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetInfo()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var actual = client.GetInfo();
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("FOSSology API", actual.Name);
+            Assert.AreEqual("fossology@fossology.org", actual.Contact);
+            Assert.AreEqual("GPL-2.0-only", actual.FossologyLicense.Name);
+            Assert.AreEqual("master", actual.FossologyInfo.BranchName);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetGroupList()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var actual = client.GetGroupList();
+            Assert.IsNotNull(actual);
+            Assert.IsTrue(actual.Count > 0);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestCreateGroup()
+        {
+            var groupName = "TestGroup-" + Guid.NewGuid();
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var actual = client.CreateGroup(groupName);
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(200, actual.Code);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetLicenseList()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+
+            // default
+            var actual = client.GetLicenseList();
+            Assert.IsNotNull(actual);
+            Assert.IsTrue(actual.Count == 100);
+
+            actual = client.GetLicenseList(1, 1, "main", true);
+            Assert.IsNotNull(actual);
+            Assert.IsTrue(actual.Count == 1);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetLicense()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+
+            var actual = client.GetLicense("MIT");
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("MIT", actual.ShortName);
+            Assert.AreEqual("MIT License", actual.FullName);
+            Assert.AreEqual(0, actual.Risk);
+            Assert.IsFalse(actual.IsCandidate);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetLicenseWithObligations()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+
+            var actual = client.GetLicense("Apache-2.0");
+            Assert.IsNotNull(actual);
+            Assert.AreEqual("Apache-2.0", actual.ShortName);
+            Assert.AreEqual(0, actual.Risk);
+            Assert.IsFalse(actual.IsCandidate);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestCreateLicense_Fail()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+
+            var license = new License();
+            license.ShortName = "MIT";
+            license.FullName = "MIT License";
+
+            try
+            {
+                client.CreateLicense(license);
+                Assert.IsFalse(true, "This must not happen!");
+            }
+            catch (FossologyApiException fex)
+            {
+                Assert.IsNotNull(fex);
+                Assert.AreEqual(HttpStatusCode.Conflict, fex.HttpStatusCode);
+            }
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestCreateLicense()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+
+            var license = new License();
+            var uuid = Guid.NewGuid().ToString();
+            license.ShortName = "TOM-MIT-" + uuid;
+            license.FullName = "Tom's MIT License-" + uuid;
+            license.IsCandidate = true;
+            license.Risk = 0;
+            license.LicenseText = "Some dummy license text " + uuid;
+
+            var actual = client.CreateLicense(license);
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(201, actual.Code);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestFileSearch()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var hash = new SearchHash();
+            hash.Sha1 = null;
+            hash.Md5 = "3F40923DFBB69F90727DFE7378B8E962";
+            hash.Sha256 = null;
+            var hashes = new List<SearchHash>();
+            hashes.Add(hash);
+
+            var actual = client.SearchForFile(hashes);
+            Assert.IsNotNull(actual);
+            Assert.IsTrue(actual.Count > 0);
+
+            // always returns
+            // [
+            //   {
+            //     "hash" : {
+            //        "sha1":null,
+            //        "md5":null,
+            //        "sha256":null,
+            //        "size":null
+            //      },
+            //     "message": "Invalid keys"
+            //   }
+            // ]"
+        }
+
+        //// ---------------------------------------------------------------------
+
+        #region TESTS THAT REQUIRE MANUAL PREPARATION
+#if false
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestDeleteUserSuccess()
+        {
+            // since there is no way to automatically add a user,
+            // you always need to have a user ready to be deleted
+            const int Id = 4;
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var result = client.DeleteUser(Id);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(202, result.Code);
+        }
+#endif
+        #endregion TESTS THAT REQUIRE MANUAL PREPARATION
+
+        //// ---------------------------------------------------------------------
+
+        #region SUPPORT METHODS
+        /// <summary>
+        /// Triggers the report generation.
+        /// </summary>
+        /// <param name="uploadId">The upload identifier.</param>
+        /// <returns>The report id.</returns>
+        private static int TriggerReportGeneration(int uploadId)
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var result = client.TriggerReportGeneration(uploadId, "spdx2");
+            Assert.IsNotNull(result);
+            Assert.AreEqual("INFO", result.Type);
+            Assert.AreEqual(201, result.Code);
+
+            var text = result.Message[(result.Message.LastIndexOf('/') + 1) ..];
+            return int.Parse(text);
+        }
+
+        /// <summary>
+        /// Uploads a package and run jobs.
+        /// </summary>
+        /// <param name="uploadId">The upload identifier.</param>
+        /// <returns>The job id.</returns>
+        private static int UploadPackageAndRunJobs(int uploadId)
+        {
+            var folderId = EnsureTestFolderExists();
+            var client = new FossologyClient(LocalUrl, Token);
+            var job = new TriggerInfo();
+            job.Analysis.Bucket = true;
+            job.Analysis.CopyrightEmailAuthor = true;
+            job.Analysis.Ecc = true;
+            job.Analysis.Keyword = true;
+            job.Analysis.Mime = true;
+            job.Analysis.Monk = true;
+            job.Analysis.Nomos = true;
+            job.Analysis.Ojo = true;
+            job.Analysis.Package = true;
+            job.Decider.NomosMonk = true;
+            job.Decider.BulkReused = true;
+            job.Decider.NewScanner = true;
+            job.Decider.OjoDecider = true;
+            job.Reuse.ReuseUploadId = 0;
+            job.Reuse.ReuseGroup = 0;
+            job.Reuse.ReuseMain = true;
+            job.Reuse.ReuseEnhanced = true;
+            var result = client.TriggerJob(folderId, uploadId, job, "fossy");
+            Assert.IsNotNull(result);
+            Assert.AreEqual("INFO", result.Type);
+            Assert.AreEqual(201, result.Code);
+            Debug.WriteLine($"TriggerInfo job id = {result.Message}");
+
+            var jobId = int.Parse(result.Message);
+
+            var joblist = client.GetJobList();
+            Assert.IsNotNull(joblist);
+            Assert.IsTrue(joblist.Count > 0);
+
+            var jobInfo = client.GetJob(jobId);
+            Assert.IsNotNull(jobInfo);
+            Assert.AreEqual(jobId, jobInfo.Id);
+            WaitUntilJobIsDone(client, jobId);
+
+            return jobId;
+        }
+
+        /// <summary>
+        /// Finds the id of the upload with the given name.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <returns>System.Int32.</returns>
+        private static int FindUpload(string filename)
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var uploadList = client.GetUploadList();
+            foreach (var upload in uploadList)
+            {
+                if (upload.UploadName == filename)
+                {
+                    return upload.Id;
+                } // if
+            } // foreach
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Ensures that the test folder exists.
+        /// </summary>
+        /// <returns>The test folder id.</returns>
+        private static int EnsureTestFolderExists()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var folderlist = client.GetFolderList();
+            Assert.IsNotNull(folderlist);
+            if (folderlist.Count < 1)
+            {
+                Assert.Fail("Invalid number of folders");
+            } // if
+
+            var folder = client.GetFolder(1);
+            Assert.IsNotNull(folder);
+            Assert.AreEqual(1, folder.Id);
+
+            var folderId = FindFolder(folderlist, TestFolderName);
+            if (folderId < 0)
+            {
+                var result = client.CreateFolder(TestFolderName, 1);
+                Assert.IsNotNull(result);
+                Assert.AreEqual("INFO", result.Type);
+                Assert.AreEqual(201, result.Code);
+                folderId = int.Parse(result.Message);
+                Assert.IsTrue(folderId > 0);
+            } // if
+
+            return folderId;
+        }
+
+        /// <summary>
+        /// Tests whether the specified folder exists.
+        /// </summary>
+        /// <param name="client">The client.</param>
+        /// <param name="folderName">Name of the folder.</param>
+        /// <returns><c>true</c> if the folder exists, <c>false</c> otherwise.</returns>
+        private static bool FossologyFolderExists(FossologyClient client, string folderName)
+        {
+            var list = client.GetFolderList();
+            foreach (var folder in list)
+            {
+                if (folder.Name == folderName)
+                {
+                    return true;
+                } // if
+            } // foreach
+
+            return false;
+        }
+
+        /// <summary>
+        /// Waits until the upload is done.
+        /// </summary>
+        /// <param name="client">The client.</param>
+        /// <param name="id">The identifier.</param>
         private static void WaitUntilUploadIsDone(FossologyClient client, int id)
         {
             while (!client.IsUploadUnpacked(id))
@@ -750,5 +1276,6 @@ namespace Fossology.Rest.Dotnet.Test
 
             return -1;
         } // FindFolder()
+        #endregion SUPPORT METHODS
     }
 }

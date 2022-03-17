@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="ReuseInfo.cs" company="Tethys">
-//   Copyright (C) 2019-2020 T. Graf
+//   Copyright (C) 2019-2022 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -40,10 +40,24 @@ namespace Fossology.Rest.Dotnet.Model
         public bool ReuseMain { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to reuse
-        /// bulk phrases from reused packages.
+        /// Gets or sets a value indicating whether to run the
+        /// enhanced reuser with diff tool (slow).
         /// </summary>
         [JsonProperty("reuse_enhanced")]
         public bool ReuseEnhanced { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to copy all
+        /// report configuration from conf page.
+        /// </summary>
+        [JsonProperty("reuse_report")]
+        public bool ReuseReport { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to copy the
+        /// copyright deactivation and edits.
+        /// </summary>
+        [JsonProperty("reuse_copyright")]
+        public bool ReuseCopyright { get; set; }
     } // ReuseInfo
 }
