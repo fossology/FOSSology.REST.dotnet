@@ -119,6 +119,11 @@ namespace Fossology.Rest.Dotnet
             var response = this.api.Execute(request);
             var result = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
 
+            if (result == null)
+            {
+                return string.Empty;
+            } // if
+
             return result.GetPlainToken();
         } // GetToken()
         #endregion // PUBLIC METHODS
