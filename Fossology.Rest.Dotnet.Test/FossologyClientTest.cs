@@ -17,7 +17,6 @@ namespace Fossology.Rest.Dotnet.Test
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
     using System.Net;
     using System.Threading;
     using Fossology.Rest.Dotnet;
@@ -46,7 +45,7 @@ namespace Fossology.Rest.Dotnet.Test
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc3MzQzOTksIm5iZiI6MTY0NzM4ODgwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ._bOQV5E3LF-fQ8X5yr4g5SNlBQmBiSgb104x0nVBnqc";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc4MjA3OTksIm5iZiI6MTY0NzQ3NTIwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.8PK99xI7N482c1GC2Onzwe2p74Y80_ef4DVj99jiwn4";
 
         /// <summary>
         /// The filename of a test package.
@@ -227,7 +226,6 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.IsFalse(FossologyFolderExists(client, folderName));
         }
 
-#if false
         /// <summary>
         /// Unit test.
         /// </summary>
@@ -243,7 +241,6 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual(201, result.Code);
             Debug.WriteLine($"Upload id = {result.Message}");
         }
-#endif
 
         /// <summary>
         /// Unit test.
@@ -626,9 +623,9 @@ namespace Fossology.Rest.Dotnet.Test
         {
             const string ReportName = "Report.spdx2.rdf";
 
-            if (File.Exists(ReportName))
+            if (System.IO.File.Exists(ReportName))
             {
-                File.Delete(ReportName);
+                System.IO.File.Delete(ReportName);
             } // if
 
             var uploadId = FindUpload(PackageName2);
@@ -648,7 +645,7 @@ namespace Fossology.Rest.Dotnet.Test
 
             var client = new FossologyClient(LocalUrl, Token);
             client.DownloadReport(reportId, ReportName);
-            Assert.IsTrue(File.Exists(ReportName));
+            Assert.IsTrue(System.IO.File.Exists(ReportName));
         }
 
         /// <summary>
@@ -865,16 +862,16 @@ namespace Fossology.Rest.Dotnet.Test
             var text = result.Message.Substring(result.Message.LastIndexOf('/') + 1);
             var reportId = int.Parse(text);
 
-            if (File.Exists(ReportFilename))
+            if (System.IO.File.Exists(ReportFilename))
             {
-                File.Delete(ReportFilename);
+                System.IO.File.Delete(ReportFilename);
             } // if
 
             // ugly but required: wait some time until report is available
             Thread.Sleep(3000);
 
             client.DownloadReport(reportId, ReportFilename);
-            Assert.IsTrue(File.Exists(ReportFilename));
+            Assert.IsTrue(System.IO.File.Exists(ReportFilename));
 
             result = client.DeleteUpload(uploadId);
             Assert.IsNotNull(result);
@@ -1041,17 +1038,16 @@ namespace Fossology.Rest.Dotnet.Test
         public void TestFileSearch()
         {
             var client = new FossologyClient(LocalUrl, Token);
-            var hash = new Hash();
-            hash.Sha1 = "33D683B0AC33D9C193354BAEB41264B40132B4EC";
-            hash.Md5 = "EBDCAC10B261D462C70A8C9D2E6458DD";
-            hash.Sha256 = "E8883B515FF07F7DF949CF3722C91DFCBFBEFEAF25441E727CE1F89C210DAB6F";
-            hash.Size = 4126720;
-            var hashes = new List<Hash>();
+            var hash = new SearchHash();
+            hash.Sha1 = null;
+            hash.Md5 = "3F40923DFBB69F90727DFE7378B8E962";
+            hash.Sha256 = null;
+            var hashes = new List<SearchHash>();
             hashes.Add(hash);
 
             var actual = client.SearchForFile(hashes);
             Assert.IsNotNull(actual);
-            Assert.IsTrue(actual.Length > 0);
+            Assert.IsTrue(actual.Count > 0);
 
             // always returns
             // [
@@ -1069,7 +1065,7 @@ namespace Fossology.Rest.Dotnet.Test
 
         //// ---------------------------------------------------------------------
 
-#region TESTS THAT REQUIRE MANUAL PREPARATION
+        #region TESTS THAT REQUIRE MANUAL PREPARATION
 #if false
         /// <summary>
         /// Unit test.
@@ -1087,11 +1083,11 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual(202, result.Code);
         }
 #endif
-#endregion TESTS THAT REQUIRE MANUAL PREPARATION
+        #endregion TESTS THAT REQUIRE MANUAL PREPARATION
 
         //// ---------------------------------------------------------------------
 
-#region SUPPORT METHODS
+        #region SUPPORT METHODS
         /// <summary>
         /// Triggers the report generation.
         /// </summary>
@@ -1280,6 +1276,6 @@ namespace Fossology.Rest.Dotnet.Test
 
             return -1;
         } // FindFolder()
-#endregion SUPPORT METHODS
+        #endregion SUPPORT METHODS
     }
 }

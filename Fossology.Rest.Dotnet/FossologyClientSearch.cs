@@ -77,7 +77,7 @@ namespace Fossology.Rest.Dotnet
                 request.AddHeader("license", license);
             } // if
 
-            if (!string.IsNullOrEmpty(license))
+            if (!string.IsNullOrEmpty(copyright))
             {
                 request.AddHeader("copyright", copyright);
             } // if
@@ -99,7 +99,7 @@ namespace Fossology.Rest.Dotnet
         /// <param name="fileHashes">A list of file hashes.</param>
         /// <param name="groupName">Name of the group.</param>
         /// <returns>A raw JSON result.</returns>
-        public string SearchForFile(List<Hash> fileHashes, string groupName = "")
+        public IReadOnlyList<File> SearchForFile(List<SearchHash> fileHashes, string groupName = "")
         {
             Log.Debug($"Searching for files by hash...");
 
@@ -115,8 +115,14 @@ namespace Fossology.Rest.Dotnet
             } // if
 
             request.AddJsonBody(json);
-            var resultRaw = this.api.Execute(request);
-            return resultRaw.Content;
+            var response = this.api.Execute(request);
+            var result = JsonConvert.DeserializeObject<IReadOnlyList<File>>(
+                response.Content,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+            return result;
         } // SearchForFile()
     } // FossologyClient
 }

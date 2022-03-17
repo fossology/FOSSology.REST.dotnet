@@ -60,7 +60,7 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Uploading package {fileName} to folder {folderId}...");
 
-            if (!File.Exists(fileName))
+            if (!System.IO.File.Exists(fileName))
             {
                 throw new FossologyApiException(ErrorCode.FileNotFound, fileName);
             } // if

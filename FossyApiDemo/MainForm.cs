@@ -485,9 +485,9 @@ namespace FossyApiDemo
                 } // if
 
                 var reportFilename = upload.UploadName + ".spdx2.rdf.xml";
-                if (File.Exists(reportFilename))
+                if (System.IO.File.Exists(reportFilename))
                 {
-                    File.Delete(reportFilename);
+                    System.IO.File.Delete(reportFilename);
                 } // if
 
                 this.SetStatus(90, "Downloading report...");
@@ -536,7 +536,7 @@ namespace FossyApiDemo
                 } // catch
             } // while
 
-            if (!File.Exists(reportFilename))
+            if (!System.IO.File.Exists(reportFilename))
             {
                 log.Error("Error downloading report!");
                 return false;
