@@ -1,6 +1,6 @@
 # ChangeLog - FOSSology.REST.dotnet
 
-## NEXT
+## 1.2.0
 * improved error handling.
 * supports FOSSology REST API v1.4.3 (FOSSology 4.0.0 built @ 2023/03/09).
 * new method GetHealth().
