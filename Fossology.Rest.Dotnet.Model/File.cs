@@ -26,7 +26,7 @@ namespace Fossology.Rest.Dotnet.Model
         /// Gets or sets the hash.
         /// </summary>
         [JsonProperty("hash")]
-        public Hash Hash{ get; set; }
+        public Hash Hash { get; set; }
 
         /// <summary>
         /// Gets or sets the findings.
@@ -38,7 +38,9 @@ namespace Fossology.Rest.Dotnet.Model
         /// Gets or sets the SHA256 hash.
         /// </summary>
         [JsonProperty("uploads")]
+#pragma warning disable CA2227 // Collection properties should be read only
         public List<int> Uploads { get; set; }
+#pragma warning restore CA2227 // Collection properties should be read only
 
         /// <summary>
         /// Gets or sets the message.
