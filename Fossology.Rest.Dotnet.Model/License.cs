@@ -43,7 +43,9 @@ namespace Fossology.Rest.Dotnet.Model
         /// Gets or sets the url.
         /// </summary>
         [JsonProperty("url")]
+#pragma warning disable CA1056 // Uri properties should not be strings
         public string Url { get; set; }
+#pragma warning restore CA1056 // Uri properties should not be strings
 
         /// <summary>
         /// Gets or sets the risk.
