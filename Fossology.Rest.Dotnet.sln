@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		CodeCoverageReport.ps1 = CodeCoverageReport.ps1
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fossology.Rest.Dotnet.Model", "Fossology.Rest.Dotnet.Model\Fossology.Rest.Dotnet.Model.csproj", "{8508C5AC-5A27-4E14-A366-97B7D054867B}"
