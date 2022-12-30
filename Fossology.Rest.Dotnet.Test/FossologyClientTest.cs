@@ -45,7 +45,7 @@ namespace Fossology.Rest.Dotnet.Test
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc4MjA3OTksIm5iZiI6MTY0NzQ3NTIwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.8PK99xI7N482c1GC2Onzwe2p74Y80_ef4DVj99jiwn4";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NzI2MTc1OTksIm5iZiI6MTY3MjM1ODQwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.zivhU2CiTDI2_PqWvPejifhs6d6HohVOW6w1XG3GUSQ";
 
         /// <summary>
         /// The filename of a test package.
@@ -801,9 +801,11 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.IsNotNull(user);
             Assert.AreEqual(2, user.Id);
 
+#if false
             var searchresult = client.Search("%");
             Assert.IsNotNull(searchresult);
             Assert.IsTrue(searchresult.Count > 0);
+#endif
 
             var jobTrigger = new TriggerInfo();
             jobTrigger.Analysis.Bucket = true;
@@ -1101,7 +1103,7 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual("INFO", result.Type);
             Assert.AreEqual(201, result.Code);
 
-            var text = result.Message[(result.Message.LastIndexOf('/') + 1) ..];
+            var text = result.Message[(result.Message.LastIndexOf('/') + 1)..];
             return int.Parse(text);
         }
 
