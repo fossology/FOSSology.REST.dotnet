@@ -373,38 +373,48 @@ namespace Fossology.Rest.Dotnet
                 throw new FossologyApiException(ErrorCode.Unauthorized, response.StatusCode);
             } // if
 
-            var forceError = false;
+            FossologyApiException exception;
             try
             {
                 if (string.IsNullOrEmpty(response.Content))
                 {
-                    throw new FossologyApiException(
+                    exception = new FossologyApiException(
                         ErrorCode.RestApiError, response.StatusCode, string.Empty, null);
-                } // if
-
-                if (response.Content.ToLower().StartsWith("<html>"))
+                }
+                else
                 {
-                    throw new FossologyApiException(
-                        ErrorCode.RestApiError, response.StatusCode, response.Content, null);
+                    if (response.Content.ToLower().StartsWith("<html>"))
+                    {
+                        exception = new FossologyApiException(
+                            ErrorCode.RestApiError, response.StatusCode, response.Content, null);
+                    }
+                    else
+                    {
+                        var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(response.Content);
+                        if (result != null)
+                        {
+                            exception = new FossologyApiException(
+                                ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
+                        }
+                        else
+                        {
+                            exception = new FossologyApiException(
+                                ErrorCode.RestApiError,
+                                response.StatusCode,
+                                "Unable to decode JSON response",
+                                null);
+                        } // if
+                    } // if
                 } // if
-
-                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(response.Content);
-                if (result != null)
-                {
-                    throw new FossologyApiException(
-                        ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
-                } // if
-
-                Log.Warn("Unable to decode JSON response");
             }
             catch
             {
-                forceError = true;
+                exception = new FossologyApiException(ErrorCode.RestApiError);
             } // catch
 
-            if (forceError)
+            if (exception != null)
             {
-                throw new FossologyApiException(ErrorCode.RestApiError);
+                throw exception;
             } // if
         } // CheckForErrors()
 
