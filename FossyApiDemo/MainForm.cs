@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // <copyright file="MainForm.cs" company="Tethys">
 //   Copyright (C) 2019-2022 T. Graf
 // </copyright>
@@ -16,7 +16,6 @@ namespace FossyApiDemo
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
@@ -239,6 +238,11 @@ namespace FossyApiDemo
         /// containing the event data.</param>
         private void MainFormDragEnter(object sender, DragEventArgs e)
         {
+            if (e?.Data == null)
+            {
+                return;
+            } // if
+
             e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop)
                 ? DragDropEffects.Copy : DragDropEffects.None;
         } // MainFormDragEnter()
@@ -251,6 +255,11 @@ namespace FossyApiDemo
         /// containing the event data.</param>
         private void MainFormDragDrop(object sender, DragEventArgs e)
         {
+            if (e?.Data == null)
+            {
+                return;
+            } // if
+
             if (!e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 return;
@@ -275,10 +284,16 @@ namespace FossyApiDemo
                 this.CreateClient();
             } // if
 
+            if (this.client == null)
+            {
+                log.Error("Error creating REST API client!");
+                return string.Empty;
+            } // if
+
             var request = new TokenRequest();
             request.Username = "fossy";
             request.Password = "fossy";
-            request.TokenName = "TestToken";
+            request.TokenName = "TestToken88";
             request.TokenScope = "write";
             request.TokenExpire = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
             var result = this.client.GetToken(request);
@@ -294,6 +309,12 @@ namespace FossyApiDemo
             if (this.client == null)
             {
                 this.CreateClient();
+            } // if
+
+            if (this.client == null)
+            {
+                log.Error("Error creating REST API client!");
+                return;
             } // if
 
             // get version does not require an access token
@@ -608,6 +629,12 @@ namespace FossyApiDemo
                 this.CreateClient();
             } // if
 
+            if (this.client == null)
+            {
+                log.Error("Error creating REST API client!");
+                return false;
+            } // if
+
             if (string.IsNullOrEmpty(this.txtFolder.Text))
             {
                 log.Error("No Fossology folder specified!");
@@ -635,7 +662,7 @@ namespace FossyApiDemo
                 }
                 else
                 {
-                    log.Error($"Folder '{this.txtFolder.Name}' was not found!");
+                    log.Error($"Folder '{this.txtFolder.Text}' was not found!");
                 } // if
             }
             catch (Exception ex)
@@ -731,20 +758,18 @@ namespace FossyApiDemo
         /// </summary>
         private void OpenFile()
         {
-            using (var dlg = new OpenFileDialog
-                 {
-                     InitialDirectory = ".",
-                     RestoreDirectory = true,
-                     Filter = @"All Files (*.*) |*.*||",
-                 })
+            using var dlg = new OpenFileDialog
             {
-                if (dlg.ShowDialog(this) != DialogResult.OK)
-                {
-                    return;
-                } // if
+                InitialDirectory = ".",
+                RestoreDirectory = true,
+                Filter = @"All Files (*.*) |*.*||",
+            };
+            if (dlg.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            } // if
 
-                this.txtFile.Text = dlg.FileName;
-            } // using
+            this.txtFile.Text = dlg.FileName;
         } // OpenFile()
 
         /// <summary>

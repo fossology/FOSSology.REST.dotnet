@@ -1,4 +1,4 @@
-﻿// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // <copyright file="Program.cs" company="Tethys">
 //   Copyright (C) 2019 T. Graf
 // </copyright>
@@ -20,16 +20,15 @@ namespace FossyApiDemo
     /// <summary>
     /// Main class of the application.
     /// </summary>
-    public static class Program
+    internal static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         public static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            ApplicationConfiguration.Initialize();
             Application.Run(new MainForm());
         } // Main()
     } // Program
