@@ -19,7 +19,10 @@ foreach ($file in $coberturaFiles) {
 
 # 2. Run tests
 Write-Host "Running unit tests..."
-dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+# OLD way
+# dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+# new way
+dotnet test --collect:"XPlat Code Coverage"
 
 # 3 Generate reports
 Write-Host "Generating reports..."
