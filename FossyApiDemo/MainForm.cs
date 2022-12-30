@@ -119,7 +119,7 @@ namespace FossyApiDemo
             this.txtFossyUrl.Text = "http://localhost:8081/repo/api/v1";
             this.txtToken.Text = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc0NzUxOTksIm5iZiI6MTY0NzEyOTYwMCwianRpIjoiTXk0eiIsInNjb3BlIjoid3JpdGUifQ.DSDQDyodi5LgIUyqUbOKQiMtpoqOkI0RnF-uphwI_0A";
             this.txtFolder.Text = "TestFolder";
-            this.txtFile.Text = @"..\..\..\TestData\fetch-retry-master.zip";
+            this.txtFile.Text = @"..\..\..\..\TestData\fetch-retry-master.zip";
 #endif
             this.InitializeStatusDisplay();
             log.Info("Ready.");
@@ -399,7 +399,7 @@ namespace FossyApiDemo
                 {
                     if (fex.HttpStatusCode != HttpStatusCode.NotFound)
                     {
-                        log.Error("Error starting jobs: ", fex);
+                        log.Error($"Error starting jobs: {fex.Message}", fex);
                         return -1;
                     } // if
 
@@ -410,7 +410,7 @@ namespace FossyApiDemo
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Error starting jobs: ", ex);
+                    log.Error($"Error starting jobs: {ex.Message}", ex);
                     return -1;
                 }
             } // while
@@ -522,7 +522,7 @@ namespace FossyApiDemo
             }
             catch (Exception ex)
             {
-                log.Error("Error processing file: ", ex);
+                log.Error($"Error processing file: {ex.Message}", ex);
                 return false;
             } // catch
         } // ProcessFile()
@@ -553,7 +553,7 @@ namespace FossyApiDemo
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Error downloading report ", ex);
+                    log.Error($"Error downloading report {ex.Message}", ex);
                 } // catch
             } // while
 
@@ -667,7 +667,7 @@ namespace FossyApiDemo
             }
             catch (Exception ex)
             {
-                log.Error("Error accessing Fossology folder: ", ex);
+                log.Error($"Error accessing Fossology folder: {ex.Message}", ex);
             } // catch
 
             return false;
