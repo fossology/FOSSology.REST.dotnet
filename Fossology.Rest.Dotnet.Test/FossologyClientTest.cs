@@ -1103,7 +1103,7 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual("INFO", result.Type);
             Assert.AreEqual(201, result.Code);
 
-            var text = result.Message[(result.Message.LastIndexOf('/') + 1)..];
+            var text = result.Message[(result.Message.LastIndexOf('/') + 1) ..];
             return int.Parse(text);
         }
 
