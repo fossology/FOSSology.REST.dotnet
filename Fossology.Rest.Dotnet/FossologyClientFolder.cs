@@ -21,8 +21,6 @@ namespace Fossology.Rest.Dotnet
 
     using RestSharp;
 
-    using JsonSerializer = RestSharp.Serialization.Json.JsonSerializer;
-
     /// <summary>
     /// Client for the SW360 REST API.
     /// </summary>
@@ -38,16 +36,19 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Getting folder {id}...");
 
-            var request = new RestRequest(this.Url + $"/folders/{id}", Method.GET);
+            var request = new RestRequest(this.Url + $"/folders/{id}");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var folder = JsonConvert.DeserializeObject<Folder>(
                 response.Content,
                 new JsonSerializerSettings
@@ -66,16 +67,19 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug("Getting list of folder...");
 
-            var request = new RestRequest(this.Url + $"/folders", Method.GET);
+            var request = new RestRequest(this.Url + "/folders");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var list = JsonConvert.DeserializeObject<List<Folder>>(
                 response.Content,
                 new JsonSerializerSettings
@@ -99,7 +103,7 @@ namespace Fossology.Rest.Dotnet
         /// </remarks>>
         public Result CreateFolder(string folderName, int parentFolder, string description = "", string groupName = "")
         {
-            var request = new RestRequest(this.Url + "/folders", Method.POST);
+            var request = new RestRequest(this.Url + "/folders", Method.Post);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("parentFolder", parentFolder.ToString());
             request.AddHeader("folderName", folderName);
@@ -114,8 +118,16 @@ namespace Fossology.Rest.Dotnet
             } // if
 
             var resultRaw = this.api.Execute(request);
+            if (resultRaw?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
-            Log.Debug($"Folder {result.Message} created.");
+            if (result != null)
+            {
+                Log.Debug($"Folder {result.Message} created.");
+            } // if
 
             return result;
         } // CreateFolder()
@@ -130,16 +142,19 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Deleting folder {id}...");
 
-            var request = new RestRequest(this.Url + $"/folders/{id}", Method.DELETE);
+            var request = new RestRequest(this.Url + $"/folders/{id}", Method.Delete);
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
             return result;
         } // DeleteFolder()

@@ -33,6 +33,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug("Getting users...");
 
             var result = this.api.Get(this.Url + "/users");
+            if (result?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var list = JsonConvert.DeserializeObject<List<User>>(
                 result.Content,
                 new JsonSerializerSettings
@@ -52,6 +57,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Getting user {id}...");
 
             var result = this.api.Get(this.Url + $"/users/{id}");
+            if (result?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var user = JsonConvert.DeserializeObject<User>(result.Content);
             return user;
         } // GetUser()
@@ -66,6 +76,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Deleting user {id}...");
 
             var response = this.api.Delete(this.Url + $"/users/{id}");
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
             return result;
         } // DeleteUser()

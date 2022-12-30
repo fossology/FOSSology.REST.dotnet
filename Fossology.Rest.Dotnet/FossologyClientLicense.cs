@@ -21,8 +21,6 @@ namespace Fossology.Rest.Dotnet
 
     using RestSharp;
 
-    using JsonSerializer = RestSharp.Serialization.Json.JsonSerializer;
-
     /// <summary>
     /// Client for the SW360 REST API.
     /// </summary>
@@ -46,10 +44,8 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug("Getting list of licenses...");
 
-            var request = new RestRequest(this.Url + $"/license?kind={kind}", Method.GET);
+            var request = new RestRequest(this.Url + $"/license?kind={kind}");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             request.AddHeader("page", page.ToString());
             request.AddHeader("limit", limit.ToString());
             request.AddHeader("active", active.ToString());
@@ -60,6 +56,11 @@ namespace Fossology.Rest.Dotnet
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var list = JsonConvert.DeserializeObject<List<License>>(
                 response.Content,
                 new JsonSerializerSettings
@@ -79,16 +80,19 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Getting license {shortName}...");
 
-            var request = new RestRequest(this.Url + $"/license/{shortName}", Method.GET);
+            var request = new RestRequest(this.Url + $"/license/{shortName}");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var license = JsonConvert.DeserializeObject<License>(
                 response.Content,
                 new JsonSerializerSettings
@@ -110,7 +114,7 @@ namespace Fossology.Rest.Dotnet
         public Result CreateLicense(License newLicense, string groupName = "")
         {
             var json = JsonConvert.SerializeObject(newLicense);
-            var request = new RestRequest(this.Url + "/license", Method.POST);
+            var request = new RestRequest(this.Url + "/license", Method.Post);
             request.RequestFormat = DataFormat.Json;
             if (!string.IsNullOrEmpty(groupName))
             {
@@ -118,10 +122,23 @@ namespace Fossology.Rest.Dotnet
             } // if
 
             request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
 
             var resultRaw = this.api.Execute(request);
+            if (resultRaw?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
-            Log.Debug($"Folder {result.Message} created.");
+            if (result == null)
+            {
+                Log.Error("Empty result returned!");
+            }
+            else
+            {
+                Log.Debug($"Folder {result.Message} created.");
+            } // if
 
             return result;
         } // CreateLicense()

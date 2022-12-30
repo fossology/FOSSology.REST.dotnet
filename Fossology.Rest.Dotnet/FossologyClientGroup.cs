@@ -21,8 +21,6 @@ namespace Fossology.Rest.Dotnet
 
     using RestSharp;
 
-    using JsonSerializer = RestSharp.Serialization.Json.JsonSerializer;
-
     /// <summary>
     /// Client for the SW360 REST API.
     /// </summary>
@@ -36,12 +34,15 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug("Getting list of folder...");
 
-            var request = new RestRequest(this.Url + $"/groups", Method.GET);
+            var request = new RestRequest(this.Url + "/groups");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var list = JsonConvert.DeserializeObject<List<Group>>(
                 response.Content,
                 new JsonSerializerSettings
@@ -62,13 +63,21 @@ namespace Fossology.Rest.Dotnet
         /// </remarks>>
         public Result CreateGroup(string groupName)
         {
-            var request = new RestRequest(this.Url + "/groups", Method.POST);
+            var request = new RestRequest(this.Url + "/groups", Method.Post);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("name", groupName);
 
             var resultRaw = this.api.Execute(request);
+            if (resultRaw?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
-            Log.Debug($"Group {result.Message} created.");
+            if (result != null)
+            {
+                Log.Debug($"Group {result.Message} created.");
+            } // if
 
             return result;
         } // CreateGroup()

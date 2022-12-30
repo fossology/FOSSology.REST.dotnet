@@ -21,8 +21,6 @@ namespace Fossology.Rest.Dotnet
 
     using RestSharp;
 
-    using JsonSerializer = RestSharp.Serialization.Json.JsonSerializer;
-
     /// <summary>
     /// Client for the SW360 REST API.
     /// </summary>
@@ -41,10 +39,8 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Triggering job for upload {uploadId}, folder={folderId}...");
 
             var json = JsonConvert.SerializeObject(details);
-            var request = new RestRequest(this.Url + "/jobs", Method.POST);
+            var request = new RestRequest(this.Url + "/jobs", Method.Post);
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             request.AddHeader("uploadId", uploadId.ToString());
             request.AddHeader("folderId", folderId.ToString());
             if (!string.IsNullOrEmpty(groupName))
@@ -53,10 +49,23 @@ namespace Fossology.Rest.Dotnet
             } // if
 
             request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
-            Log.Debug($"TriggerInfo {result.Message} triggered.");
+            if (result == null)
+            {
+                Log.Error("Got empty response!");
+            }
+            else
+            {
+                Log.Debug($"TriggerInfo {result.Message} triggered.");
+            } // if
 
             return result;
         } // TriggerJob()
@@ -71,6 +80,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Getting job {id}...");
 
             var result = this.api.Get(this.Url + $"/jobs/{id}");
+            if (result?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var job = JsonConvert.DeserializeObject<Job>(
                 result.Content,
                 new JsonSerializerSettings
@@ -102,10 +116,8 @@ namespace Fossology.Rest.Dotnet
                 url = $"/jobs?upload={uploadId}";
             } // if
 
-            var request = new RestRequest(this.Url + url, Method.GET);
+            var request = new RestRequest(this.Url + url);
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             request.AddHeader("page", page.ToString());
             request.AddHeader("limit", limit.ToString());
 
@@ -115,6 +127,11 @@ namespace Fossology.Rest.Dotnet
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var list = JsonConvert.DeserializeObject<List<Job>>(
                 response.Content,
                 new JsonSerializerSettings

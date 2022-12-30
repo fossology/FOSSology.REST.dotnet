@@ -20,8 +20,6 @@ namespace Fossology.Rest.Dotnet
 
     using RestSharp;
 
-    using JsonSerializer = RestSharp.Serialization.Json.JsonSerializer;
-
     /// <summary>
     /// Client for the SW360 REST API.
     /// </summary>
@@ -42,9 +40,8 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Triggering report generation for upload {uploadId}, format={reportFormat}...");
 
-            var request = new RestRequest(this.Url + "/report", Method.GET);
+            var request = new RestRequest(this.Url + "/report");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
             request.AddHeader("uploadId", uploadId.ToString());
             request.AddHeader("reportFormat", reportFormat);
             if (!string.IsNullOrEmpty(groupName))
@@ -53,8 +50,20 @@ namespace Fossology.Rest.Dotnet
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
-            Log.Debug($"Report {result.Message}: generation started.");
+            if (result != null)
+            {
+                Log.Debug($"Report {result.Message}: generation started.");
+            }
+            else
+            {
+                Log.Error("Got empty response!");
+            } // if
 
             return result;
         } // TriggerReportGeneration()
@@ -70,9 +79,8 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Getting report {reportId}...");
 
-            var request = new RestRequest(this.Url + $"/report/{reportId}", Method.GET);
+            var request = new RestRequest(this.Url + $"/report/{reportId}");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);

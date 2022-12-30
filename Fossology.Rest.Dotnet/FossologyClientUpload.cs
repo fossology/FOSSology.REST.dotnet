@@ -16,7 +16,6 @@ namespace Fossology.Rest.Dotnet
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Net;
     using Fossology.Rest.Dotnet.Model;
@@ -24,8 +23,6 @@ namespace Fossology.Rest.Dotnet
     using Newtonsoft.Json;
 
     using RestSharp;
-
-    using JsonSerializer = RestSharp.Serialization.Json.JsonSerializer;
 
     /// <summary>
     /// Client for the SW360 REST API.
@@ -65,7 +62,7 @@ namespace Fossology.Rest.Dotnet
                 throw new FossologyApiException(ErrorCode.FileNotFound, fileName);
             } // if
 
-            var request = new RestRequest(this.Url + "/uploads", Method.POST);
+            var request = new RestRequest(this.Url + "/uploads", Method.Post);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("folderId", folderId.ToString());
             request.AddHeader("groupName", groupName);
@@ -75,50 +72,30 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("Content-Type", "multipart/form-data");
             request.AddHeader("applyGlobal", applyGlobal.ToString());
 
-            var fi = new FileInfo(fileName);
-            var item = new FileParameter
-                                  {
-                                      Name = "fileInput",
-                                      ContentLength = fi.Length,
-                                      FileName = fi.Name,
-                                      ContentType = "application/octet-stream",
-                                  };
-            item.Writer = stream =>
-            {
-                var bufferSize = 1024 * 1024; // 1 MB
-                var sofar = 0;
-
-                var buffer = new byte[bufferSize];
-                using (var fs = new FileStream(fileName, FileMode.Open))
-                {
-                    while (sofar < fi.Length)
-                    {
-                        var read = fs.Read(buffer, 0, bufferSize);
-
-                        if (read < bufferSize)
-                        {
-                            bufferSize = read;
-                        } // if
-
-                        stream.Write(buffer, 0, bufferSize);
-                        sofar += bufferSize;
-
-                        var percentage = sofar * 100 / fi.Length;
-                        var progress = percentage / 100f;
-
-                        Log.Debug($"Upload progress = {progress}");
-                        uploadProgress?.Invoke(progress);
-                    } // while
-                } // using
-
-                uploadFinished?.Invoke();
-            };
-            request.Files.Add(item);
-
+            var options = new FileParameterOptions();
+            var fp = FileParameter.Create(
+                "fileInput",
+                () => new FileStreamWithProgress(fileName, uploadFinished, uploadProgress),
+                fileName,
+                "application/octet-stream",
+                options);
+            request.AddFile(fp, uploadFinished, uploadProgress);
             request.AlwaysMultipartFormData = true;
             var resultRaw = this.api.Execute(request);
+            if (resultRaw?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
-            Log.Debug($"Package {result.Message} uploaded.");
+            if (result == null)
+            {
+                Log.Error("Got empty response!");
+            }
+            else
+            {
+                Log.Debug($"Package {result.Message} uploaded.");
+            } // if
 
             return result;
         } // UploadPackage()
@@ -149,7 +126,7 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Uploading package {details.Name} from URL {details.Url} to folder {folderId}...");
 
-            var request = new RestRequest(this.Url + "/uploads", Method.POST);
+            var request = new RestRequest(this.Url + "/uploads", Method.Post);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("folderId", folderId.ToString());
             request.AddHeader("groupName", groupName);
@@ -158,13 +135,25 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("ignoreScm", ignoreScm.ToString());
             request.AddHeader("uploadType", "url");
 
-            request.JsonSerializer = new JsonSerializer();
             var json = JsonConvert.SerializeObject(details);
             request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
 
             var resultRaw = this.api.Execute(request);
+            if (resultRaw?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
-            Log.Debug($"Package {result.Message} uploaded.");
+            if (result == null)
+            {
+                Log.Error("Got empty response!");
+            }
+            else
+            {
+                Log.Debug($"Package {result.Message} uploaded.");
+            } // if
 
             return result;
         } // UploadPackageFromUrl()
@@ -194,7 +183,7 @@ namespace Fossology.Rest.Dotnet
             bool ignoreScm = true)
         {
             Log.Debug($"Uploading package {details.VcsName} from {details.VcsUrl} to folder {folderId}...");
-            var request = new RestRequest(this.Url + "/uploads", Method.POST);
+            var request = new RestRequest(this.Url + "/uploads", Method.Post);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("folderId", folderId.ToString());
             request.AddHeader("groupName", groupName);
@@ -203,13 +192,25 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("ignoreScm", ignoreScm.ToString());
             request.AddHeader("uploadType", "vcs");
 
-            request.JsonSerializer = new JsonSerializer();
             var json = JsonConvert.SerializeObject(details);
             request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
 
             var resultRaw = this.api.Execute(request);
+            if (resultRaw?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
-            Log.Debug($"Package {result.Message} uploaded.");
+            if (result == null)
+            {
+                Log.Error("Got empty response!");
+            }
+            else
+            {
+                Log.Debug($"Package {result.Message} uploaded.");
+            } // if
 
             return result;
         } // UploadPackageFromVcs()
@@ -239,7 +240,7 @@ namespace Fossology.Rest.Dotnet
             bool ignoreScm = true)
         {
             Log.Debug($"Uploading package {details.Name} from server {details.Path} to folder {folderId}...");
-            var request = new RestRequest(this.Url + "/uploads", Method.POST);
+            var request = new RestRequest(this.Url + "/uploads", Method.Post);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("folderId", folderId.ToString());
             request.AddHeader("groupName", groupName);
@@ -248,13 +249,25 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("ignoreScm", ignoreScm.ToString());
             request.AddHeader("uploadType", "server");
 
-            request.JsonSerializer = new JsonSerializer();
             var json = JsonConvert.SerializeObject(details);
             request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
 
             var resultRaw = this.api.Execute(request);
+            if (resultRaw?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(resultRaw.Content);
-            Log.Debug($"Package {result.Message} uploaded.");
+            if (result == null)
+            {
+                Log.Error("Got empty response!");
+            }
+            else
+            {
+                Log.Debug($"Package {result.Message} uploaded.");
+            } // if
 
             return result;
         } // UploadPackageFromServer()
@@ -272,6 +285,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Checking status for upload {id}...");
 
             var result = this.api.Get(this.Url + $"/jobs?upload={id}");
+            if (result?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var jobs = JsonConvert.DeserializeObject<List<Job>>(
                 result.Content,
                 new JsonSerializerSettings
@@ -292,16 +310,19 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Getting upload {id}...");
 
-            var request = new RestRequest(this.Url + $"/uploads/{id}", Method.GET);
+            var request = new RestRequest(this.Url + $"/uploads/{id}");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var upload = JsonConvert.DeserializeObject<Upload>(
@@ -317,10 +338,15 @@ namespace Fossology.Rest.Dotnet
             // this will be the case for StatusCode == ServiceUnavailable
             // In this case header["look-at"] contains something like /api/v1/jobs?upload=8
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
-            var exception = new FossologyApiException(
-                ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
-
-            throw exception;
+            if (result == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            }
+            else
+            {
+                throw new FossologyApiException(
+                    ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
+            } // if
         } // GetUpload()
 
         /// <summary>
@@ -333,16 +359,19 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Getting upload summary {id}...");
 
-            var request = new RestRequest(this.Url + $"/uploads/{id}/summary", Method.GET);
+            var request = new RestRequest(this.Url + $"/uploads/{id}/summary");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var summary = JsonConvert.DeserializeObject<UploadSummary>(
                 response.Content,
                 new JsonSerializerSettings
@@ -362,16 +391,18 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug("Getting all uploads...");
 
-            var request = new RestRequest(this.Url + $"/uploads", Method.GET);
+            var request = new RestRequest(this.Url + "/uploads");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
 
             var list = JsonConvert.DeserializeObject<List<Upload>>(
                 response.Content,
@@ -394,9 +425,14 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Getting upload licenses for upload {id} and agent {agent}...");
 
             var ctext = containers ? "true" : "false";
-            var request = new RestRequest(this.Url + $"/uploads/{id}/licenses?agent={agent}&containers={ctext}", Method.GET);
+            var request = new RestRequest(this.Url + $"/uploads/{id}/licenses?agent={agent}&containers={ctext}");
             request.RequestFormat = DataFormat.Json;
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var summary = JsonConvert.DeserializeObject<List<UploadLicenses>>(
                 response.Content,
                 new JsonSerializerSettings
@@ -417,16 +453,19 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Deleting upload {id}...");
 
-            var request = new RestRequest(this.Url + $"/uploads/{id}", Method.DELETE);
+            var request = new RestRequest(this.Url + $"/uploads/{id}", Method.Delete);
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
             return result;
         } // DeleteUpload()

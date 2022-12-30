@@ -15,13 +15,11 @@
 namespace Fossology.Rest.Dotnet
 {
     using System;
-    using System.IO;
     using System.Net;
-
     using Fossology.Rest.Dotnet.Model;
 
     using RestSharp;
-    using RestSharp.Serialization.Json;
+    using Tethys.Logging;
 
     /// <summary>
     /// Basic REST API implementation.
@@ -29,6 +27,11 @@ namespace Fossology.Rest.Dotnet
     public class RestApi
     {
         #region PRIVATE PROPERTIES
+        /// <summary>
+        /// The logger for this class.
+        /// </summary>
+        private static readonly ILog Log = LogManager.GetLogger(typeof(RestApi));
+
         /// <summary>
         /// The client.
         /// </summary>
@@ -61,7 +64,7 @@ namespace Fossology.Rest.Dotnet
         /// <summary>
         /// Gets or sets an after response handler (for extensibility).
         /// </summary>
-        public Action<IRestResponse> AfterResponse { get; set; }
+        public Action<RestResponse> AfterResponse { get; set; }
         #endregion // PUBLIC PROPERTIES
 
         //// ---------------------------------------------------------------------
@@ -75,7 +78,22 @@ namespace Fossology.Rest.Dotnet
         public RestApi(string hostUrl, string accessToken)
         {
             this.AccessToken = accessToken;
+
+#if false // add proxy for detailed analysis
+            var options = new RestClientOptions(hostUrl)
+            {
+                Proxy = new WebProxy()
+                {
+                    Address = new Uri("http://localhost:8000"),
+                    BypassProxyOnLocal = false,
+                },
+                ThrowOnAnyError = true,
+                MaxTimeout = 1000,
+            };
+            this.client = new RestClient(options);
+#else
             this.client = new RestClient(hostUrl /* + ApiNamespace*/);
+#endif
         } // RestApi()
         #endregion // CONSTRUCTION
 
@@ -85,13 +103,14 @@ namespace Fossology.Rest.Dotnet
         /// <summary>Gets the response from the specified URL via GET.</summary>
         /// <param name="url">The URL.</param>
         /// <param name="ignoreResultCode">Ignore the HTTP result code.</param>
-        /// <returns>An <see cref="IRestResponse" /> object.</returns>
-        public IRestResponse Get(string url, bool ignoreResultCode = false)
+        /// <returns>An <see cref="RestResponse" /> object.</returns>
+        public RestResponse Get(string url, bool ignoreResultCode = false)
         {
             try
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url);
                 this.AddHeaders(request);
+                request.AddHeader("Content-Type", "application/json");
                 var response = this.client.Execute(request);
 
                 if (!ignoreResultCode)
@@ -123,10 +142,14 @@ namespace Fossology.Rest.Dotnet
         {
             try
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url);
                 this.AddHeaders(request);
                 var response = this.client.Execute(request);
                 CheckForErrors(response);
+                if (response.Content == null)
+                {
+                    throw new FossologyApiException(ErrorCode.NoValidAnswer);
+                } // if
 
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(response.Content);
             }
@@ -146,17 +169,17 @@ namespace Fossology.Rest.Dotnet
         /// <param name="url">The URL.</param>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        /// An <see cref="IRestResponse" /> object.
+        /// An <see cref="RestResponse" /> object.
         /// </returns>
-        public IRestResponse Post(string url, object payload)
+        public RestResponse Post(string url, object payload)
         {
             try
             {
-                var request = new RestRequest(url, Method.POST);
+                var request = new RestRequest(url, Method.Post);
                 request.RequestFormat = DataFormat.Json;
-                request.JsonSerializer = new JsonSerializer();
                 this.AddHeaders(request);
                 request.AddJsonBody(payload);
+                request.AddHeader("Content-Type", "application/json");
                 var response = this.client.Execute(request);
                 CheckForErrors(response);
 
@@ -178,13 +201,13 @@ namespace Fossology.Rest.Dotnet
         /// <param name="url">The URL.</param>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        /// An <see cref="IRestResponse" /> object.
+        /// An <see cref="RestResponse" /> object.
         /// </returns>
-        public IRestResponse Post(string url, string payload)
+        public RestResponse Post(string url, string payload)
         {
             try
             {
-                var request = new RestRequest(url, Method.POST);
+                var request = new RestRequest(url, Method.Post);
                 request.RequestFormat = DataFormat.Json;
                 this.AddHeaders(request);
 
@@ -212,12 +235,12 @@ namespace Fossology.Rest.Dotnet
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="payload">The payload.</param>
-        /// <returns>An <see cref="IRestResponse" /> object.</returns>
-        public IRestResponse Patch(string url, string payload)
+        /// <returns>An <see cref="RestResponse" /> object.</returns>
+        public RestResponse Patch(string url, string payload)
         {
             try
             {
-                var request = new RestRequest(url, Method.PATCH);
+                var request = new RestRequest(url, Method.Patch);
                 request.RequestFormat = DataFormat.Json;
                 this.AddHeaders(request);
 
@@ -245,13 +268,13 @@ namespace Fossology.Rest.Dotnet
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>
-        /// An <see cref="IRestResponse" /> object.
+        /// An <see cref="RestResponse" /> object.
         /// </returns>
-        public IRestResponse Delete(string url)
+        public RestResponse Delete(string url)
         {
             try
             {
-                var request = new RestRequest(url, Method.DELETE);
+                var request = new RestRequest(url, Method.Delete);
                 request.RequestFormat = DataFormat.Json;
                 this.AddHeaders(request);
                 var response = this.client.Execute(request);
@@ -274,14 +297,13 @@ namespace Fossology.Rest.Dotnet
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>
-        /// An <see cref="IRestResponse" /> object.
+        /// An <see cref="RestResponse" /> object.
         /// </returns>
-        public IRestResponse Execute(RestRequest request)
+        public RestResponse Execute(RestRequest request)
         {
             try
             {
                 request.RequestFormat = DataFormat.Json;
-                request.JsonSerializer = new JsonSerializer();
                 this.AddHeaders(request);
                 var response = this.client.Execute(request);
                 CheckForErrors(response);
@@ -305,12 +327,18 @@ namespace Fossology.Rest.Dotnet
         {
             try
             {
-                var request = new RestRequest(uri, Method.GET);
+                var request = new RestRequest(uri);
                 request.RequestFormat = DataFormat.Json;
-                request.JsonSerializer = new JsonSerializer();
                 this.AddHeaders(request);
-                var data = this.client.DownloadData(request, true);
-                System.IO.File.WriteAllBytes(filename, data);
+                var data = this.client.DownloadData(request);
+                if (data != null)
+                {
+                    System.IO.File.WriteAllBytes(filename, data);
+                }
+                else
+                {
+                    Log.Error("Error downloading file: no data received!");
+                }
             }
             catch (FossologyApiException)
             {
@@ -330,7 +358,7 @@ namespace Fossology.Rest.Dotnet
         /// Checks for errors.
         /// </summary>
         /// <param name="response">The response.</param>
-        private static void CheckForErrors(IRestResponse response)
+        private static void CheckForErrors(RestResponseBase response)
         {
             if ((((int)response.StatusCode) == 0)
                 || (response.StatusCode == HttpStatusCode.OK)
@@ -353,16 +381,30 @@ namespace Fossology.Rest.Dotnet
                     exception = new FossologyApiException(
                         ErrorCode.RestApiError, response.StatusCode, string.Empty, null);
                 }
-                else if (response.Content.ToLower().StartsWith("<html>"))
-                {
-                    exception = new FossologyApiException(
-                        ErrorCode.RestApiError, response.StatusCode, response.Content, null);
-                }
                 else
                 {
-                    var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(response.Content);
-                    exception = new FossologyApiException(
-                        ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
+                    if (response.Content.ToLower().StartsWith("<html>"))
+                    {
+                        exception = new FossologyApiException(
+                            ErrorCode.RestApiError, response.StatusCode, response.Content, null);
+                    }
+                    else
+                    {
+                        var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(response.Content);
+                        if (result != null)
+                        {
+                            exception = new FossologyApiException(
+                                ErrorCode.RestApiError, (HttpStatusCode)result.Code, result.Message, null);
+                        }
+                        else
+                        {
+                            exception = new FossologyApiException(
+                                ErrorCode.RestApiError,
+                                response.StatusCode,
+                                "Unable to decode JSON response",
+                                null);
+                        } // if
+                    } // if
                 } // if
             }
             catch
@@ -370,7 +412,10 @@ namespace Fossology.Rest.Dotnet
                 exception = new FossologyApiException(ErrorCode.RestApiError);
             } // catch
 
-            throw exception;
+            if (exception != null)
+            {
+                throw exception;
+            } // if
         } // CheckForErrors()
 
         /// <summary>
@@ -380,7 +425,7 @@ namespace Fossology.Rest.Dotnet
         /// <example>
         /// <code>Prefer: outlook.timezone="Eastern Standard Time"</code>
         /// </example>
-        private void AddHeaders(IRestRequest request)
+        private void AddHeaders(RestRequest request)
         {
             request.AddHeader("Authorization", "Bearer " + this.AccessToken);
 

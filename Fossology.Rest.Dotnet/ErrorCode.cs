@@ -43,5 +43,10 @@ namespace Fossology.Rest.Dotnet
         /// File to upload not found.
         /// </summary>
         FileNotFound = 4,
+
+        /// <summary>
+        /// The no valid answer from server.
+        /// </summary>
+        NoValidAnswer = 5,
     } // ErrorCode
 }

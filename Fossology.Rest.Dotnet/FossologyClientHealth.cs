@@ -29,9 +29,14 @@ namespace Fossology.Rest.Dotnet
         /// <returns><see cref="HealthInfo"/>.</returns>
         public HealthInfo GetHealth()
         {
-            Log.Debug($"Getting health info...");
+            Log.Debug("Getting health info...");
 
-            var result = this.api.Get(this.Url + $"/health");
+            var result = this.api.Get(this.Url + "/health");
+            if (result?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var info = JsonConvert.DeserializeObject<HealthInfo>(
                 result.Content,
                 new JsonSerializerSettings

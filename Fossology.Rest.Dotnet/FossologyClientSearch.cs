@@ -21,8 +21,6 @@ namespace Fossology.Rest.Dotnet
 
     using RestSharp;
 
-    using JsonSerializer = RestSharp.Serialization.Json.JsonSerializer;
-
     /// <summary>
     /// Client for the SW360 REST API.
     /// </summary>
@@ -50,10 +48,8 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Searching for file {fileName}...");
 
-            var request = new RestRequest(this.Url + "/search", Method.GET);
+            var request = new RestRequest(this.Url + "/search");
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             request.AddHeader("searchType", searchType);
             request.AddHeader("fileName", fileName);
 
@@ -88,6 +84,11 @@ namespace Fossology.Rest.Dotnet
             } // if
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<IReadOnlyList<SearchResult>>(response.Content);
 
             return result;
@@ -101,21 +102,25 @@ namespace Fossology.Rest.Dotnet
         /// <returns>A raw JSON result.</returns>
         public IReadOnlyList<File> SearchForFile(List<SearchHash> fileHashes, string groupName = "")
         {
-            Log.Debug($"Searching for files by hash...");
+            Log.Debug("Searching for files by hash...");
 
             var json = JsonConvert.SerializeObject(fileHashes);
 
-            var request = new RestRequest(this.Url + "/filesearch", Method.POST);
+            var request = new RestRequest(this.Url + "/filesearch", Method.Post);
             request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
             if (!string.IsNullOrEmpty(groupName))
             {
                 request.AddHeader("groupName", groupName);
             } // if
 
             request.AddJsonBody(json);
+            request.AddHeader("Content-Type", "application/json");
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<IReadOnlyList<File>>(
                 response.Content,
                 new JsonSerializerSettings
