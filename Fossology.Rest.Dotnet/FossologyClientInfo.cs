@@ -29,9 +29,14 @@ namespace Fossology.Rest.Dotnet
         /// <returns><see cref="AppInfo"/>.</returns>
         public AppInfo GetInfo()
         {
-            Log.Debug($"Getting Fossology info...");
+            Log.Debug("Getting Fossology info...");
 
             var result = this.api.Get(this.Url + "/info");
+            if (result?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var info = JsonConvert.DeserializeObject<AppInfo>(
                 result.Content,
                 new JsonSerializerSettings

@@ -19,19 +19,8 @@ namespace Fossology.Rest.Dotnet
     using Newtonsoft.Json;
 
     using RestSharp;
-
+    using RestSharp.Serializers;
     using Tethys.Logging;
-
-    using JsonSerializer = RestSharp.Serialization.Json.JsonSerializer;
-
-    /*************************************************************************
-     * Required NuGet Packages
-     * ------------------------
-     * - Tethys.Logging 1.3.0, Apache-2.0
-     * - Newtonsoft.Json 12.0.3, MIT
-     * - RestSharp 106.6.10
-     *
-     ************************************************************************/
 
     /// <summary>
     /// Client for the SW360 REST API.
@@ -95,6 +84,11 @@ namespace Fossology.Rest.Dotnet
             Log.Debug("Getting version info...");
 
             var result = this.api.Get(this.Url + "/version");
+            if (result?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var version = JsonConvert.DeserializeObject<VersionInfo>(result.Content);
             return version;
         } // GetVersion()
@@ -109,14 +103,16 @@ namespace Fossology.Rest.Dotnet
             Log.Debug($"Requesting token {requestDetails.TokenName} for user {requestDetails.Username}...");
 
             var json = JsonConvert.SerializeObject(requestDetails);
-            var request = new RestRequest(this.Url + "/tokens", Method.POST);
-            request.RequestFormat = DataFormat.Json;
-            request.JsonSerializer = new JsonSerializer();
-            request.Parameters.Clear();
-
-            request.AddJsonBody(json);
+            var request = new RestRequest(this.Url + "/tokens", Method.Post);
+            request.AddStringBody(json, ContentType.Json);
+            request.AddHeader("Content-Type", "application/json");
 
             var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
             var result = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
 
             if (result == null)
