@@ -1,6 +1,16 @@
 # ChangeLog - FOSSology.REST.dotnet
 
-## 1.2.0
+## 1.3.0 (2022-12-30)
+
+* all dependencies updates to the latest version.
+  * this fixes the security vulnerabilities of RestSharp and NewtonSoft.Json.
+  * adaptations to use RestSharp 108.0.3 **and** FOSSology.
+* many additional checks for potential null assignments.
+* demo application is now .Net 6.
+* tested with FOSSology, version 4.2.1.21 (REST API v1.4.3).
+
+## 1.2.0 (2022-03-17)
+
 * improved error handling.
 * supports FOSSology REST API v1.4.3 (FOSSology 4.0.0 built @ 2023/03/09).
 * new method GetHealth().
@@ -14,6 +24,7 @@
 * improved unit tests.
 
 ## 1.1.0 (2020-06-25)
+
 * supports FOSSology REST API v1.0.16 (FOSSology 3.8.0 built @ 2020/06/19).
 * new method GetToken().
 * new method UploadPackageFromUrl().
@@ -32,5 +43,6 @@
     
 
 ## 1.0.0 (2020-11-24)
+
 * first version released.
 * supports FOSSology REST API v1.0.3 (FOSSology 3.7.0).
