@@ -1,5 +1,9 @@
 # ChangeLog - FOSSology.REST.dotnet
 
+## NEXT
+
+* support new maintenance endpoint.
+
 ## 1.3.0 (2022-12-30)
 
 * all dependencies updates to the latest version.

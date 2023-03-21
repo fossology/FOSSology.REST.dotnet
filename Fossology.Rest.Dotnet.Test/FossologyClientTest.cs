@@ -45,7 +45,7 @@ namespace Fossology.Rest.Dotnet.Test
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NzI2MTc1OTksIm5iZiI6MTY3MjM1ODQwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.zivhU2CiTDI2_PqWvPejifhs6d6HohVOW6w1XG3GUSQ";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Nzk3MDIzOTksIm5iZiI6MTY3OTM1NjgwMCwianRpIjoiTXk0eiIsInNjb3BlIjoid3JpdGUifQ.LAM8QI2o1zry1PbyxHCqmNYr45jDPFzadH7FNm1L-CQ";
 
         /// <summary>
         /// The filename of a test package.
@@ -1065,6 +1065,25 @@ namespace Fossology.Rest.Dotnet.Test
             //     "message": "Invalid keys"
             //   }
             // ]"
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestInitiateMaintenance()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var info = new CreateMaintenanceInfo();
+            info.Options.Add(CreateMaintenanceInfo.Optiona);
+            info.LogsDate = "2023-01-01";
+            info.GoldDate = "2023-04-01";
+
+            var result = client.InitiateMaintenance(info);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("INFO", result.Type);
+            Assert.AreEqual(201, result.Code);
+            Debug.WriteLine($"Initiate maintenance = {result.Message}");
         }
 
         //// ---------------------------------------------------------------------
