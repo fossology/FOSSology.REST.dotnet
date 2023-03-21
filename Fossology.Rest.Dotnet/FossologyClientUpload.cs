@@ -69,6 +69,7 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("uploadDescription", description);
             request.AddHeader("public", accessLevel);
             request.AddHeader("ignoreScm", ignoreScm.ToString());
+            request.AddHeader("uploadType", "file");
             request.AddHeader("Content-Type", "multipart/form-data");
             request.AddHeader("applyGlobal", applyGlobal.ToString());
 
