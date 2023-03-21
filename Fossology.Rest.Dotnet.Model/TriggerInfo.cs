@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="TriggerInfo.cs" company="Tethys">
-//   Copyright (C) 2019-2020 T. Graf
+//   Copyright (C) 2019-2023 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -45,6 +45,12 @@ namespace Fossology.Rest.Dotnet.Model
             "reuse_group": 0,
             "reuse_main": true,
             "reuse_enhanced": true
+          },
+          "scancode": {
+            "license": true,
+            "copyright": true,
+            "email": true,
+            "url": true
           }
         }
          */
@@ -68,6 +74,12 @@ namespace Fossology.Rest.Dotnet.Model
         public ReuseInfo Reuse { get; set; }
 
         /// <summary>
+        /// Gets or sets the ScanCode settings.
+        /// </summary>
+        [JsonProperty("scancode")]
+        public ScanCodeInfo Scancode { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TriggerInfo"/> class.
         /// </summary>
         public TriggerInfo()
@@ -75,6 +87,7 @@ namespace Fossology.Rest.Dotnet.Model
             this.Analysis = new Analysis();
             this.Decider = new DeciderInfo();
             this.Reuse = new ReuseInfo();
+            this.Scancode = new ScanCodeInfo();
         } // TriggerInfo()
     } // TriggerInfo
 }

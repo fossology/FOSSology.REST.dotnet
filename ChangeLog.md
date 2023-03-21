@@ -2,7 +2,10 @@
 
 ## NEXT
 
-* support new maintenance endpoint.
+* support REST API 1.5.1 feaures:
+    * support new maintenance endpoint.
+    * support new upload features.
+    * new `GetUploadFileById` to download an upload file.
 
 ## 1.3.0 (2022-12-30)
 

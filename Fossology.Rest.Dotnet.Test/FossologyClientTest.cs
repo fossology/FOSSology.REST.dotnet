@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="FossologyClientTest.cs" company="Tethys">
-//   Copyright (C) 2019-2022 T. Graf
+//   Copyright (C) 2019-2023 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -325,10 +325,10 @@ namespace Fossology.Rest.Dotnet.Test
             var folderId = EnsureTestFolderExists();
 
             var client = new FossologyClient(LocalUrl, Token);
-            var details = new UrlUpload();
-            details.Name = "Tethys.xml_v1.0.0.zip";
-            details.Url = "https://github.com/tngraf/Tethys.Xml/archive/v1.0.0.zip";
-            details.MaxRecursionDepth = 0;
+            var details = new UploadInformationUrl();
+            details.Location.Name = "Tethys.xml_v1.0.0.zip";
+            details.Location.Url = "https://github.com/tngraf/Tethys.Xml/archive/v1.0.0.zip";
+            details.Location.MaxRecursionDepth = 0;
 
             var result = client.UploadPackageFromUrl(folderId, details);
             Assert.IsNotNull(result);
@@ -346,13 +346,13 @@ namespace Fossology.Rest.Dotnet.Test
             var folderId = EnsureTestFolderExists();
 
             var client = new FossologyClient(LocalUrl, Token);
-            var details = new VcsUpload();
-            details.VcsName = "Tethys.Logging";
-            details.VcsUrl = "https://github.com/tngraf/Tethys.Logging.git";
-            details.VcsBranch = "master";
-            details.VcsType = "git";
-            details.VcsUsername = "xxx";
-            details.VcsPassword = "xxx";
+            var details = new UploadInformationVcs();
+            details.Location.VcsName = "Tethys.Logging";
+            details.Location.VcsUrl = "https://github.com/tngraf/Tethys.Logging.git";
+            details.Location.VcsBranch = "master";
+            details.Location.VcsType = "git";
+            details.Location.VcsUsername = "xxx";
+            details.Location.VcsPassword = "xxx";
 
             var result = client.UploadPackageFromVcs(folderId, details);
             Assert.IsNotNull(result);
@@ -461,6 +461,40 @@ namespace Fossology.Rest.Dotnet.Test
             var result = client.DeleteUpload(id);
             Assert.IsNotNull(result);
             Assert.AreEqual(202, result.Code);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(FossologyApiException))]
+        public void TestGetUploadFileById_DoesNotExist()
+        {
+            var client = new FossologyClient(LocalUrl, Token);
+            var result = client.GetUploadFileById(123456789, "TestFile.dat");
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetUploadFileById()
+        {
+            var id = FindUpload(PackageName2);
+            if (id < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                id = FindUpload(PackageName2);
+            } // if
+
+            var client = new FossologyClient(LocalUrl, Token);
+            Debug.WriteLine($"Upload id = {id}");
+
+            var result = client.GetUploadFileById(id, "TestFile.dat");
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.Code);
         }
 
         /// <summary>
@@ -1124,7 +1158,7 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual("INFO", result.Type);
             Assert.AreEqual(201, result.Code);
 
-            var text = result.Message[(result.Message.LastIndexOf('/') + 1)..];
+            var text = result.Message[(result.Message.LastIndexOf('/') + 1) ..];
             return int.Parse(text);
         }
 
