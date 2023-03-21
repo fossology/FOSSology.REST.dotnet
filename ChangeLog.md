@@ -6,6 +6,7 @@
     * support new maintenance endpoint.
     * support new upload features.
     * new `GetUploadFileById` to download an upload file.
+    * new `GetUploadCopyrights` to get the copyrights for an upload.
 
 ## 1.3.0 (2022-12-30)
 

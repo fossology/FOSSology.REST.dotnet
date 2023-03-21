@@ -446,7 +446,7 @@ namespace Fossology.Rest.Dotnet
         } // GetUploadList()
 
         /// <summary>
-        /// Gets the summary for the upload with the specified id.
+        /// Gets the licenses for an upload.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="agent">Agent name, one of (nomos, monk, ninka, ojo, scancode).</param>
@@ -545,5 +545,32 @@ namespace Fossology.Rest.Dotnet
 
             return result;
         } // GetUploadFileById()
+
+        /// <summary>
+        /// Gets the coüpyright for an upload.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>A list of <see cref="CopyrightEntry" /> objects.</returns>
+        public List<CopyrightEntry> GetUploadCopyrights(int id)
+        {
+            Log.Debug($"Getting upload copyrights for upload {id}...");
+
+            var request = new RestRequest(this.Url + $"/uploads/{id}/copyrights");
+            request.RequestFormat = DataFormat.Json;
+            var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
+            var summary = JsonConvert.DeserializeObject<List<CopyrightEntry>>(
+                response.Content,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+
+            return summary;
+        } // GetUploadCopyrights()
     } // FossologyClient
 }

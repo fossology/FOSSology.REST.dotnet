@@ -501,6 +501,42 @@ namespace Fossology.Rest.Dotnet.Test
         /// Unit test.
         /// </summary>
         [TestMethod]
+        public void TestGetUploadCopyrights()
+        {
+#if true
+            var uploadId = FindUpload(PackageName2);
+            if (uploadId < 0)
+            {
+                this.TestUploadPackageFromUrl();
+                // ugly but required: wait some time until report is available
+                Thread.Sleep(3000);
+                uploadId = FindUpload(PackageName2);
+            } // if
+
+            UploadPackageAndRunJobs(uploadId);
+#else
+            // use a specific upload
+            var uploadId = 111;
+#endif
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var copyrights = client.GetUploadCopyrights(uploadId);
+            Assert.IsNotNull(copyrights);
+
+            Assert.AreEqual(10, copyrights.Count);
+            Assert.AreEqual(
+                "copyright owner or by an individual or Legal Entity authorized to submit on behalf of",
+                copyrights[0].Copyright);
+            Assert.AreEqual(1, copyrights[0].FilePath.Count);
+            Assert.AreEqual(
+                "Tethys.xml_v1.0.0.zip/Tethys.Xml-1.0.0/LICENSE",
+                copyrights[0].FilePath[0]);
+        }
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
         public void TestTriggerJob()
         {
             var folderId = EnsureTestFolderExists();
