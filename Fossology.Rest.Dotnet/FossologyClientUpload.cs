@@ -18,11 +18,14 @@ namespace Fossology.Rest.Dotnet
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Runtime.InteropServices.ComTypes;
+    using System.Threading.Tasks;
     using Fossology.Rest.Dotnet.Model;
 
     using Newtonsoft.Json;
 
     using RestSharp;
+    using RestSharp.Extensions;
 
     /// <summary>
     /// Client for the SW360 REST API.
@@ -41,9 +44,14 @@ namespace Fossology.Rest.Dotnet
         /// <param name="accessLevel">The access level.</param>
         /// <param name="ignoreScm">if set to <c>true</c> ignore SCM files.</param>
         /// <param name="applyGlobal">if set to <c>true</c> apply global decisions.</param>
-        /// <returns>An <see cref="Result" /> object.</returns>
-        /// <remarks>The message property of the result contains the upload id
-        /// which is needed for further operations.</remarks>
+        /// <param name="details">The upload and scan details.</param>
+        /// <returns>
+        /// An <see cref="Result" /> object.
+        /// </returns>
+        /// <remarks>
+        /// The message property of the result contains the upload id
+        /// which is needed for further operations.
+        /// </remarks>
         public Result UploadPackage(
             string fileName,
             int folderId,
@@ -53,7 +61,8 @@ namespace Fossology.Rest.Dotnet
             string description = "",
             string accessLevel = "public",
             bool ignoreScm = true,
-            bool applyGlobal = false)
+            bool applyGlobal = false,
+            UploadInformationFile details = null)
         {
             Log.Debug($"Uploading package {fileName} to folder {folderId}...");
 
@@ -72,6 +81,18 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("uploadType", "file");
             request.AddHeader("Content-Type", "multipart/form-data");
             request.AddHeader("applyGlobal", applyGlobal.ToString());
+
+            if (details != null)
+            {
+                var json = JsonConvert.SerializeObject(
+                details,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+                request.AddJsonBody(json);
+                request.AddHeader("Content-Type", "application/json");
+            } // if
 
             var options = new FileParameterOptions();
             var fp = FileParameter.Create(
@@ -119,13 +140,13 @@ namespace Fossology.Rest.Dotnet
         /// </remarks>
         public Result UploadPackageFromUrl(
             int folderId,
-            UrlUpload details,
+            UploadInformationUrl details,
             string groupName = "",
             string description = "",
             string accessLevel = "public",
             bool ignoreScm = true)
         {
-            Log.Debug($"Uploading package {details.Name} from URL {details.Url} to folder {folderId}...");
+            Log.Debug($"Uploading package {details.Location.Name} from URL {details.Location.Url} to folder {folderId}...");
 
             var request = new RestRequest(this.Url + "/uploads", Method.Post);
             request.RequestFormat = DataFormat.Json;
@@ -136,7 +157,12 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("ignoreScm", ignoreScm.ToString());
             request.AddHeader("uploadType", "url");
 
-            var json = JsonConvert.SerializeObject(details);
+            var json = JsonConvert.SerializeObject(
+                details,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
 
@@ -177,13 +203,13 @@ namespace Fossology.Rest.Dotnet
         /// </remarks>
         public Result UploadPackageFromVcs(
             int folderId,
-            VcsUpload details,
+            UploadInformationVcs details,
             string groupName = "",
             string description = "",
             string accessLevel = "public",
             bool ignoreScm = true)
         {
-            Log.Debug($"Uploading package {details.VcsName} from {details.VcsUrl} to folder {folderId}...");
+            Log.Debug($"Uploading package {details.Location.VcsName} from {details.Location.VcsUrl} to folder {folderId}...");
             var request = new RestRequest(this.Url + "/uploads", Method.Post);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("folderId", folderId.ToString());
@@ -193,7 +219,12 @@ namespace Fossology.Rest.Dotnet
             request.AddHeader("ignoreScm", ignoreScm.ToString());
             request.AddHeader("uploadType", "vcs");
 
-            var json = JsonConvert.SerializeObject(details);
+            var json = JsonConvert.SerializeObject(
+                details,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
             request.AddJsonBody(json);
             request.AddHeader("Content-Type", "application/json");
 
@@ -418,7 +449,7 @@ namespace Fossology.Rest.Dotnet
         /// Gets the summary for the upload with the specified id.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <param name="agent">Agent name, one of (nomos, monk, ninka, ojo).</param>
+        /// <param name="agent">Agent name, one of (nomos, monk, ninka, ojo, scancode).</param>
         /// <param name="containers">if set to <c>true</c> show directories and containers.</param>
         /// <returns>A list of <see cref="UploadLicenses" /> objects.</returns>
         public List<UploadLicenses> GetUploadLicenses(int id, string agent, bool containers)
@@ -470,5 +501,49 @@ namespace Fossology.Rest.Dotnet
             var result = JsonConvert.DeserializeObject<Result>(response.Content);
             return result;
         } // DeleteUpload()
+
+        /// <summary>
+        /// Gets the upload file by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="filename">The filename.</param>
+        /// <returns>
+        /// An <see cref="Result" /> object.
+        /// </returns>
+        public Result GetUploadFileById(int id, string filename)
+        {
+            Log.Debug($"Downloading upload {id}...");
+
+            var request = new RestRequest(this.Url + $"/uploads/{id}/download", Method.Get);
+            var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                System.IO.File.WriteAllBytes(filename, response.RawBytes);
+                var res = new Result();
+                res.Code = (int)HttpStatusCode.OK;
+                res.Message = string.Empty;
+                return res;
+            } // if
+
+            var result = JsonConvert.DeserializeObject<Result>(response.Content);
+            if (result == null)
+            {
+                Log.Error("Got empty response!");
+            }
+            else
+            {
+                if (result.Code != (int)HttpStatusCode.OK)
+                {
+                    Log.Error($"Error downloading upload: {result.Message}");
+                } // if
+            } // if
+
+            return result;
+        } // GetUploadFileById()
     } // FossologyClient
 }
