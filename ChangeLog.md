@@ -1,12 +1,25 @@
 # ChangeLog - FOSSology.REST.dotnet
 
-## NEXT
+## 1.4.0 (2023-03-21)
 
 * support REST API 1.5.1 feaures:
     * support new maintenance endpoint.
     * support new upload features.
     * new `GetUploadFileById` to download an upload file.
     * new `GetUploadCopyrights` to get the copyrights for an upload.
+* not yet implemented:
+    * set permissions for a upload in a folder for different groups (`/uploads/{id}/permissions`)
+    * get all the groups with their respective permissions for a upload (`/uploads/{id}/perm-groups`)
+    * create a new user (`POST /users`)
+    * edit user details by id (`PUT /users`)
+    * create a new REST API token (`POST /users/tokens`)
+    * get all the REST API tokens for a user (`/users/tokens/{type}`)
+    * get all jobs created by all users (`/jobs/all`)
+    * return jobs for the given upload id (`/jobs/history`)
+    * delete group by id (`/groups/{id}/user/{userId}`)
+    * selete group member by groupId and userId (`/groups/{id}/user/{userId}`)
+    * importing ...
+    * get a list of license candidates from the database (`/license/admincandidates`)
 
 ## 1.3.0 (2022-12-30)
 

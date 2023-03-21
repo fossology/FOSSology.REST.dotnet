@@ -110,13 +110,13 @@ namespace Fossology.Rest.Dotnet.Model
         public List<string> Options { get; set; }
 
         /// <summary>
-        /// Gets or sets the logs date.
+        /// Gets or sets the date from which to remove older log files from repository.
         /// </summary>
         [JsonProperty("logsDate")]
         public string LogsDate { get; set; }
 
         /// <summary>
-        /// Gets or sets gold date.
+        /// Gets or sets date from which to remove older gold files from repository.
         /// </summary>
         [JsonProperty("goldDate")]
         public string GoldDate { get; set; }
