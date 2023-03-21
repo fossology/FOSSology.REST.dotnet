@@ -1,7 +1,8 @@
 version: 1.4.0.{build}
 image: Visual Studio 2022
-#install:
+install:
 #  - call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat"
+  - echo "starting build"
 configuration:
   - Debug
   - Release
