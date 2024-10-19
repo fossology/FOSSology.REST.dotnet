@@ -49,7 +49,7 @@ More information about FOSSology can be found [here](https://www.fossology.org/.
 
 ## License
 
-Copyright (C) 2019-2023 T. Graf
+Copyright (C) 2019-2024 T. Graf
 
 Licensed under the **MIT License** (the "License");  
 you may not use this file except in compliance with the License.  

@@ -1,5 +1,10 @@
 # ChangeLog - FOSSology.REST.dotnet
 
+## 1.4.1 (2024-10-19)
+
+* Dependency updates, especially RestSharp 108.0.3 to 112.1.0 to fix a security vulnerability.
+* `GetVersion()` uses now the endpoint `/info`, because `/version` does not exist anymore.
+
 ## 1.4.0 (2023-03-21)
 
 * support REST API 1.5.1 feaures:
