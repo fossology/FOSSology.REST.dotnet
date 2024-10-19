@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="FossologyClient.cs" company="Tethys">
-//   Copyright (C) 2019-2022 T. Graf
+//   Copyright (C) 2019-2023 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -19,7 +19,6 @@ namespace Fossology.Rest.Dotnet
     using Newtonsoft.Json;
 
     using RestSharp;
-    using RestSharp.Serializers;
     using Tethys.Logging;
 
     /// <summary>
@@ -83,7 +82,7 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug("Getting version info...");
 
-            var result = this.api.Get(this.Url + "/version");
+            var result = this.api.Get(this.Url + "/info");
             if (result?.Content == null)
             {
                 throw new FossologyApiException(ErrorCode.NoValidAnswer);
