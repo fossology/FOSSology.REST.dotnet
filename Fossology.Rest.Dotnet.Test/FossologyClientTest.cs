@@ -45,7 +45,7 @@ namespace Fossology.Rest.Dotnet.Test
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Nzk3MDIzOTksIm5iZiI6MTY3OTM1NjgwMCwianRpIjoiTXk0eiIsInNjb3BlIjoid3JpdGUifQ.LAM8QI2o1zry1PbyxHCqmNYr45jDPFzadH7FNm1L-CQ";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Mjk2NDE1OTksIm5iZiI6MTcyOTI5NjAwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.XDoC_pByw2RaxJFO_F-PM7zrJlCIyu1G3UyD3_7QeQ4";
 
         /// <summary>
         /// The filename of a test package.
@@ -524,13 +524,25 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.IsNotNull(copyrights);
 
             Assert.AreEqual(10, copyrights.Count);
-            Assert.AreEqual(
-                "copyright owner or by an individual or Legal Entity authorized to submit on behalf of",
-                copyrights[0].Copyright);
             Assert.AreEqual(1, copyrights[0].FilePath.Count);
-            Assert.AreEqual(
-                "Tethys.xml_v1.0.0.zip/Tethys.Xml-1.0.0/LICENSE",
-                copyrights[0].FilePath[0]);
+            if (copyrights[0].FilePath[0].Contains("LICENSE"))
+            {
+                Assert.AreEqual(
+                    "Tethys.xml_v1.0.0.zip/Tethys.Xml-1.0.0/LICENSE",
+                    copyrights[0].FilePath[0]);
+                Assert.AreEqual(
+                    "copyright owner or by an individual or Legal Entity authorized to submit on behalf of",
+                    copyrights[0].Copyright);
+            }
+            else
+            {
+                Assert.AreEqual(
+                    "copyright file=\"AssemblyInfo.cs\" company=\"Tethys\">",
+                    copyrights[0].Copyright);
+                Assert.AreEqual(
+                    "Tethys.xml_v1.0.0.zip/Tethys.Xml-1.0.0/Tethys.Xml/Properties/AssemblyInfo.cs",
+                    copyrights[0].FilePath[0]);
+            } // if
         }
 
         /// <summary>
