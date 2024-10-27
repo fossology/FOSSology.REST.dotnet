@@ -1,0 +1,1400 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:7b2954e8-f518-466d-bfcb-e02c72dc0e2f",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2024-10-27T17:57:05Z",
+    "tools": [
+      {
+        "vendor": "CycloneDX",
+        "name": "CycloneDX module for .NET",
+        "version": "4.0.0.0"
+      }
+    ],
+    "component": {
+      "type": "library",
+      "bom-ref": "Fossology.Rest.Dotnet@1.4.1",
+      "name": "Fossology.Rest.Dotnet",
+      "version": "1.4.1"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/coverlet.collector@6.0.2",
+      "authors": [
+        {
+          "name": "tonerdo"
+        }
+      ],
+      "name": "coverlet.collector",
+      "version": "6.0.2",
+      "description": "Coverlet is a cross platform code coverage library for .NET, with support for line, branch and method coverage.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9060EC586906992AA906154D05E8AF0592B145D46B40CFBBFC097236E81FAF48D9EC6A437C5642CC094F7EAFF2642DD036D58F7823C65CDF10E13705E1A3D904"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/coverlet.collector@6.0.2",
+      "externalReferences": [
+        {
+          "url": "https://github.com/coverlet-coverage/coverlet",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/coverlet-coverage/coverlet.git",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/coverlet.msbuild@6.0.2",
+      "authors": [
+        {
+          "name": "tonerdo"
+        }
+      ],
+      "name": "coverlet.msbuild",
+      "version": "6.0.2",
+      "description": "Coverlet is a cross platform code coverage library for .NET, with support for line, branch and method coverage.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "71C02D8A862C35878F6D5454C48CCBBAEE17E719D1EEB32D4E11C69592C42EBB31E193EBE67C4E8FB440EF38F56CF1FC781640A1B6EF4F6144314ED3DC5C641D"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/coverlet.msbuild@6.0.2",
+      "externalReferences": [
+        {
+          "url": "https://github.com/coverlet-coverage/coverlet",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/coverlet-coverage/coverlet.git",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.ApplicationInsights@2.22.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.ApplicationInsights",
+      "version": "2.22.0",
+      "description": "Application Insights Base API. This package provides core functionality for transmission of all Application Insights Telemetry Types and is a dependent package for all other Application Insights packages. Please install the platform specific package for the best experience. Privacy statement: https://go.microsoft.com/fwlink/?LinkId=512156",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "3E3D036C471F7BBDB121FEEE896F1DCD44F2D3A5C3CF76E44D8CA85399E2F7E6B9855AACB38EEECA9B02101092EA175E5E6A0E5B76B42904683ABEA0572C61D2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.ApplicationInsights@2.22.0",
+      "externalReferences": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?LinkId=392727",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/Microsoft/ApplicationInsights-dotnet",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Bcl.AsyncInterfaces",
+      "version": "8.0.0",
+      "description": "Provides the IAsyncEnumerable\u003CT\u003E and IAsyncDisposable interfaces and helper types for .NET Standard 2.0. This package is not required starting with .NET Standard 2.1 and .NET Core 3.0.\n\nCommonly Used Types:\nSystem.IAsyncDisposable\nSystem.Collections.Generic.IAsyncEnumerable\nSystem.Collections.Generic.IAsyncEnumerator",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "79CB0773D94465924CEE4E471D90353D5D8DF842C46AB2C572CB15D9B9FB5D0209A1A88D64392995335C5FE54A00D7C3194440B84C95142711BBB685CB5E9552"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.CodeCoverage@17.11.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.CodeCoverage",
+      "version": "17.11.1",
+      "description": "Microsoft.CodeCoverage package brings infra for collecting code coverage from vstest.console.exe and \u0022dotnet test\u0022.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "649E02875BBB01E988CCDA5CD016CBA32B09D1D26295D22F0326CBDAF0547DBAA1A3CE8DD95AB35FD3C635CF5AF697A667FFF563A00E27B489C62FE90AF2E11C"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.CodeCoverage@17.11.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/vstest",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/vstest",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.NET.Test.Sdk@17.11.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.NET.Test.Sdk",
+      "version": "17.11.1",
+      "description": "The MSbuild targets and properties for building .NET test projects.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "93750BAE9CAB4C72A155E2AA745C225033B0A8A551B554DCCA399F2AA2B0FCDAC81C9E789A44DA1A553901151A9030BCF785F5C13C97B5D9B3CDA0D9A9E96588"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.NET.Test.Sdk@17.11.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/vstest",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/vstest",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.NETCore.Platforms@1.1.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.NETCore.Platforms",
+      "version": "1.1.0",
+      "description": "Provides runtime information required to resolve target framework, platform, and runtime specific implementations of .NETCore packages. \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "6BF892C274596FE2C7164E3D8503B24E187F64D0B7BEC6D9B05EB95F04086FCEB7A85EA6B2685D42DC465C52F6F0E6F636C0B3FDDAC48F6F0125DFD83E92D106"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.NETCore.Platforms@1.1.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Testing.Extensions.Telemetry@1.4.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Testing.Extensions.Telemetry",
+      "version": "1.4.1",
+      "description": "Microsoft Testing is a set of platform, framework and protocol intended to make it possible to run any test on any target or device.\n\nThis package provides telemetry for the platform.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "3E081D6C4568A9B915D464998AC35E4E3513350B5257BCADE17B8088BA8FDBEE85BBEB25A37EDFA1482BDE0BE9AAF5AB27BDD42D5A404EA7CF245CF3D7D388D1"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Testing.Extensions.Telemetry@1.4.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Testing.Extensions.TrxReport.Abstractions@1.4.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Testing.Extensions.TrxReport.Abstractions",
+      "version": "1.4.1",
+      "description": "Package Description",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "BA3265A5D3DD181E1C67825F93499A2C33603746246819F95E865099ADB94C28A354C35C52FC5F55C7DA29A4A7109D00899F28845140C2C3BDEF567397B9AFFE"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Testing.Extensions.TrxReport.Abstractions@1.4.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Testing.Extensions.VSTestBridge@1.4.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Testing.Extensions.VSTestBridge",
+      "version": "1.4.1",
+      "description": "Microsoft Testing is a set of platform, framework and protocol intended to make it possible to run any test on any target or device.\n\nThis package provides a bridge integration for test adapters wanting to target both VSTest and Microsoft.Testing.Platform test platforms.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "8850B1856FB6EA9C1012AE42E1CD20D2D5D01CFEEB5DC305B71743D73831B335380E503A1EF57542F60B27926D7C2919A16A2572CC0E537134F258EC796CBDA2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Testing.Extensions.VSTestBridge@1.4.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Testing.Platform@1.4.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Testing.Platform",
+      "version": "1.4.1",
+      "description": "Microsoft Testing is a set of platform, framework and protocol intended to make it possible to run any test on any target or device.\n\nThis package provides the core platform and the .NET implementation of the protocol.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9859F0D45F78EEF6B1FDD07DE44E234A902CBD70CB34ACCD56C08A7D63D48F4665C3AABB8C2F0F3F74D372649F8EB0D226BD32389C756BD1ECEB2D3548ACADD1"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Testing.Platform@1.4.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Testing.Platform.MSBuild@1.4.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Testing.Platform.MSBuild",
+      "version": "1.4.1",
+      "description": "Microsoft Testing is a set of platform, framework and protocol intended to make it possible to run any test on any target or device.\n\nThis package provides MSBuild integration of the platform, its extensions and configuration files.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9BC4DCFB63EECF41C4777D12D421E13AF2767FA3691E1306E8CFC1D49C54D96CE58F85B7F07B9CF8F3A4F92DBD952816B33B103D6D722AD069C125FD08F815F6"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.Testing.Platform.MSBuild@1.4.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.TestPlatform.ObjectModel@17.11.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.TestPlatform.ObjectModel",
+      "version": "17.11.1",
+      "description": "The Microsoft Test Platform Object Model.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "F6127A19B7F721A3F038FDAA81D00360B124F4D5ED02CA79CB7B330688007B4963EF3681594D27F06882571A492FC45AA0F79EE3AAA52417D972ED73F4342000"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.TestPlatform.ObjectModel@17.11.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/vstest",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/vstest",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.TestPlatform.TestHost@17.11.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.TestPlatform.TestHost",
+      "version": "17.11.1",
+      "description": "Testplatform host executes the test using specified adapter.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "75E4476514731D459B0AEDF56A816616DF6A7A53240E6B81B202778E0A90B7C284223D93C7447541EEE70D167761417CE1818808C5CC05DF81001B56470DD6C6"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.TestPlatform.TestHost@17.11.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/vstest",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/vstest",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/MSTest.TestAdapter@3.6.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "MSTest.TestAdapter",
+      "version": "3.6.1",
+      "description": "MSTest is Microsoft supported Test Framework.\n\n      This package includes the adapter logic to discover and run tests. For access to the testing framework, install the MSTest.TestFramework package.\n\n      Supported platforms:\n      - .NET 4.6.2\u002B\n      - .NET Core 3.1\u002B\n      - .NET 6.0\n      - .NET 6.0 Windows.18362\u002B\n      - UWP 10.0.16299",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "80552FC99420DBB4595056CE04E23396809E2409AD25B9D7081F7B11744E0A40E8EA3150019F88C5DB07DD24D2BBA89F0A8FCDA3DF9784199211D56EA8AC1C60"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/MSTest.TestAdapter@3.6.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/MSTest.TestFramework@3.6.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "MSTest.TestFramework",
+      "version": "3.6.1",
+      "description": "MSTest is Microsoft supported Test Framework.\n\n      This package includes the libraries for writing tests with MSTest. To ensure discovery and execution of your tests, install the MSTest.TestAdapter package.\n\n      Supported platforms:\n      - .NET 4.6.2\u002B\n      - .NET Core 3.1\u002B\n      - .NET 6.0\n      - .NET 6.0 Windows.18362\u002B\n      - UWP 10.0.16299",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "7D3039F80543EF0D26D5173910522D517CC168BC40308CD51D0665B403CC42BE02E26F127E524EE52E7894C55DC838991459B5106D939796E0F2A1DDAA289FE7"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/MSTest.TestFramework@3.6.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/microsoft/testfx",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/NETStandard.Library@2.0.3",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "NETStandard.Library",
+      "version": "2.0.3",
+      "description": "A set of standard .NET APIs that are prescribed to be used and supported together. \n18a36291e48808fa7ef2d00a764ceb1ec95645a5 \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "E78F0CEA69C14895B1B089644077DBCE8631A626055D96522F4D29E061D8BFC3E48AA1419E74FAF265B998612C03F721F5F0CEF4690F824150A5689764DEE601"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/standard/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": ".NET Foundation and Contributors",
+      "purl": "pkg:nuget/NETStandard.Library@2.0.3",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Newtonsoft.Json@13.0.3",
+      "authors": [
+        {
+          "name": "James Newton-King"
+        }
+      ],
+      "name": "Newtonsoft.Json",
+      "version": "13.0.3",
+      "description": "Json.NET is a popular high-performance JSON framework for .NET",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "99B252BC77D1C5F5F7B51FD4EA7D5653E9961D7B3061CF9207F8643A9C7CC9965EEBC84D6467F2989BB4723B1A244915CC232A78F894E8B748CA882A7C89FB92"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "Copyright \u00A9 James Newton-King 2008",
+      "purl": "pkg:nuget/Newtonsoft.Json@13.0.3",
+      "externalReferences": [
+        {
+          "url": "https://www.newtonsoft.com/json",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/JamesNK/Newtonsoft.Json",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/RestSharp@112.1.0",
+      "authors": [
+        {
+          "name": ".NET Foundation and Contributors"
+        }
+      ],
+      "name": "RestSharp",
+      "version": "112.1.0",
+      "description": "Simple REST and HTTP API Client",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2C5AF02883CC322B65B4518A2134CA425492CC8A0F4452527F79B726A54ECE0E9A2F37AB3E268ED2AFD0D030AC6811C42A670A4B1D2159DE31F184E63FC85FD8"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/RestSharp@112.1.0",
+      "externalReferences": [
+        {
+          "url": "https://restsharp.dev/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/restsharp/RestSharp.git",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/StyleCop.Analyzers@1.1.118",
+      "authors": [
+        {
+          "name": "Sam Harwell et. al."
+        }
+      ],
+      "name": "StyleCop.Analyzers",
+      "version": "1.1.118",
+      "description": "An implementation of StyleCop\u0027s rules using Roslyn analyzers and code fixes",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "398619762085FDBDCAFC0CC6590D8F2D01F9067411CD07C76DB520B9C32926A05EF63B0F4E7C9087DDA831A6DF7C571370147610EA49C8C729F43D397ECF32BC"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "copyright": "Copyright 2015 Tunnel Vision Laboratories, LLC",
+      "purl": "pkg:nuget/StyleCop.Analyzers@1.1.118",
+      "externalReferences": [
+        {
+          "url": "https://github.com/DotNetAnalyzers/StyleCopAnalyzers",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Buffers@4.5.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Buffers",
+      "version": "4.5.1",
+      "description": "Provides resource pooling of any type for performance-critical applications that allocate and deallocate objects frequently.\n\nCommonly Used Types:\nSystem.Buffers.ArrayPool\u003CT\u003E\n \n7601f4f6225089ffb291dc7d58293c7bbf5c5d4f \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "80DA6158E55B9BCF7E0B5E6379B9CF45A632914F037B53C5BF5609576E3CD7821F7861956B73D74470D2D0C2E56DD235A5EF4CA6FFE7E192B820DC2D023AAFF2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Buffers@4.5.1",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Diagnostics.DiagnosticSource@5.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Diagnostics.DiagnosticSource",
+      "version": "5.0.0",
+      "description": "Provides Classes that allow you to decouple code logging rich (unserializable) diagnostics/telemetry (e.g. framework) from code that consumes it (e.g. tools)\n\nCommonly Used Types:\nSystem.Diagnostics.DiagnosticListener\nSystem.Diagnostics.DiagnosticSource\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "BA21118BAD3B362FC480708C71E239368D4BCCBF2B2E0E5C83577D54205DB26B162F46E24B4FB846B641EBE80F4FA341790B0AEC8E725A0978F01B165E3BDDD7"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Diagnostics.DiagnosticSource@5.0.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "website"
+        },
+        {
+          "url": "git://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Memory@4.5.5",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Memory",
+      "version": "4.5.5",
+      "description": "Provides types for efficient representation and pooling of managed, stack, and native memory segments and sequences of such segments, along with primitives to parse and format UTF-8 encoded text stored in those memory segments.\n\nCommonly Used Types:\nSystem.Span\nSystem.ReadOnlySpan\nSystem.Memory\nSystem.ReadOnlyMemory\nSystem.Buffers.MemoryPool\nSystem.Buffers.ReadOnlySequence\nSystem.Buffers.Text.Utf8Parser\nSystem.Buffers.Text.Utf8Formatter\n \n32b491939fbd125f304031c35038b1e14b4e3958 \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "E8C8E536C97B94AC3443C940B30DAD43CF6E97DC7A8C3D989371048FE74E168606384F5E0143BDC0D86F7783BF9FDEE8417964CB3A8A5D752713E90B125172DC"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Memory@4.5.5",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Numerics.Vectors@4.4.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Numerics.Vectors",
+      "version": "4.4.0",
+      "description": "Provides hardware-accelerated numeric types, suitable for high-performance processing and graphics applications.\n\nCommonly Used Types:\nSystem.Numerics.Matrix3x2\nSystem.Numerics.Matrix4x4\nSystem.Numerics.Plane\nSystem.Numerics.Quaternion\nSystem.Numerics.Vector2\nSystem.Numerics.Vector3\nSystem.Numerics.Vector4\nSystem.Numerics.Vector\nSystem.Numerics.Vector\u003CT\u003E\n \n8321c729934c0f8be754953439b88e6e1c120c24",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "81D46B509B3546B8D6DC9079A7CDA162303AEF1A1E14BBE1D127522168D388DF2A13195B16DFD1B57C1560D73906E909FDFF4E2B34104BA81A9336C97874EA1E"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Numerics.Vectors@4.4.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Reflection.Metadata@1.6.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Reflection.Metadata",
+      "version": "1.6.0",
+      "description": "This packages provides a low-level .NET (ECMA-335) metadata reader and writer. It\u0027s geared for performance and is the ideal choice for building higher-level libraries that intend to provide their own object model, such as compilers.\n\nCommonly Used Types:\nSystem.Reflection.Metadata.MetadataReader\nSystem.Reflection.PortableExecutable.PEReader\nSystem.Reflection.Metadata.Ecma335.MetadataBuilder\nSystem.Reflection.PortableExecutable.PEBuilder\nSystem.Reflection.PortableExecutable.ManagedPEBuilder\n \n30ab651fcb4354552bd4891619a0bdd81e0ebdbf \nWhen using NuGet 3.x this package requires at least version 3.4.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "F5227666EDC6BB1DA78B8A8E86A68E9BD647CAA2EC6A1580C14A4A5E1FE5CFDE3BDAF0D8C23DC210C405A55F83CEB6ADD1A9ADAB149DC065B38CFDDC9B01BA20"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation.  All rights reserved.",
+      "purl": "pkg:nuget/System.Reflection.Metadata@1.6.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Runtime.CompilerServices.Unsafe",
+      "version": "6.0.0",
+      "description": "Provides the System.Runtime.CompilerServices.Unsafe class, which provides generic, low-level functionality for manipulating pointers.\n\nCommonly Used Types:\nSystem.Runtime.CompilerServices.Unsafe",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "D4057301BE4EC4936F24B9CE003B5EC4D99681AB6D9B65D5393DD38D04CDEC37784AAA12C1A8B50AC3767ED878DAE425749490773FEC01E734F93CF1045822B3"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Text.Encodings.Web@8.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Text.Encodings.Web",
+      "version": "8.0.0",
+      "description": "Provides types for encoding and escaping strings for use in JavaScript, HyperText Markup Language (HTML), and uniform resource locators (URL).\n\nCommonly Used Types:\nSystem.Text.Encodings.Web.HtmlEncoder\nSystem.Text.Encodings.Web.UrlEncoder\nSystem.Text.Encodings.Web.JavaScriptEncoder",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "BA0822C38C3B658ABA9495642D269E882B827E3BE4AD2DC1426D8A97D3CBC5A2277C5F80847D0CB9381078AF01523328C4992CAA058146D5D8EE6B8A08609C32"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Text.Encodings.Web@8.0.0",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Text.Json@8.0.4",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Text.Json",
+      "version": "8.0.4",
+      "description": "Provides high-performance and low-allocating types that serialize objects to JavaScript Object Notation (JSON) text and deserialize JSON text to objects, with UTF-8 support built-in. Also provides types to read and write JSON text encoded as UTF-8, and to create an in-memory document object model (DOM), that is read-only, for random access of the JSON elements within a structured view of the data.\n\nThe System.Text.Json library is built-in as part of the shared framework in .NET Runtime. The package can be installed when you need to use it in other target frameworks.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9F87EE2A39BA4F602A2B3EC7584B8AA2C03A7F6DB1E303F48224DBC139DDBF3CB10190BE04EFE1D1592B0BF5B2FD97F6D8F88FD492A45F778B84FD3E613ACB00"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Text.Json@8.0.4",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        },
+        {
+          "url": "https://github.com/dotnet/runtime",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "System.Threading.Tasks.Extensions",
+      "version": "4.5.4",
+      "description": "Provides additional types that simplify the work of writing concurrent and asynchronous code.\n\nCommonly Used Types:\nSystem.Threading.Tasks.ValueTask\u003CTResult\u003E\n \n7601f4f6225089ffb291dc7d58293c7bbf5c5d4f",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "68052086E77D3C7198737A3DA163D67740B7C44F93250C39659B3BF21B6547A9ABF64CBF40481F5C78F24361AF3AAF47D52D188B371554A0928A7F7665C1FC14"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/dotnet/corefx/blob/master/LICENSE.TXT"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4",
+      "externalReferences": [
+        {
+          "url": "https://dot.net/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Tethys.Logging@1.6.1",
+      "authors": [
+        {
+          "name": "Thomas Graf"
+        }
+      ],
+      "name": "Tethys.Logging",
+      "version": "1.6.1",
+      "description": "Simple logging and enhancements for existing logging frameworks.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "AA1A34B4D491F71753F13407099F7FAF60FC05861872025C993731006D202485C13F283C43BBDAB2FF9A1C6C002A4D1CAF535FCDEE282DEDD8E724EE3355D785"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "copyright": "Copyright (C) 2009-2021 T. Graf",
+      "purl": "pkg:nuget/Tethys.Logging@1.6.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/tngraf/Tethys.Logging/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Tethys.Logging.Console@1.6.1",
+      "authors": [
+        {
+          "name": "Thomas Graf"
+        }
+      ],
+      "name": "Tethys.Logging.Console",
+      "version": "1.6.1",
+      "description": "Console log output for Tethys.Logging.",
+      "scope": "excluded",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9BDB7AFE5C80F88D0119BE02313948DE7A2C0136167C815CF88AC1CA4D12A07342F5263A819649D258CB6643B1CD7AC89F284ACBAE281EB185CDB1CC72D13937"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "copyright": "Copyright (C) 2009-2021 T. Graf",
+      "purl": "pkg:nuget/Tethys.Logging.Console@1.6.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/tngraf/Tethys.Logging/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Tethys.Logging.Controls.NET5@1.6.1",
+      "authors": [
+        {
+          "name": "Thomas Graf"
+        }
+      ],
+      "name": "Tethys.Logging.Controls.NET5",
+      "version": "1.6.1",
+      "description": "Simple logging and enhancements for existing logging frameworks.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "3B4B59F8B6C2E9A77ABD993D255347BDCD811A1B9A8EC040C64E2DBC037296AC443DA31354E6E8C04D1FD65097C8B9E1D0A1DDCCE3422A86A9EADCA5D3423E76"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "copyright": "Copyright (C) 2009-2021 T. Graf",
+      "purl": "pkg:nuget/Tethys.Logging.Controls.NET5@1.6.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/tngraf/Tethys.Logging/",
+          "type": "website"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "Fossology.Rest.Dotnet@1.4.1",
+      "dependsOn": [
+        "pkg:nuget/NETStandard.Library@2.0.3",
+        "pkg:nuget/Newtonsoft.Json@13.0.3",
+        "pkg:nuget/StyleCop.Analyzers@1.1.118",
+        "pkg:nuget/RestSharp@112.1.0",
+        "pkg:nuget/Tethys.Logging@1.6.1",
+        "pkg:nuget/Tethys.Logging.Controls.NET5@1.6.1",
+        "pkg:nuget/coverlet.collector@6.0.2",
+        "pkg:nuget/coverlet.msbuild@6.0.2",
+        "pkg:nuget/Microsoft.NET.Test.Sdk@17.11.1",
+        "pkg:nuget/MSTest.TestAdapter@3.6.1",
+        "pkg:nuget/MSTest.TestFramework@3.6.1",
+        "pkg:nuget/Tethys.Logging.Console@1.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/coverlet.collector@6.0.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/coverlet.msbuild@6.0.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.ApplicationInsights@2.22.0",
+      "dependsOn": [
+        "pkg:nuget/System.Diagnostics.DiagnosticSource@5.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.CodeCoverage@17.11.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.NET.Test.Sdk@17.11.1",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.CodeCoverage@17.11.1",
+        "pkg:nuget/Microsoft.TestPlatform.TestHost@17.11.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.NETCore.Platforms@1.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Testing.Extensions.Telemetry@1.4.1",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.ApplicationInsights@2.22.0",
+        "pkg:nuget/Microsoft.Testing.Platform@1.4.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Testing.Extensions.TrxReport.Abstractions@1.4.1",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.Testing.Platform@1.4.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Testing.Extensions.VSTestBridge@1.4.1",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.ApplicationInsights@2.22.0",
+        "pkg:nuget/Microsoft.TestPlatform.ObjectModel@17.11.1",
+        "pkg:nuget/Microsoft.Testing.Extensions.Telemetry@1.4.1",
+        "pkg:nuget/Microsoft.Testing.Extensions.TrxReport.Abstractions@1.4.1",
+        "pkg:nuget/Microsoft.Testing.Platform@1.4.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Testing.Platform.MSBuild@1.4.1",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.Testing.Platform@1.4.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Testing.Platform@1.4.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.TestPlatform.ObjectModel@17.11.1",
+      "dependsOn": [
+        "pkg:nuget/System.Reflection.Metadata@1.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.TestPlatform.TestHost@17.11.1",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.TestPlatform.ObjectModel@17.11.1",
+        "pkg:nuget/Newtonsoft.Json@13.0.3"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/MSTest.TestAdapter@3.6.1",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.Testing.Extensions.VSTestBridge@1.4.1",
+        "pkg:nuget/Microsoft.Testing.Platform.MSBuild@1.4.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/MSTest.TestFramework@3.6.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/NETStandard.Library@2.0.3",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.NETCore.Platforms@1.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Newtonsoft.Json@13.0.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/RestSharp@112.1.0",
+      "dependsOn": [
+        "pkg:nuget/System.Text.Json@8.0.4"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/StyleCop.Analyzers@1.1.118",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Buffers@4.5.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Diagnostics.DiagnosticSource@5.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Memory@4.5.5",
+      "dependsOn": [
+        "pkg:nuget/System.Buffers@4.5.1",
+        "pkg:nuget/System.Numerics.Vectors@4.4.0",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Numerics.Vectors@4.4.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Reflection.Metadata@1.6.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/System.Text.Encodings.Web@8.0.0",
+      "dependsOn": [
+        "pkg:nuget/System.Buffers@4.5.1",
+        "pkg:nuget/System.Memory@4.5.5",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Text.Json@8.0.4",
+      "dependsOn": [
+        "pkg:nuget/Microsoft.Bcl.AsyncInterfaces@8.0.0",
+        "pkg:nuget/System.Buffers@4.5.1",
+        "pkg:nuget/System.Memory@4.5.5",
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0",
+        "pkg:nuget/System.Text.Encodings.Web@8.0.0",
+        "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/System.Threading.Tasks.Extensions@4.5.4",
+      "dependsOn": [
+        "pkg:nuget/System.Runtime.CompilerServices.Unsafe@6.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Tethys.Logging.Console@1.6.1",
+      "dependsOn": [
+        "pkg:nuget/Tethys.Logging@1.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Tethys.Logging.Controls.NET5@1.6.1",
+      "dependsOn": [
+        "pkg:nuget/Tethys.Logging@1.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:nuget/Tethys.Logging@1.6.1",
+      "dependsOn": []
+    }
+  ]
+}
