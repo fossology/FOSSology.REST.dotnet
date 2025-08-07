@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="FossologyClientUpload.cs" company="Tethys">
-//   Copyright (C) 2019-2022 T. Graf
+//   Copyright (C) 2019-2025 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -18,14 +18,11 @@ namespace Fossology.Rest.Dotnet
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
-    using System.Runtime.InteropServices.ComTypes;
-    using System.Threading.Tasks;
     using Fossology.Rest.Dotnet.Model;
 
     using Newtonsoft.Json;
 
     using RestSharp;
-    using RestSharp.Extensions;
 
     /// <summary>
     /// Client for the SW360 REST API.
@@ -514,6 +511,7 @@ namespace Fossology.Rest.Dotnet
         {
             Log.Debug($"Downloading upload {id}...");
 
+            // ReSharper disable once RedundantArgumentDefaultValue
             var request = new RestRequest(this.Url + $"/uploads/{id}/download", Method.Get);
             var response = this.api.Execute(request);
             if (response?.Content == null)
@@ -521,7 +519,7 @@ namespace Fossology.Rest.Dotnet
                 throw new FossologyApiException(ErrorCode.NoValidAnswer);
             } // if
 
-            if (response.StatusCode == HttpStatusCode.OK)
+            if ((response.StatusCode == HttpStatusCode.OK) && (response.RawBytes != null))
             {
                 System.IO.File.WriteAllBytes(filename, response.RawBytes);
                 var res = new Result();
@@ -547,7 +545,7 @@ namespace Fossology.Rest.Dotnet
         } // GetUploadFileById()
 
         /// <summary>
-        /// Gets the coüpyright for an upload.
+        /// Gets the copyright for an upload.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>A list of <see cref="CopyrightEntry" /> objects.</returns>
@@ -572,5 +570,78 @@ namespace Fossology.Rest.Dotnet
 
             return summary;
         } // GetUploadCopyrights()
+
+        /// <summary>
+        /// Get the item id for the top level item in a given upload.
+        /// </summary>
+        /// <param name="id">The upload identifier.</param>
+        /// <returns>System.Int32.</returns>
+        public int GetTopItem(int id)
+        {
+            Log.Debug($"Getting upload top item upload {id}...");
+
+            var request = new RestRequest(this.Url + $"/uploads/{id}/topitem");
+            request.RequestFormat = DataFormat.Json;
+            var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
+            var result = JsonConvert.DeserializeObject<Result>(response.Content);
+            if (result == null)
+            {
+                Log.Error("Got empty response!");
+                return -1;
+            }
+            else
+            {
+                if (result.Code != (int)HttpStatusCode.OK)
+                {
+                    Log.Error($"Error getting top-item: {result.Message}");
+                } // if
+            } // if
+
+            return int.Parse(result.Message);
+        } // GetTopItem()
+
+#if false // NOT YET SUPPORTED
+        /// <summary>
+        /// Gets the copyright found by ScanCode for an upload.
+        /// </summary>
+        /// <param name="uploadId">The upload id.</param>
+        /// <param name="itemId">The upload tree id.</param>
+        /// <param name="status">Status of the CX.</param>
+        /// <param name="limit">Limits of responses per request.</param>
+        /// <param name="page">Page number for responses.</param>
+        /// <returns>A list of <see cref="CopyrightEntry" /> objects.</returns>
+        public List<CopyrightEntry> GetUploadScanCodeCopyrights(
+            int uploadId,
+            int itemId,
+            string status,
+            int limit,
+            int page)
+        {
+            Log.Debug($"Getting upload copyrights for upload {uploadId}, {itemId}...");
+
+            ////var request = new RestRequest(this.Url + $"/uploads/{uploadId}/item/{itemId}/scancode-copyrights?status={status}");
+            var request = new RestRequest("http://localhost:8081/repo/api/v2" + $"/uploads/{uploadId}/item/{itemId}/scancode-copyrights?status={status}");
+            request.RequestFormat = DataFormat.Json;
+            var response = this.api.Execute(request);
+            if (response?.Content == null)
+            {
+                throw new FossologyApiException(ErrorCode.NoValidAnswer);
+            } // if
+
+            var summary = JsonConvert.DeserializeObject<List<CopyrightEntry>>(
+                response.Content,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+
+            return summary;
+        } // GetUploadScanCodeCopyrights()
+#endif
     } // FossologyClient
 }

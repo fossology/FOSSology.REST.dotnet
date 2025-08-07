@@ -1172,7 +1172,7 @@ namespace Fossology.Rest.Dotnet.Test
 
         //// ---------------------------------------------------------------------
 
-        #region TESTS THAT REQUIRE MANUAL PREPARATION
+#region TESTS THAT REQUIRE MANUAL PREPARATION
 #if false
         /// <summary>
         /// Unit test.
@@ -1191,6 +1191,7 @@ namespace Fossology.Rest.Dotnet.Test
         }
 #endif
 
+#if false // NOT YET SUPPORTED
         /// <summary>
         /// Unit test.
         /// </summary>
@@ -1205,7 +1206,8 @@ namespace Fossology.Rest.Dotnet.Test
             var result = client.GetUploadScanCodeCopyrights(UploadId, itemId, "active", 100, 1);
             Assert.IsNotNull(result);
         }
-        #endregion TESTS THAT REQUIRE MANUAL PREPARATION
+#endif
+#endregion TESTS THAT REQUIRE MANUAL PREPARATION
 
         //// ---------------------------------------------------------------------
 
