@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="Analysis.cs" company="Tethys">
-//   Copyright (C) 2020-2022 T. Graf
+//   Copyright (C) 2020-2025 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -80,5 +80,23 @@ namespace Fossology.Rest.Dotnet.Model
         /// </summary>
         [JsonProperty("reso")]
         public bool Reso { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the patent analysis.
+        /// </summary>
+        [JsonProperty("patent")]
+        public bool Patent { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the Software Heritage analysis.
+        /// </summary>
+        [JsonProperty("heritage")]
+        public bool Heritage { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the compatibility analysis.
+        /// </summary>
+        [JsonProperty("compatibility")]
+        public bool Compatibility { get; set; }
     } // Analysis
 }

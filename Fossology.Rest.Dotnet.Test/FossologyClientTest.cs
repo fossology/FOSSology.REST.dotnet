@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="FossologyClientTest.cs" company="Tethys">
-//   Copyright (C) 2019-2023 T. Graf
+//   Copyright (C) 2019-2025 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -45,7 +45,7 @@ namespace Fossology.Rest.Dotnet.Test
         /// <summary>
         /// The access token.
         /// </summary>
-        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Mjk2NDE1OTksIm5iZiI6MTcyOTI5NjAwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.XDoC_pByw2RaxJFO_F-PM7zrJlCIyu1G3UyD3_7QeQ4";
+        private const string Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NTQ4NzAzOTksIm5iZiI6MTc1NDUyNDgwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.HlCrnsrdD8fzjpzcoD5I6ozZRtb5obgja5vIf-pI0gk";
 
         /// <summary>
         /// The filename of a test package.
@@ -576,6 +576,8 @@ namespace Fossology.Rest.Dotnet.Test
             job.Decider.BulkReused = true;
             job.Decider.NewScanner = true;
             job.Decider.OjoDecider = true;
+            job.Decider.CopyrightDeactivation = true;
+            job.Decider.CopyrightClutterRemoval = true;
             job.Reuse.ReuseUploadId = 0;
             job.Reuse.ReuseGroup = 0;
             job.Reuse.ReuseMain = true;
@@ -723,7 +725,7 @@ namespace Fossology.Rest.Dotnet.Test
             var reportId = TriggerReportGeneration(uploadId);
 
             // ugly but required: wait some time until report is available
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
 
             var client = new FossologyClient(LocalUrl, Token);
             client.DownloadReport(reportId, ReportName);
@@ -1188,6 +1190,21 @@ namespace Fossology.Rest.Dotnet.Test
             Assert.AreEqual(202, result.Code);
         }
 #endif
+
+        /// <summary>
+        /// Unit test.
+        /// </summary>
+        [TestMethod]
+        public void TestGetScanCodeResults()
+        {
+            const int UploadId = 8;
+
+            var client = new FossologyClient(LocalUrl, Token);
+            var itemId = client.GetTopItem(UploadId);
+
+            var result = client.GetUploadScanCodeCopyrights(UploadId, itemId, "active", 100, 1);
+            Assert.IsNotNull(result);
+        }
         #endregion TESTS THAT REQUIRE MANUAL PREPARATION
 
         //// ---------------------------------------------------------------------

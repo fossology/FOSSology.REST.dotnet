@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="DeciderInfo.cs" company="Tethys">
-//   Copyright (C) 2019-2020 T. Graf
+//   Copyright (C) 2019-2025 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -44,5 +44,25 @@ namespace Fossology.Rest.Dotnet.Model
         /// </summary>
         [JsonProperty("ojo_decider")]
         public bool OjoDecider { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the auto conclude license.
+        /// Auto conclude license if they are of provided type. Omit the field or keep as
+        /// empty string to not use this option.
+        /// </summary>
+        [JsonProperty("conclude_license_type")]
+        public string ConcludeLicenseType { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to do copyright deactivation.
+        /// </summary>
+        [JsonProperty("copyright_deactivation")]
+        public bool CopyrightDeactivation { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use copyright clutter removal.
+        /// </summary>
+        [JsonProperty("copyright_clutter_removal")]
+        public bool CopyrightClutterRemoval { get; set; }
     } // DeciderInfo
 }

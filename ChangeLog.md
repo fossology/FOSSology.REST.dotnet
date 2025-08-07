@@ -1,5 +1,18 @@
 # ChangeLog - FOSSology.REST.dotnet
 
+## 1.5.0 (2025-08-07)
+
+* Support of more scan/decider options:
+    * `ConcludeLicenseType`
+    * `CopyrightDeactivation`
+    * `CopyrightClutterRemoval`
+    * `Patent`
+    * `Heritage`
+    * `Compatibility`
+* More Upload properties
+    * `AssigneeDate`
+    * `ClosingDate`
+
 ## 1.4.1 (2024-10-19)
 
 * Dependency updates, especially RestSharp 108.0.3 to 112.1.0 to fix a security vulnerability.

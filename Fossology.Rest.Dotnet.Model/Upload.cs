@@ -1,6 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 // <copyright file="Upload.cs" company="Tethys">
-//   Copyright (C) 2019-2022 T. Graf
+//   Copyright (C) 2019-2025 T. Graf
 // </copyright>
 //
 // Licensed under the MIT License.
@@ -75,6 +75,18 @@ namespace Fossology.Rest.Dotnet.Model
         /// </summary>
         [JsonProperty("assignee", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Assignee { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date, when a user was assigned to the upload.
+        /// </summary>
+        [JsonProperty("assigneeDate", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string AssigneeDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date, when the upload was closed or rejected.
+        /// </summary>
+        [JsonProperty("closingDate", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string ClosingDate { get; set; }
 
         /// <summary>
         /// Gets or sets the hash of the file.
