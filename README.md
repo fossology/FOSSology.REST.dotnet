@@ -21,7 +21,7 @@ More information about FOSSology can be found [here](https://www.fossology.org/.
 
 ## Test Application
 
-**FossyApiDemo** - A simple .Net 6 WinForms based demo application.
+**FossyApiDemo** - A simple .Net 8 WinForms based demo application.
 
 ## Documentation on the FOSSology REST API
 
@@ -50,7 +50,7 @@ More information about FOSSology can be found [here](https://www.fossology.org/.
 
 ## License
 
-Copyright (C) 2019-2024 T. Graf
+Copyright (C) 2019-2025 T. Graf
 
 Licensed under the **MIT License** (the "License");  
 you may not use this file except in compliance with the License.  
